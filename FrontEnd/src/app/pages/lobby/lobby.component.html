@@ -1,13 +1,14 @@
 <div class="parent">
-  <header class="blue section">Header</header>
+  <header class="blue section"></header>
   <main class="coral section">
-    <div class="child">
-      <div class="section yellow" contenteditable>Min: 150px / Max: 25%</div>
-      <div class="section purple" contenteditable>
-        This element takes the second grid position (1fr), meaning it takes up
-        the rest of the remaining space.
+    <div id="holder">
+      <h1>Lobby</h1>
+      <div class="button">
+        <button mat-raised-button>Create</button>
+        <button mat-raised-button>Join</button>
+        <button mat-raised-button routerLink="/history">History</button>
       </div>
     </div>
   </main>
-  <footer class="purple section">Footer Content</footer>
+  <footer class="purple section"></footer>
 </div>
