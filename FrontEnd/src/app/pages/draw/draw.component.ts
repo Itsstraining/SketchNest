@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {fabric} from 'fabric'
+import { Canvas } from 'fabric/fabric-impl';
 
 @Component({
   selector: 'app-draw',
@@ -14,13 +15,18 @@ export class DrawComponent implements OnInit {
     this.canvas=new fabric.Canvas('canvas',{
       width:1000,
       height:500,
-      backgroundColor: 'red'
     });
+    this.startDrawing(this.canvas);
     //xac dinh vi tri con chuot trong canvas
-    this.canvas.on('mouse:move',function(event){
+    // this.canvas.on('mouse:move',function(event){
+    //   console.log(event.e.clientX, event.e.clientY);
+    // })
 
-      console.log(event.e.clientX, event.e.clientY);
-    })
   }
+startDrawing(canvas){
+  canvas.isDrawingMode=true;
+  canvas.renderAll();
+
+}
 
 }

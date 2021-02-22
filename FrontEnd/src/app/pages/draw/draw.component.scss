@@ -7,14 +7,18 @@
 #drawSpace{
     display: flex;
     flex-direction: row;
+    margin-top:10%
 }
 #drawContent{
     display:flex;
     flex-direction: column;
-    margin-top: 10%;
     margin-left: 10%;
 }
 button{
     width: 100px;
     height: 100px;
+}
+canvas{
+
+    border:1px solid black;
 }
