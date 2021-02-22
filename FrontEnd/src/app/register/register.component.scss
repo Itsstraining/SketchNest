@@ -1,0 +1,62 @@
+* {
+    box-sizing: border-box;
+  }
+  body {
+    background-color: #a9c6d6;
+  }
+  #wrapper {
+    margin: 0 auto;
+    text-align: center;
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+  // End optional styling
+  
+  h1 {
+    color:black;
+    font-family: "Fredoka One", sans-serif;
+    font-weight: normal;
+    letter-spacing: 2.5px;
+    font-size: 49px;
+  }
+  
+  #login-wrapper {
+    height: 300px;
+    width: 400px;
+    background: white;
+    border-radius: 3px;
+    box-shadow: 5px 5px 12px 4px rgba(0,0,0,0.24);
+    padding: 60px 30px 50px 30px;
+    .row {
+      margin-bottom: 20px;
+      label {
+        color: #45B39D;//#75C2CC;
+        font-size: 18px;
+        margin-right: 6px;
+      }
+      input {
+        padding: 6px;
+        height: 32px;
+        outline: none;
+        border: none;
+        box-shadow: 1px 2px 6px 4px rgba(0,0,0,0.08);
+        border-radius: 3px;
+      }
+      
+    }
+    button {
+      margin-bottom: 14px;
+      padding: 8px 12px;
+      border: none;
+      outline-color: gray;
+      box-shadow: 1px 2px 6px 4px rgba(0,0,0,0.08);
+      background-color: #45B39D;
+      border-radius: 3px;
+      color: white;
+      cursor: pointer;
+    }
+   
+  }
