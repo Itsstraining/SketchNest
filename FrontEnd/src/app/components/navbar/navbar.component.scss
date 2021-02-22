@@ -1,0 +1,143 @@
+.bg-custom {
+	//background: #efefef;
+	background: rgb(245, 245, 245);
+  }
+  .img-div {
+	width: 98%;
+	max-width: 100%;
+	display: block;
+	height: auto;
+	margin: auto;
+	//background:white;
+  }
+  .image img {
+	max-width: 100%;
+	/*this is the only way to make image responsive inside the flexbox*/
+	margin: auto;
+	display: block;
+  }
+  .image {
+	/*responsive*/
+	max-width: 99%;
+	height: auto;
+	/* */
+	/*centerized*/
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	/* */
+  }
+  #header-1 .bg-custom {
+	background: rgb(255, 255, 255);
+  }
+  #header-1 .b1 a {
+	background: #ff003d;
+	padding: 7px 20px;
+	border-radius: 5px;
+  }
+  #header-1 .b2 a {
+	background: #fff;
+	padding: 7px 20px;
+	border-radius: 5px;
+	color: #000;
+  }
+  #sec-1 .jumbotron-fluid {
+	position: relative;
+	text-align: center;
+	background-image: url("https://i.pinimg.com/originals/fa/03/36/fa0336691e8f9bf6f24e193c7f57150f.jpg");
+	background-size: cover;
+	height: 400px;
+	background-position: center center;
+	background-repeat: no-repeat;
+  }
+  #sec-1 .jumbotron-fluid:before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 400px;
+	background: rgba(33, 33, 45, 0.75);
+  }
+  #sec-1 {
+	margin-top: 70px;
+  }
+  #sec-1 *,
+  #sec-5 * {
+	position: relative; /* Makes elements display above overlay. */
+  }
+  #sec-1 p {
+	font-size: 18px;
+	margin-top: 50px;
+	width: 80%;
+  }
+  #sec-2,
+  #sec-3,
+  #sec-4 {
+	// margin-top:20px;
+	padding-bottom: 40px;
+	background-color: #161718;
+
+  
+  #sec-5 .jumbotron-fluid {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	background-image: url("https://www.verdict.co.uk/wp-content/uploads/2017/11/smartphones.jpg");
+	background-size: cover;
+	height: 350px;
+	background-position: center center;
+	background-repeat: no-repeat;
+  }
+  #sec-5 .jumbotron-fluid:before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 350px;
+	background: rgba(33, 33, 45, 0.75);
+  }
+  #foot {
+	background: rgb(33, 33, 33);
+  }
+  #foot p {
+	color: #ff003d;
+	font-size: 22px;
+  }
+  #foot a {
+	color: #fff;
+	font-size: 18px;
+  }
+  #foot a:hover {
+	color: #ff003d;
+  }
+  
+  @media (min-width: 1200px) {
+	#sec-2 p,
+	#sec-3 p,
+	#sec-4 p {
+	  margin-top: 200px;
+	  width: 60%;
+	  margin: auto;
+	}
+  }
+  @media (min-width: 1300px) {
+	.total {
+	  max-width: 1200px;
+	}
+  }
+  @media (max-width: 575px) {
+	#header-1 ul {
+	  justify-content: center;
+	  margin: auto;
+	  padding-bottom: 10px;
+	}
+}
+  }
+.b2{
+	background-color: plum;
+}
