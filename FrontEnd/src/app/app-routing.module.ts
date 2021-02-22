@@ -17,6 +17,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/history/history.module').then((m) => m.HistoryModule),
   },
+  { path: 'draw', loadChildren: () => import('./pages/draw/draw.module').then(m => m.DrawModule) },
 ];
 
 @NgModule({
