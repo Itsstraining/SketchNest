@@ -1,17 +1,14 @@
 
 <div id="body">
+    <div id="drawContent">
+        <button (click)="startDrawing(canvas)"><img src="https://www.vhv.rs/dpng/d/585-5858860_blue-paint-brush-and-can-png-icons-ms.png" alt=""></button>
+        <button (click)="eraser(canvas)" ></button>
+        <button (click)="drawCircle(canvas)"></button>
+        <button (click)="drawRectangle(canvas)"></button>
+        <button (click)="pointer(canvas)"></button>
+    </div>
     <div id="drawSpace">
- 
-        <div id="drawContent">
-  
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
-        </div>
         <canvas id="canvas" ></canvas>
-
     </div>
 
 </div>
