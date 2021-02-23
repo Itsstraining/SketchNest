@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import * as firebase from 'firebase'
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
     try {
       await this.auth.oAuthLogin();
       console.log("login success! "+this.auth.user.displayName );
-      await this.router.navigate(['home'])
+      await this.router.navigate([''])
     }catch(err){
       throw(err);
     }

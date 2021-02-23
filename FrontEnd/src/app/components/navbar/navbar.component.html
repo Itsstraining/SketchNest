@@ -1,14 +1,23 @@
 <head>
   <title>ELRadio Mobile Application</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link
     href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&family=Oswald:wght@200;300;400;500;600;700&family=Ultra&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+  />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
@@ -19,8 +28,14 @@
     <a class="navbar-brand py-2" href="#">
       <img
         src="https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.15752-9/152957362_1400385440293685_8382703701793146260_n.png?_nc_cat=101&ccb=3&_nc_sid=ae9488&_nc_ohc=Ng06sIqqRpoAX-yZ8Dw&_nc_ht=scontent.fsgn5-1.fna&oh=1057fccc79ee06c4d446c53ee6d006b8&oe=605860B4"
-        width=155></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        width="155"
+    /></a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#collapsibleNavbar"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse text-center" id="collapsibleNavbar">
@@ -29,7 +44,7 @@
           <a class="nav-link d-inline active" routerLink='Register'>Đăng kí</a>
         </li>
         <li class="nav-item my-2 ml-3 b2">
-          <a class="navdn" href="#sec-5">Đăng nhập</a>
+          <a class="navdn" [routerLink]="'login'">Đăng nhập</a>
         </li>
       </ul>
     </div>
