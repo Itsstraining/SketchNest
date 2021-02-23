@@ -1,6 +1,5 @@
 <div id="wrapper">
   <h1>SketchNest!</h1>
-  <h3>Login</h3>
   <div id="login-wrapper">
     <form>
       <div class="row">
@@ -17,12 +16,12 @@
       <br>
       <button type="button">Login</button>
       <br>
-      <button type="button" *ngIf="!this.user" (click)=" this.login()">Login with Google</button>
+      <button style="background-color: rgb(233, 123, 21);" id="bt" type="button" *ngIf="!this.auth.user"  (click)=" this.login()" routerLink="home">Login with Google</button>
 
 
     </form>
     <div id="forget-pw-link">
-      <a href="#">Register here</a>
+      <a href="../register/register-routing.module.ts ">Register here</a>
     </div>
   </div>
 </div>

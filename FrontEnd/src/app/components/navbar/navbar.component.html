@@ -41,10 +41,13 @@
     <div class="collapse navbar-collapse text-center" id="collapsibleNavbar">
       <ul class="navbar-nav font-weight-bold ml-auto flex-row" id="listed">
         <li class="nav-item my-2 b1 ml-3">
-          <a class="nav-link d-inline active" routerLink='Register'>Đăng kí</a>
+          <a class="nav-link d-inline active"[routerLink]="'register'" *ngIf="!this.auth.user">Đăng kí</a>
         </li>
+        <img *ngIf="this.auth.user" style="border-radius: 50%" src="{{this.auth.user.photoURL}}" height="50px">
         <li class="nav-item my-2 ml-3 b2">
-          <a class="navdn" [routerLink]="'login'">Đăng nhập</a>
+          <a class="navdn" [routerLink]="'login'" *ngIf="!this.auth.user">Đăng nhập</a>
+          <button class="navdn" id="btndx"  *ngIf="this.auth.user" (click)="this.logout()"><b>Đăng xuất</b></button>
+          
         </li>
       </ul>
     </div>
