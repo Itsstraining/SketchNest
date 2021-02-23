@@ -41,10 +41,19 @@
     <div class="collapse navbar-collapse text-center" id="collapsibleNavbar">
       <ul class="navbar-nav font-weight-bold ml-auto flex-row" id="listed">
         <li class="nav-item my-2 b1 ml-3">
-          <a class="nav-link d-inline active" href="/home">Đăng kí</a>
+          <a class="nav-link d-inline active" [routerLink]="'register'"
+            >Sign up</a
+          >
         </li>
         <li class="nav-item my-2 ml-3 b2">
-          <a class="navdn" [routerLink]="'login'">Đăng nhập</a>
+          <a class="navdn" *ngIf="!this.auth.user" [routerLink]="'login'"
+            >Sign in</a
+          >
+        </li>
+        <li class="nav-item my-2 ml-3 b2">
+          <a class="navdn" *ngIf="this.auth.user" (click)="logOut()"
+            >Sign Out</a
+          >
         </li>
       </ul>
     </div>

@@ -5,24 +5,24 @@
     <form>
       <div class="row">
         <label for="username">Username</label>
-        <input type="text" placeholder="enter username">
+        <input type="text" placeholder="enter username" />
       </div>
       <div class="row">
         <label for="password">Password</label>
-        <input type="password" placeholder="enter password">
+        <input type="password" placeholder="enter password" />
       </div>
-      <div _ngcontent-cwg-c17="" style="
-          margin-right: 141px;
-      "><input _ngcontent-cwg-c17="" type="checkbox"><label _ngcontent-cwg-c17="">Remember me</label></div>
-      <br>
+      <div _ngcontent-cwg-c17="" style="margin-right: 141px">
+        <input _ngcontent-cwg-c17="" type="checkbox" /><label
+          _ngcontent-cwg-c17=""
+          >Remember me</label
+        >
+      </div>
+      <br />
       <button type="button">Login</button>
-      <br>
-      <button type="button" *ngIf="!this.user" (click)=" this.login()">Login with Google</button>
-
-
+      <br />
+      <button type="button" *ngIf="!this.auth.user" (click)="this.login()">
+        Login with Google
+      </button>
     </form>
-    <div id="forget-pw-link">
-      <a href="#">Register here</a>
-    </div>
   </div>
 </div>

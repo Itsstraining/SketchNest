@@ -20,7 +20,6 @@ export class LoginComponent implements OnInit {
   async login() {
     try {
       await this.auth.oAuthLogin();
-      console.log('login success! ' + this.auth.user.displayName);
       await this.router.navigate(['']);
     } catch (err) {
       throw err;
