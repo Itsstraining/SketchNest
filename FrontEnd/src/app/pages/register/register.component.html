@@ -1,21 +1,29 @@
 <div id="wrapper">
     <h1>SketchNest!</h1>
-    <div id="login-wrapper">
+    <div id="signup-wrapper">
         <form>
-            <div class="row">
-                <label for="username">Username</label>
-                <input type="text" placeholder="enter username">
-            </div>
-            <div class="row">
-                <label for="password">Password</label>
-                <input type="password" placeholder="enter password" >
-            </div>
-            <div class="row">
-                <label for="email">Email</label>
-                <input type="text" placeholder=" enter email">
-            </div>
+            <table class="center" >
+                
+                    <tr>
+                        <td><label for="username">Username</label></td>
+                        <td><input type="text" placeholder="enter username"></td>
+                    </tr>
+
+                    <tr>
+                        <td><label for="pwd">Password</label></td>
+                        <td><input type="password" id="pwd" name="pwd" minlength="8" placeholder="enter password"></td>
+                    </tr>
+
+                    <tr>
+                        <td><label for="email">Email</label></td>
+                        <td> <input type="text" placeholder="enter email"></td>
+                    </tr>
+               
+            </table>
+            <br><br>
             <button type="button">Register</button>
+
         </form>
-        
+
     </div>
 </div>
