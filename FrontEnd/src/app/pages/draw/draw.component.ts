@@ -19,7 +19,7 @@ export class DrawComponent implements OnInit {
 
   ngOnInit(): void {
     this.canvas = new fabric.Canvas('canvas', {
-      width: 1000,
+      width: 1500,
       height: 800,
     });
     //xac dinh vi tri con chuot trong canvas
