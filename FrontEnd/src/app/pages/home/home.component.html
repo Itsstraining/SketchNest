@@ -7,7 +7,7 @@
                      <br>
                      <div class="purple-square-container">
                         <div class="purple-square">
-                            <button class ="btnLB"> Go to Lobby</button>
+                            <button  class ="btnLB" *ngIf="this.auth.user"> Go to Lobby</button>
                         </div>
                       </div>
     </div>

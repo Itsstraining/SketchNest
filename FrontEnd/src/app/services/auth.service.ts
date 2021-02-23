@@ -13,6 +13,8 @@ export class AuthService {
       if (user) {
         this.user = user;
         localStorage.setItem('user', JSON.stringify(this.user));
+        alert('login success! ' + user.displayName);
+        console.log(user.displayName);
       } else {
         localStorage.setItem('user', null);
       }
