@@ -28,7 +28,7 @@
 	/* */
   }
   #header-1 .bg-custom {
-	background: rgb(255, 255, 255);
+	background: rgb(0, 0, 0);
   }
   #header-1 .b1 a {
 	background: #ff003d;
@@ -138,6 +138,11 @@
 	}
 }
   }
-.b2{
-	background-color: plum;
-}
+  #btndx{
+	  width: 100px;
+	  border-radius: 10px;
+	  height: 35px;
+	background: #ff003d;
+	color: white;
+  }
+

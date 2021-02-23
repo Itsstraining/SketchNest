@@ -1,16 +1,15 @@
 <div class="main">
-  <div class="middle">
-    <aside class="left">left column<br /><br /><br /><br /><br /></aside>
-    <aside class="right">right column<br /><br /><br /></aside>
-    <aside class="body">The middle column<br /><br /><br /><br /></aside>
-    <br />
-    <div class="purple-square-container">
-      <div class="purple-square">
-        <button *ngIf="this.auth.user != undefined" routerLink="/lobby">
-          Go to Lobby
-        </button>
-      </div>
+    
+    <div class="middle">            
+                     <aside class="left">left column<br><br><br><br><br></aside>
+                     <aside class="right">right column<br><br><br></aside>
+                     <aside class="body">The middle column<br><br><br><br></aside>
+                     <br>
+                     <div class="purple-square-container">
+                        <div class="purple-square">
+                            <button  class ="btnLB" *ngIf="this.auth.user"> Go to Lobby</button>
+                        </div>
+                      </div>
     </div>
-  </div>
-  <footer class="bottom">Bottom</footer>
+             <footer class="bottom">Bottom</footer>
 </div>
