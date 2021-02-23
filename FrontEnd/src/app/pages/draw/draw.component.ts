@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {fabric} from 'fabric'
-import { Canvas } from 'fabric/fabric-impl';
+import { fabric } from 'fabric'
+import { Canvas, Circle } from 'fabric/fabric-impl';
 
 @Component({
   selector: 'app-draw',
@@ -8,25 +8,62 @@ import { Canvas } from 'fabric/fabric-impl';
   styleUrls: ['./draw.component.scss']
 })
 export class DrawComponent implements OnInit {
-  canvas:any;
+  canvas: any;
+  circle:any;
+  rect:any;
+  currentMode: any;
+  modes = {
+    draw: 'draw',
+  };
   constructor() { }
 
   ngOnInit(): void {
-    this.canvas=new fabric.Canvas('canvas',{
-      width:1000,
-      height:500,
+    this.canvas = new fabric.Canvas('canvas', {
+      width: 1000,
+      height: 800,
     });
-    this.startDrawing(this.canvas);
     //xac dinh vi tri con chuot trong canvas
     // this.canvas.on('mouse:move',function(event){
     //   console.log(event.e.clientX, event.e.clientY);
     // })
 
   }
-startDrawing(canvas){
-  canvas.isDrawingMode=true;
-  canvas.renderAll();
+  //default
+  pointer(canvas){
+    canvas.isDrawingMode=false;
+  }
+  startDrawing(canvas) {
+    canvas.isDrawingMode = true;
+    canvas.freeDrawingBrush.color = 'black';
+    canvas.freeDrawingBrush.width = 14;
+    canvas.renderAll();
+  }
+  eraser(canvas) {
+    canvas.isDrawingMode = true;
+    canvas.freeDrawingBrush.color = 'white';
+    canvas.freeDrawingBrush.width = 100;
+    canvas.renderAll();
+  }
+  ///Shape
+  drawCircle(canvas){
+    this.circle=new fabric.Circle({
+      radius:50,
+      fill:'blue'
 
-}
+    })
+    canvas.add(this.circle);
+    canvas.renderAll();
+
+  }
+  drawRectangle(canvas){
+    this.rect=new fabric.Rect({
+      width:100,
+      height:100,
+      fill:'blue'
+
+    })
+    canvas.add(this.rect);
+    canvas.renderAll();
+  }
 
 }
