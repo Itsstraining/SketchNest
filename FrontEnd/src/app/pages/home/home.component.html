@@ -1,21 +1,41 @@
 
 <body>
-  <a href="#modal" class="popup-btn">Click Me</a>
-
-</body>
-<div class="main">
-  <div class="middle">
-    <aside class="left">left column<br /><br /><br /><br /><br /></aside>
-    <aside class="right">right column<br /><br /><br /></aside>
-    <aside class="body">The middle column<br /><br /><br /><br /></aside>
-    <br />
-    <div class="purple-square-container">
-      <div class="purple-square">
-        <button class="btnLB" *ngIf="this.auth.user" routerLink="lobby">
-          Go to Lobby
-        </button> 
-      </div>
+    <div>
+        <button *ngIf="!this.auth.user" (click)='alert("Please sign in to continue")' class="popup-btn">Click Me</button>
+        <button  *ngIf="this.auth.user" routerLink="lobby" class="popup-btn">Click Me</button>
     </div>
-  </div>
-  <footer class="bottom">Bottom</footer>
+  
+</body>
+
+<footer>
+  <div class="container-footer w-container">
+    <div class="w-row">
+        <div class="footer-column w-clearfix w-col w-col-4">
+          <img src="https://lh6.googleusercontent.com/1QFbAEHv4rEJxhgTn284sBAaZu82hmUlQd48pm7azDHJYbqhm34fNRXYs7Ym7oTYF9s1UyRw0ZUoaDpkbBtujUs=w16383" alt="" style="height: 50px;">
+            <h3 class="footer-failory-name">Itsstraining</h3>
+            <p class="footer-description-failory"><b>CÔNG TY TNHH DỊCH VỤ ĐÀO TẠO VÀ GIẢI PHÁP ITSS</b><br></p>
+        </div>
+        <div class="footer-column w-col w-col-8">
+            <div class="w-row">
+                <div class="w-col w-col-8">
+                    <div class="w-row">
+                        <div class="w-col w-col-7 w-col-small-6 w-col-tiny-7">
+                            <h3 class="footer-titles">Thành viên</h3>
+                            <p class="footer-links"><a href="" target="_blank"><span class="footer-link">Phạm Đức Khánh Duy<br></span></a><a href=""><span class="footer-link">Trần Thế Gian<br></span></a><a href=""><span class="footer-link">Nguyễn Hoàng Trung</span></a><br><span class="footer-link">Lê Thành Long<br></span><span><br></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="column-center-mobile w-col w-col-4">
+                    <h3 class="footer-titles">Follow Us!</h3>
+                    <a href="" target="_blank" class="footer-social-network-icons w-inline-block"><img src="https://uploads-ssl.webflow.com/5966ea9a9217ca534caf139f/5c8dbf0a2f2b67e3b3ba079c_Twitter%20Icon.svg" width="20" alt="Twitter icon"></a>
+                    <a href="" target="_blank" class="footer-social-network-icons w-inline-block"><img src="https://uploads-ssl.webflow.com/5966ea9a9217ca534caf139f/5c8dbfe70fcf5a0514c5b1da_Instagram%20Icon.svg" width="20" alt="Instagram icon"></a>
+                    <a href="" target="_blank" class="footer-social-network-icons w-inline-block"><img src="https://uploads-ssl.webflow.com/5966ea9a9217ca534caf139f/5c8dbe42e1e6034fdaba46f6_Facebook%20Icon.svg" width="20" alt="Facebook Icon"></a>
+                    <a href="" target="_blank" class="footer-social-network-icons w-inline-block"><img src="https://uploads-ssl.webflow.com/5966ea9a9217ca534caf139f/5c8dc0002f2b676eb4ba0869_LinkedIn%20Icon.svg" width="20" alt="LinkedIn Icon"></a>
+                    <a href="" target="_blank" class="footer-social-network-icons w-inline-block"><img src="https://uploads-ssl.webflow.com/5966ea9a9217ca534caf139f/5c8dc0112f2b6739c9ba0871_Pinterest%20Icon.svg" width="20" alt="Pinterest Icon" class=""></a>
+                    <p class="footer-description">Email me at: example123@gmail.com <a href=""><strong class="link-email-footer"></strong></a><br></p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+</footer>

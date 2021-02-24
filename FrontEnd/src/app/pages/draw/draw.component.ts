@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { fabric } from 'fabric'
 import { Canvas, Circle } from 'fabric/fabric-impl';
-
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
   styleUrls: ['./draw.component.scss']
 })
 export class DrawComponent implements OnInit {
-  canvas: any;
-  circle:any;
-  rect:any;
+  canvas;
+  normal: any;
+  circle: any;
+  rect: any;
   currentMode: any;
   modes = {
     draw: 'draw',
@@ -23,47 +23,47 @@ export class DrawComponent implements OnInit {
       height: 800,
     });
     //xac dinh vi tri con chuot trong canvas
-    this.canvas.on('mouse:move',function(event){
+    this.canvas.on('mouse:move', function (event) {
       console.log(event.e.clientX, event.e.clientY);
     })
 
   }
   //default
-  pointer(canvas){
-    canvas.isDrawingMode=false;
+  pointer() {
+    this.canvas.isDrawingMode = false;
   }
-  startDrawing(canvas) {
-    canvas.isDrawingMode = true;
-    canvas.freeDrawingBrush.color = 'black';
-    canvas.freeDrawingBrush.width = 14;
-    canvas.renderAll();
+  startDrawing() {
+    this.canvas.isDrawingMode = true;
+    this.canvas.freeDrawingBrush.color = 'black';
+    this.canvas.freeDrawingBrush.width = 14;
+    this.canvas.renderAll();
   }
-  eraser(canvas) {
-    canvas.isDrawingMode = true;
-    canvas.freeDrawingBrush.color = 'white';
-    canvas.freeDrawingBrush.width = 100;
-    canvas.renderAll();
+  eraser() {
+    this.canvas.isDrawingMode =false;
+    this.canvas.remove(this.canvas.getActiveObject());
   }
   ///Shape
-  drawCircle(canvas){
-    this.circle=new fabric.Circle({
-      radius:50,
-      fill:'blue'
+  drawCircle() {
+    this.canvas.isDrawingMode =false;
+    this.circle = new fabric.Circle({
+      radius: 50,
+      fill: 'blue'
 
     })
-    canvas.add(this.circle);
-    canvas.renderAll();
+    this.canvas.add(this.circle);
+    this.canvas.renderAll();
 
   }
-  drawRectangle(canvas){
-    this.rect=new fabric.Rect({
-      width:100,
-      height:100,
-      fill:'blue'
+  drawRectangle() {
+    this.canvas.isDrawingMode =false;
+    this.rect = new fabric.Rect({
+      width: 100,
+      height: 100,
+      fill: 'blue'
 
     })
-    canvas.add(this.rect);
-    canvas.renderAll();
+    this.canvas.add(this.rect);
+    this.canvas.renderAll();
   }
 
 }
