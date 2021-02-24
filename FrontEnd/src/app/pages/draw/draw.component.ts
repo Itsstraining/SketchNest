@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { fabric } from 'fabric'
 import { Canvas, Circle } from 'fabric/fabric-impl';
-
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
@@ -40,10 +39,12 @@ export class DrawComponent implements OnInit {
     this.canvas.renderAll();
   }
   eraser() {
-    this.canvas.clear();
+    this.canvas.isDrawingMode =false;
+    this.canvas.remove(this.canvas.getActiveObject());
   }
   ///Shape
   drawCircle() {
+    this.canvas.isDrawingMode =false;
     this.circle = new fabric.Circle({
       radius: 50,
       fill: 'blue'
@@ -54,6 +55,7 @@ export class DrawComponent implements OnInit {
 
   }
   drawRectangle() {
+    this.canvas.isDrawingMode =false;
     this.rect = new fabric.Rect({
       width: 100,
       height: 100,
