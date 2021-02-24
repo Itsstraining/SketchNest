@@ -1,29 +1,49 @@
-<div id="wrapper">
-    <h1>SketchNest!</h1>
-    <div id="signup-wrapper">
-        <form>
-            <table class="center" >
-                
-                    <tr>
-                        <td><label for="username">Username</label></td>
-                        <td><input type="text" placeholder="enter username"></td>
-                    </tr>
+<html lang="en">
 
-                    <tr>
-                        <td><label for="pwd">Password</label></td>
-                        <td><input type="password" id="pwd" name="pwd" minlength="8" placeholder="enter password"></td>
-                    </tr>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Login Form</title>
+</head>
 
-                    <tr>
-                        <td><label for="email">Email</label></td>
-                        <td> <input type="text" placeholder="enter email"></td>
-                    </tr>
-               
-            </table>
-            <br><br>
-            <button type="button">Register</button>
+<body>
+  <div class="login-form">
+    <div class="login-form__top">SIGN UP</div>
+    <form action="#">
+      <div class="form-group">
+        <input class="input" type="email" placeholder="Email" required>
+        <label class="label" for="email">
+          Email
+        </label>
+        <span class="input__border">
+        </span>
+      </div>
+      <div class="form-group">
+        <input class="input" type="password" placeholder="Password" required pattern=".{5,}">
+        <label class="label" for="password">Password</label>
+        <span class="input__border"></span>
 
-        </form>
+      </div>
+      <div class="form-group">
+        <input class="input" type="password" placeholder="Repeat password" required pattern=".{5,}">
+        <label class="label" for="password">Repeat password</label>
+        <span class="input__border"></span>
 
-    </div>
-</div>
+      </div>
+      <div class="form-help">
+        <label class="checkbox">
+          <input type="checkbox"/>
+          Accept our <a href="aa">-terms</a>
+        </label>
+      </div>
+
+      <button class="btn">
+        SIGN UP
+      </button>
+    </form>
+    
+  </div>
+</body>
+
+</html>
