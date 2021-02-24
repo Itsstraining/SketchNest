@@ -19,13 +19,13 @@ export class DrawComponent implements OnInit {
 
   ngOnInit(): void {
     this.canvas = new fabric.Canvas('canvas', {
-      width: 1000,
+      width: 1500,
       height: 800,
     });
     //xac dinh vi tri con chuot trong canvas
-    // this.canvas.on('mouse:move',function(event){
-    //   console.log(event.e.clientX, event.e.clientY);
-    // })
+    this.canvas.on('mouse:move',function(event){
+      console.log(event.e.clientX, event.e.clientY);
+    })
 
   }
   //default
