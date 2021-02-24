@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { fabric } from 'fabric'
 import { Canvas, Circle } from 'fabric/fabric-impl';
+import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.component';
 
 @Component({
   selector: 'app-draw',
@@ -16,8 +18,10 @@ export class DrawComponent implements OnInit {
   modes = {
     draw: 'draw',
   };
-  constructor() { }
-
+  constructor(public dialog:MatDialog) { }
+openDialog(){
+  this.dialog.open(DialogExampleComponent);
+}
   ngOnInit(): void {
     this.canvas = new fabric.Canvas('canvas', {
       width: 1500,
@@ -63,5 +67,5 @@ export class DrawComponent implements OnInit {
     this.canvas.add(this.rect);
     this.canvas.renderAll();
   }
-
+ 
 }

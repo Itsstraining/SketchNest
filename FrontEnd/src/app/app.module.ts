@@ -10,9 +10,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-
+import {MatDialogModule} from '@angular/material/dialog';
+import { DialogExampleComponent } from './dialog-example/dialog-example.component';
 @NgModule({
-  declarations: [AppComponent, NavbarComponent],
+  declarations: [AppComponent, NavbarComponent, DialogExampleComponent],
+  entryComponents:[DialogExampleComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -20,6 +22,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     MatIconModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
