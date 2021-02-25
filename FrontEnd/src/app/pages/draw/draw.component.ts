@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { fabric } from 'fabric'
-import { Canvas, Circle } from 'fabric/fabric-impl';
+import { Canvas, Circle, StaticCanvas } from 'fabric/fabric-impl';
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
   styleUrls: ['./draw.component.scss']
 })
 export class DrawComponent implements OnInit {
+  
+  img: any;
   canvas;
   normal: any;
   circle: any;
@@ -15,6 +17,7 @@ export class DrawComponent implements OnInit {
   modes = {
     draw: 'draw',
   };
+  preview: any;
   constructor() { }
 
   ngOnInit(): void {
@@ -41,6 +44,8 @@ export class DrawComponent implements OnInit {
   eraser() {
     this.canvas.isDrawingMode =false;
     this.canvas.remove(this.canvas.getActiveObject());
+
+
   }
   ///Shape
   drawCircle() {
@@ -65,5 +70,22 @@ export class DrawComponent implements OnInit {
     this.canvas.add(this.rect);
     this.canvas.renderAll();
   }
+@ViewChild("canvas") mycanvas;
+
+// previewFile() {
+//   let preview = document.querySelector('img');
+//   const newLocal = document.querySelector('input[type=file]').files[0];
+//   const file = newLocal;
+//   const reader = new FileReader();
+
+//   reader.addEventListener("load", () => {
+//      this.preview.src = reader.result;
+
+//     }, false);
+
+//   if (file) {
+//     reader.readAsDataURL(file);
+//   }
+// }
 
 }
