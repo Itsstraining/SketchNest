@@ -3,12 +3,14 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { BrowserModule } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { from } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { ConnectService } from './services/connect.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent],
@@ -20,7 +22,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     AngularFireAuthModule,
     MatIconModule,
   ],
-  providers: [],
+  providers: [ConnectService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
