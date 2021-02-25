@@ -15,6 +15,7 @@ import { Color } from 'fabric/fabric-impl';
 export class DrawComponent implements OnInit {
   brush: any;
   canvas: any;
+  
   something: any;
   normal: any;
   circle: any;
@@ -51,6 +52,8 @@ export class DrawComponent implements OnInit {
   eraser() {
     this.canvas.isDrawingMode = false;
     this.canvas.remove(this.canvas.getActiveObject());
+
+
   }
   ///Shape
   drawCircle() {

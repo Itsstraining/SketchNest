@@ -14,8 +14,9 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { ConnectService } from './services/connect.service';
 import { HttpClientModule } from '@angular/common/http';
 import { DialogExampleComponent } from './dialog-example/dialog-example.component';
+import { DialogCreateRoomComponent } from './dialog-create-room/dialog-create-room.component';
 @NgModule({
-  declarations: [AppComponent, NavbarComponent, DialogExampleComponent],
+  declarations: [AppComponent, NavbarComponent, DialogExampleComponent, DialogCreateRoomComponent],
   entryComponents: [DialogExampleComponent],
   imports: [
     BrowserModule,

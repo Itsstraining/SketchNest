@@ -1,4 +1,4 @@
-<div id="body">
+<body>
     <div id="page">
         <button id="pageBtn">Page 1/1</button>
     </div>
@@ -9,20 +9,17 @@
             <button id="btnFunction" (click)="eraser()"><span class="material-icons">clear</span></button>
             <button id="btnFunction" (click)="drawCircle()"><span class="material-icons">brightness_1</span></button>
             <button id="btnFunction" (click)="drawRectangle()"><span class="material-icons">crop_din</span></button>
-            <button id="btnFunction"><span class="material-icons">event_node</span></button>
-            <button id="btnFunction"><span class="material-icons">insert_photo</span></button>
+            <button id="btnFunction" ><span class="material-icons">event_node</span></button>
+            <button  id="btnFunction"><span class="material-icons">insert_photo</span></button>
+            <!-- <input type="file" (change)="previewFile()" accept="image/*"> -->
         </div>
             <div id="drawBoard">
                 <canvas id="canvas"></canvas>
             </div>
             <div id="userBoard">
-                <button>Share</button>
+                <button id="btnshare"mat-raised-button (click)="openDialog()">Share</button>
             </div>
     
         </div>
-        <div id="userBoard">
-            <button mat-raised-button (click)="openDialog()">Share</button>
-
-    </div>
-
-    </div>
+   
+    
