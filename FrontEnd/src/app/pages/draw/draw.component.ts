@@ -1,6 +1,6 @@
 import { BLACK_ON_WHITE_CSS_CLASS } from '@angular/cdk/a11y/high-contrast-mode/high-contrast-mode-detector';
 import { NONE_TYPE } from '@angular/compiler';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fabric } from 'fabric'
 import { Canvas, Circle } from 'fabric/fabric-impl';
@@ -12,7 +12,7 @@ import { Color } from 'fabric/fabric-impl';
   templateUrl: './draw.component.html',
   styleUrls: ['./draw.component.scss']
 })
-export class DrawComponent implements OnInit {
+export class DrawComponent implements OnInit,OnDestroy{
   brush: any;
   canvas: any;
   something: any;
@@ -20,6 +20,8 @@ export class DrawComponent implements OnInit {
   circle: any;
   rect: any;
   currentMode: any;
+  color:any;
+  json:any;
   modes = {
     draw: 'draw',
   };
@@ -28,30 +30,37 @@ openDialog(){
   this.dialog.open(DialogExampleComponent);
 }
   ngOnInit(): void {
-
     this.canvas = new fabric.Canvas('canvas', {
       width: 1500,
       height: 800,
     });
     //xac dinh vi tri con chuot trong canvas
-    this.canvas.on('mouse:move', function (event) {
-      console.log(event.e.clientX, event.e.clientY);
-    })
+    // this.canvas.on('mouse:move', function (event) {
+    //   console.log(event.e.clientX, event.e.clientY);
+    // })
 
 
 
+  }
+  ngOnDestroy(){
+    this.json=JSON.stringify(this.canvas.toJSON());
   }
   //default
   pointer() {
     this.canvas.isDrawingMode = false;
   }
+  chooseColor(){
+    this.color=document.getElementById('color');
+    console.log(this.color.value);
+    
+  }
+ 
   startDrawing() {
-
     this.canvas.isDrawingMode = true;
-    this.canvas.freeDrawingBrush.color = 'black';
+    this.canvas.freeDrawingBrush.color =this.chooseColor();
     this.canvas.freeDrawingBrush.width = 14;
     fabric.Path.prototype.selectable = false;
-    fabric.Path.prototype
+
 
   }
   eraser() {
