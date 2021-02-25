@@ -44,10 +44,12 @@ openDialog(){
     this.canvas.renderAll();
   }
   eraser() {
-    this.canvas.clear();
+    this.canvas.isDrawingMode =false;
+    this.canvas.remove(this.canvas.getActiveObject());
   }
   ///Shape
   drawCircle() {
+    this.canvas.isDrawingMode =false;
     this.circle = new fabric.Circle({
       radius: 50,
       fill: 'blue'
@@ -58,6 +60,7 @@ openDialog(){
 
   }
   drawRectangle() {
+    this.canvas.isDrawingMode =false;
     this.rect = new fabric.Rect({
       width: 100,
       height: 100,

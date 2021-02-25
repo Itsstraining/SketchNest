@@ -1,26 +1,12 @@
 
 <body>
-  <a href="#modal" class="popup-btn">Click Me</a>
-
-
-
-</body>
-<div class="main">
-  <div class="middle">
-    <aside class="left">left column<br /><br /><br /><br /><br /></aside>
-    <aside class="right">right column<br /><br /><br /></aside>
-    <aside class="body">The middle column<br /><br /><br /><br /></aside>
-    <br />
-    <div class="purple-square-container">
-      <div class="purple-square">
-        <button class="btnLB" *ngIf="this.auth.user" routerLink="lobby">
-          Go to Lobby
-        </button> 
-      </div>
+    <div>
+        <button *ngIf="!this.auth.user" (click)='alert("Please sign in to continue")' class="popup-btn">Click Me</button>
+        <button  *ngIf="this.auth.user" routerLink="lobby" class="popup-btn">Click Me</button>
     </div>
-  </div>
- 
-</div>
+  
+</body>
+
 <footer>
   <div class="container-footer w-container">
     <div class="w-row">
