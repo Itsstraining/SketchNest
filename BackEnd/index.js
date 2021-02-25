@@ -1,20 +1,38 @@
-const express =require('express');
-const app=express();
-const Server=require("http").Server(app);
-const body = require('body-parser');
-// const io= require('socket.io');
-app.use(body,json());
-let array = {
- name:"gian",
- ip:"123123"
-}
+// const config = require("./config");
+// const app = require("express")();
+// const http = require("http").createServer(app);
+// const io = require("socket.io")(http, {
+//   cors: {
+//     origins: "*",
+//     method: ["GET","POST"],
+//   },
+// });
+// app.get("/", (req, res) => {
+//   res.send("<h1>Hey Socket.io</h1>");
+// });
+// io.on("connection", (socket) => {
+//   console.log("a user connected");
+//   socket.on("disconnect", () => {
+//     console.log("user disconnected");
+//   });
+// });
+// http.listen(config.PORT, config.HOST, () => {
+//   console.log("listening on *:3000");
+// });
 
-app.get("/",(req,res)=>{
-    res.send(array);
-})
-// io.on('connection',function(){
-//     console.log(" co nguoi dang nhap");
-// })
-Server.listen(3000,"0.0.0.0",()=>{
-    console.log("Server is running");
-})
+const config = require("./config");
+const app = require("express")();
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
+
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
+});
+
+io.on("connection", (socket) => {
+  console.log("A user connected");
+});
+
+http.listen(3000, "0.0.0.0", function () {
+  console.log("Server is running on port 3000");
+});

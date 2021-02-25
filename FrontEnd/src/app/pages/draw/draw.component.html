@@ -1,4 +1,4 @@
-<div id="body">
+<body>
     <div id="page">
         <button id="pageBtn">Page 1/1</button>
     </div>
@@ -12,12 +12,10 @@
             <input type="color" id="color" (onValueChange)="chooseColor()">
             <button id="btnFunction"><span class="material-icons">insert_photo</span></button>
         </div>
-            <div id="drawBoard">
-                <canvas id="canvas"></canvas>
-            </div>
-            <div id="userBoard">
-                <button mat-raised-button (click)="openDialog()">Share</button>
-            </div>
+        <div id="drawBoard">
+            <canvas id="canvas"></canvas>
         </div>
-
+        <div id="userBoard">
+            <button mat-raised-button (click)="openDialog()">Share</button>
+        </div>
     </div>

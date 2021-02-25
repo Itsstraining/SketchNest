@@ -1,4 +1,4 @@
-#body{
+body{
   display:flex;
   flex-direction: column;
   width: 100%;
@@ -57,7 +57,10 @@
 #pageBtn{
   margin-top: 50px;
 }
-
+#btnshare{
+  background-color: blue;
+  color: white;
+}
 // #drawContent {
 //   display: flex;
 //   flex-direction: column;

@@ -10,11 +10,12 @@ import { Color } from 'fabric/fabric-impl';
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
-  styleUrls: ['./draw.component.scss']
+  styleUrls: ['./draw.component.scss'],
 })
 export class DrawComponent implements OnInit,OnDestroy{
   brush: any;
   canvas: any;
+  
   something: any;
   normal: any;
   circle: any;
@@ -25,10 +26,10 @@ export class DrawComponent implements OnInit,OnDestroy{
   modes = {
     draw: 'draw',
   };
-  constructor(public dialog:MatDialog) { }
-openDialog(){
-  this.dialog.open(DialogExampleComponent);
-}
+  constructor(public dialog: MatDialog) {}
+  openDialog() {
+    this.dialog.open(DialogExampleComponent);
+  }
   ngOnInit(): void {
     this.canvas = new fabric.Canvas('canvas', {
       width: 1500,
@@ -51,7 +52,7 @@ openDialog(){
   }
   chooseColor(){
     this.color=document.getElementById('color');
-    console.log(this.color.value);
+    return this.color.value;
     
   }
  
@@ -66,6 +67,8 @@ openDialog(){
   eraser() {
     this.canvas.isDrawingMode = false;
     this.canvas.remove(this.canvas.getActiveObject());
+
+
   }
   ///Shape
   drawCircle() {
@@ -73,22 +76,22 @@ openDialog(){
     this.circle = new fabric.Circle({
       radius: 50,
       fill: 'blue',
-    })
+    });
     this.canvas.add(this.circle);
     this.canvas.renderAll();
-
   }
   drawRectangle() {
     this.canvas.isDrawingMode = false;
     this.rect = new fabric.Rect({
       width: 100,
       height: 100,
-      fill: 'blue'
-
-    })
+      fill: 'blue',
+    });
     this.canvas.add(this.rect);
     this.canvas.renderAll();
   }
-   //Choose color
+ 
 }
+ 
+
 
