@@ -3,12 +3,12 @@
     
     <div>
         <div class="Title">
-        <h1 >SKETCHNEST</h1>
+        <h1 >SketchNest</h1>
         <br><br>
        <h3>a collaborative painting application</h3>
     </div>
         <button *ngIf="!this.auth.user" (click)='alert("Please sign in to continue")' class="popup-btn">Click Me</button>
-        <button  *ngIf="this.auth.user" routerLink="lobby" class="popup-btn">Click Me</button>
+        <button  *ngIf="this.auth.user" routerLink="lobby" class="popup-btn">GO TO LOBBY</button>
     </div>
   
 </body>
