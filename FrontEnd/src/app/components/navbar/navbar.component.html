@@ -1,5 +1,4 @@
 <head>
-  <title>ELRadio Mobile Application</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link
@@ -27,23 +26,14 @@
   <nav class="navbar bg-custom navbar-expand-sm navbar-dark fixed-top py-0">
     <a class="navbar-brand py-2" href="#">
       <img
-        src="https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.15752-9/152957362_1400385440293685_8382703701793146260_n.png?_nc_cat=101&ccb=3&_nc_sid=ae9488&_nc_ohc=Ng06sIqqRpoAX-yZ8Dw&_nc_ht=scontent.fsgn5-1.fna&oh=1057fccc79ee06c4d446c53ee6d006b8&oe=605860B4"
-        width="155"
-    /></a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#collapsibleNavbar"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
+        src="https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.15752-9/152957362_1400385440293685_8382703701793146260_n.png?_nc_cat=101&ccb=3&_nc_sid=ae9488&_nc_ohc=Ng06sIqqRpoAX-yZ8Dw&_nc_ht=scontent.fsgn5-1.fna&oh=1057fccc79ee06c4d446c53ee6d006b8&oe=605860B4"width="155"></a>
+      
+        
     <div class="collapse navbar-collapse text-center" id="collapsibleNavbar">
+
       <ul class="navbar-nav font-weight-bold ml-auto flex-row" id="listed">
         <li class="nav-item my-2 b1 ml-3">
-          <a *ngIf="!this.auth.user" class="nav-link d-inline active" [routerLink]="'register'"
-            >Sign up</a
-          >
+          <a *ngIf="!this.auth.user" class="nav-link d-inline active" [routerLink]="'register'">Sign up</a>
         </li>
         <img *ngIf="this.auth.user" style="border-radius: 50%" src="{{this.auth.user.photoURL}}" height="50px">
         <li class="nav-item my-2 ml-3 b2">
