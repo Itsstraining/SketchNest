@@ -8,6 +8,7 @@ main {
   justify-content: space-between;
   height: 100%;
   border-top: 1px solid #dadce0;
+  margin-top: 2%;
 }
 
 #holder {
@@ -40,10 +41,9 @@ h1 {
   font-weight: bold;
   color: rgb(211, 49, 49);
 }
-h3 {
+h2 {
   font-family: 500 16px/24px "Google Sans", Arial, sans-serif;
   margin-left: 6%;
-  margin-top: 2%;
 }
 .icon-holder {
   margin-right: 5%;
@@ -126,7 +126,6 @@ user agent stylesheet button {
 }
 .jam-flatbutton-content {
   margin-right: 2%;
-  margin-top: 1%;
 }
 * {
   box-sizing: border-box;
@@ -180,4 +179,37 @@ body {
 .card {
   border: solid 2px;
   width: 140px;
+}
+
+.content {
+  height: auto;
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: left;
+  width: fit-content;
+}
+
+.visual {
+  height: 100px;
+  width: 100%;
+}
+.visual.pink {
+  background-color: pink;
+}
+.visual.blue {
+  background-color: blue;
+}
+.visual.green {
+  background-color: green;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  justify-content: space-between;
+}
+
+h3 {
+  margin: 0;
 }

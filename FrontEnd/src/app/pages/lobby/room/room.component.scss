@@ -1,0 +1,23 @@
+.visual {
+  height: 100px;
+  width: 100%;
+}
+.visual.pink {
+  background-color: pink;
+}
+.visual.blue {
+  background-color: blue;
+}
+.visual.green {
+  background-color: green;
+}
+
+h3 {
+  margin: 0;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  justify-content: space-between;
+}
