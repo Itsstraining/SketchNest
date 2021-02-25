@@ -27,9 +27,6 @@ export class DrawComponent implements OnInit {
 openDialog(){
   this.dialog.open(DialogExampleComponent);
 }
-=======
-  constructor() { }
-
   ngOnInit(): void {
 
     this.canvas = new fabric.Canvas('canvas', {
@@ -83,8 +80,6 @@ openDialog(){
     this.canvas.add(this.rect);
     this.canvas.renderAll();
   }
- 
+   //Choose color
 }
-  //Choose color
 
-}
