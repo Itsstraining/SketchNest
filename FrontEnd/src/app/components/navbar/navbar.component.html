@@ -1,58 +1,20 @@
-<head>
-  <title>ELRadio Mobile Application</title>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&family=Oswald:wght@200;300;400;500;600;700&family=Ultra&display=swap"
-    rel="stylesheet"
-  />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-  />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
-  <link
-    rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-  />
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-</head>
 
-<header id="header-1">
-  <nav class="navbar bg-custom navbar-expand-sm navbar-dark fixed-top py-0">
-    <a class="navbar-brand py-2" href="#">
-      <img
-        src="https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.15752-9/152957362_1400385440293685_8382703701793146260_n.png?_nc_cat=101&ccb=3&_nc_sid=ae9488&_nc_ohc=Ng06sIqqRpoAX-yZ8Dw&_nc_ht=scontent.fsgn5-1.fna&oh=1057fccc79ee06c4d446c53ee6d006b8&oe=605860B4"
-        width="155"
-    /></a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#collapsibleNavbar"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse text-center" id="collapsibleNavbar">
-      <ul class="navbar-nav font-weight-bold ml-auto flex-row" id="listed">
-        <li class="nav-item my-2 b1 ml-3">
-          <a *ngIf="!this.auth.user" class="nav-link d-inline active" [routerLink]="'register'"
-            >Sign up</a
-          >
-        </li>
-        <img *ngIf="this.auth.user" style="border-radius: 50%" src="{{this.auth.user.photoURL}}" height="50px">
-        <li class="nav-item my-2 ml-3 b2">
-          <a class="navdn" *ngIf="!this.auth.user" [routerLink]="'login'">Sign in</a>
-        </li>
-        <li class="nav-item my-2 ml-3 b2">
-          <a [routerLink]="'home'" class="navdn" *ngIf="this.auth.user" (click)="logOut()">Sign Out</a>
-        </li>
-      </ul>
-    </div>
+
+  <nav>
+    <input type="checkbox" id="check">
+    <label for="check" class="checkbtn">
+      <i class="fas fa-bars"></i>
+    </label>
+    <label class="logo" ><img src="https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.15752-9/152957362_1400385440293685_8382703701793146260_n.png?_nc_cat=101&ccb=3&_nc_sid=ae9488&_nc_ohc=Ng06sIqqRpoAX-yZ8Dw&_nc_ht=scontent.fsgn5-1.fna&oh=1057fccc79ee06c4d446c53ee6d006b8&oe=605860B4" style="width: 300px;"></label>
+    <ul>
+      <li><a class="active" href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Services</a></li>
+      <li><a href="#" *ngIf="!this.auth.user" [routerLink]="'register'">Sign Up</a></li>
+      <li><a href="#" *ngIf="!this.auth.user" [routerLink]="'login'">Sign In</a></li>
+      <li><a href="#" [routerLink]="'home'"  *ngIf="this.auth.user" (click)="logOut()">Sign Out</a></li>
+      
+    </ul>
+
   </nav>
-</header>
+

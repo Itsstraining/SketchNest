@@ -84,7 +84,7 @@ form {
 }
 user agent stylesheet button {
   appearance: auto;
-  -webkit-writing-mode: horizontal-tb !important;
+  writing-mode: horizontal-tb !important;
   text-rendering: auto;
   color: -internal-light-dark(black, white);
   letter-spacing: normal;
@@ -144,7 +144,9 @@ body {
 }
 
 /* Remove extra left and right margins, due to padding in columns */
-.row {margin: 0 -5px;}
+.row {
+  margin: 0 -5px;
+}
 
 /* Clear floats after the columns */
 .row:after {
@@ -164,21 +166,18 @@ body {
 /* Responsive columns - one column layout (vertical) on small screens */
 @media screen and (max-width: 600px) {
   .column {
-    
     display: block;
     margin-bottom: 20px;
     border: solid 2px;
-
   }
 }
-.border{
+.border {
   border: solid 2px;
-  width:100px;
+  width: 100px;
   height: 100px;
   background-color: blue;
 }
-.card{
+.card {
   border: solid 2px;
-  width:140px;
-  
+  width: 140px;
 }

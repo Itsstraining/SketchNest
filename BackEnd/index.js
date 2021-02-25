@@ -26,13 +26,13 @@ const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
+  res.send("hello!");
 });
 
 io.on("connection", (socket) => {
   console.log("A user connected");
 });
 
-http.listen(3000, "0.0.0.0", function () {
+http.listen(3000, function () {
   console.log("Server is running on port 3000");
 });

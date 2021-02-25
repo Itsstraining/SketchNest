@@ -77,7 +77,6 @@ body {
 }
 
 .popup-btn {
-  margin-top: 30%;
   width: auto;
   display: inline-block;
   padding: 0.5rem 2rem;
@@ -618,9 +617,20 @@ strong.link-email-footer {
     font-weight: 700;
 }
 }
-.logo{
-  width: fit-content;
-  height: fit-content;
-margin-bottom: 35%;
+.Title{
+  color: white;
 text-align: center;
+margin-bottom: 10%;
+}
+h1
+{
+// font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+font-size: 120px;
+font-style: normal;
+font-family: "Brush Script MT, Brush Script Std, cursive";
+
+}
+h3{
+  font-size: 45px;
+  font-family: "Brush Script MT, Brush Script Std, cursive";
 }
