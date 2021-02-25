@@ -1,16 +1,21 @@
+import { BLACK_ON_WHITE_CSS_CLASS } from '@angular/cdk/a11y/high-contrast-mode/high-contrast-mode-detector';
+import { NONE_TYPE } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fabric } from 'fabric'
 import { Canvas, Circle } from 'fabric/fabric-impl';
 import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.component';
 
+import { Color } from 'fabric/fabric-impl';
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
   styleUrls: ['./draw.component.scss']
 })
 export class DrawComponent implements OnInit {
-  canvas;
+  brush: any;
+  canvas: any;
+  something: any;
   normal: any;
   circle: any;
   rect: any;
@@ -22,7 +27,11 @@ export class DrawComponent implements OnInit {
 openDialog(){
   this.dialog.open(DialogExampleComponent);
 }
+=======
+  constructor() { }
+
   ngOnInit(): void {
+
     this.canvas = new fabric.Canvas('canvas', {
       width: 1500,
       height: 800,
@@ -32,35 +41,39 @@ openDialog(){
       console.log(event.e.clientX, event.e.clientY);
     })
 
+
+
   }
   //default
   pointer() {
     this.canvas.isDrawingMode = false;
   }
   startDrawing() {
+
     this.canvas.isDrawingMode = true;
     this.canvas.freeDrawingBrush.color = 'black';
     this.canvas.freeDrawingBrush.width = 14;
-    this.canvas.renderAll();
+    fabric.Path.prototype.selectable = false;
+    fabric.Path.prototype
+
   }
   eraser() {
-    this.canvas.isDrawingMode =false;
+    this.canvas.isDrawingMode = false;
     this.canvas.remove(this.canvas.getActiveObject());
   }
   ///Shape
   drawCircle() {
-    this.canvas.isDrawingMode =false;
+    this.canvas.isDrawingMode = false;
     this.circle = new fabric.Circle({
       radius: 50,
-      fill: 'blue'
-
+      fill: 'blue',
     })
     this.canvas.add(this.circle);
     this.canvas.renderAll();
 
   }
   drawRectangle() {
-    this.canvas.isDrawingMode =false;
+    this.canvas.isDrawingMode = false;
     this.rect = new fabric.Rect({
       width: 100,
       height: 100,
@@ -71,4 +84,7 @@ openDialog(){
     this.canvas.renderAll();
   }
  
+}
+  //Choose color
+
 }
