@@ -13,4 +13,7 @@ export class HomeComponent implements OnInit {
   print() {
     console.log(this.auth.user);
   }
+  public alert(n){
+    alert(n);
+  }
 }

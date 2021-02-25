@@ -1,27 +1,49 @@
-<div id="wrapper">
-  <h1>SketchNest!</h1>
-  <div id="login-wrapper">
-    <form>
-      <div class="row">
-        <label for="username">Username</label>
-        <input type="text" placeholder="enter username" >
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Login Form</title>
+</head>
+
+<body>
+  <div class="login-form">
+    <div class="login-form__top">SIGN IN</div>
+    <form action="#">
+      <div class="form-group">
+        <input class="input" type="email" placeholder="Email" required>
+        <label class="label" for="email">
+          Email
+        </label>
+        <span class="input__border">
+        </span>
       </div>
-      <div class="row">
-        <label for="password">Password</label>
-        <input type="password" placeholder="enter password" />
+      <div class="form-group">
+        <input class="input" type="password" placeholder="Password" required pattern=".{5,}">
+        <label class="label" for="password">Password</label>
+        <span class="input__border"></span>
+
       </div>
-      <div _ngcontent-cwg-c17="" style="margin-right: 141px">
-        <input _ngcontent-cwg-c17="" type="checkbox" /><label
-          _ngcontent-cwg-c17=""
-          >Remember me</label
-        >
+      <div class="form-help">
+        
+        <label class="checkbox">
+          <input type="checkbox" />
+          Remember me
+        </label>
+        <a href="" class="forgot">Forgot Password?</a>
       </div>
-      <br />
-      <button type="button">Login</button>
-      <br />
-      <button type="button" *ngIf="!this.auth.user" (click)="this.login()">
-        Login with Google
+
+      <button class="btn">
+        SIGN IN
       </button>
     </form>
+    <div class="box">
+      <span class="or">OR</span>
+
+      <button class="oauth-google" (click)="this.login()" >Login With Google+</button>
+    </div>
   </div>
-</div>
+</body>
+
+</html>
