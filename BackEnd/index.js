@@ -1,16 +1,21 @@
-const express =require('express');
-const app=express();
-const Server=require("http").Server(app);
-const io= require('socket.io');
+const config = require("./config");
 
-
-Server.listen(3000,()=>{
-    console.log("Server is running at port: "+3000);
-})
-app.get("/",(req,res)=>{
-    res.sendFile("");
-})
-io.on('connection',function(){
-    console.log(" co nguoi dang nhap");
-})
-
+const app = require("express")();
+const http = require("http").createServer(app);
+const io = require("socket.io")(http, {
+  cors: {
+    origins: ["http://localhost:4200"],
+  },
+});
+app.get("/", (req, res) => {
+  res.send("<h1>Hey Socket.io</h1>");
+});
+io.on("connection", (socket) => {
+  console.log("a user connected");
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
+});
+http.listen(config.PORT, config.HOST, () => {
+  console.log("listening on *:3000");
+});
