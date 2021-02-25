@@ -77,6 +77,7 @@ body {
 }
 
 .popup-btn {
+  margin-top: 30%;
   width: auto;
   display: inline-block;
   padding: 0.5rem 2rem;
@@ -358,6 +359,7 @@ div.container-footer.w-container:before {
 div.w-row {
     box-sizing: border-box;
     background-color: black;
+    ;
 }
 
 div.w-row:after {
@@ -615,4 +617,10 @@ strong.link-email-footer {
     box-sizing: border-box;
     font-weight: 700;
 }
+}
+.logo{
+  width: fit-content;
+  height: fit-content;
+margin-bottom: 35%;
+text-align: center;
 }

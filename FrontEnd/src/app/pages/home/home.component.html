@@ -1,5 +1,8 @@
 
 <body>
+    <div class="logo">
+        <img src="https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.15752-9/152957362_1400385440293685_8382703701793146260_n.png?_nc_cat=101&ccb=3&_nc_sid=ae9488&_nc_ohc=Ng06sIqqRpoAX-yZ8Dw&_nc_ht=scontent.fsgn5-1.fna&oh=1057fccc79ee06c4d446c53ee6d006b8&oe=605860B4" alt="">
+    </div>
     <div>
         <button *ngIf="!this.auth.user" (click)='alert("Please sign in to continue")' class="popup-btn">Click Me</button>
         <button  *ngIf="this.auth.user" routerLink="lobby" class="popup-btn">Click Me</button>
@@ -38,4 +41,5 @@
         </div>
     </div>
 </div>
+
 </footer>
