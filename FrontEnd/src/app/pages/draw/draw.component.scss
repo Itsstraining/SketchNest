@@ -1,8 +1,9 @@
 body{
   display:flex;
   flex-direction: column;
-  height: auto;
-  background-color: rgb(10, 15, 29);
+  width: 100%;
+
+  background-color: rgb(190, 204, 241);
   height: 100%;
   
   
@@ -23,6 +24,7 @@ body{
 #page{
   display:flex;
   flex-direction: row;
+  border:none;
 }
 #pageBtn{
   margin-left: 45%;
@@ -31,7 +33,6 @@ body{
 }
 #canvas{
   background-color: white;
-  border: 1px solid black;
 
 }
 #btnFunction{
@@ -53,8 +54,13 @@ body{
   width: 20%;
 
 }
-
-
+#pageBtn{
+  margin-top: 50px;
+}
+#btnshare{
+  background-color: blue;
+  color: white;
+}
 // #drawContent {
 //   display: flex;
 //   flex-direction: column;

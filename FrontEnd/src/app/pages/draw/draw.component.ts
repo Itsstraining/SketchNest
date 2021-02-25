@@ -1,15 +1,22 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { fabric } from 'fabric'
-import { Canvas, Circle, StaticCanvas } from 'fabric/fabric-impl';
+import { BLACK_ON_WHITE_CSS_CLASS } from '@angular/cdk/a11y/high-contrast-mode/high-contrast-mode-detector';
+import { NONE_TYPE } from '@angular/compiler';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { fabric } from 'fabric';
+import { Canvas, Circle } from 'fabric/fabric-impl';
+import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.component';
+
+import { Color } from 'fabric/fabric-impl';
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
-  styleUrls: ['./draw.component.scss']
+  styleUrls: ['./draw.component.scss'],
 })
 export class DrawComponent implements OnInit {
+  brush: any;
+  canvas: any;
   
-  img: any;
-  canvas;
+  something: any;
   normal: any;
   circle: any;
   rect: any;
@@ -17,9 +24,10 @@ export class DrawComponent implements OnInit {
   modes = {
     draw: 'draw',
   };
-  preview: any;
-  constructor() { }
-
+  constructor(public dialog: MatDialog) {}
+  openDialog() {
+    this.dialog.open(DialogExampleComponent);
+  }
   ngOnInit(): void {
     this.canvas = new fabric.Canvas('canvas', {
       width: 1500,
@@ -28,8 +36,7 @@ export class DrawComponent implements OnInit {
     //xac dinh vi tri con chuot trong canvas
     this.canvas.on('mouse:move', function (event) {
       console.log(event.e.clientX, event.e.clientY);
-    })
-
+    });
   }
   //default
   pointer() {
@@ -39,53 +46,34 @@ export class DrawComponent implements OnInit {
     this.canvas.isDrawingMode = true;
     this.canvas.freeDrawingBrush.color = 'black';
     this.canvas.freeDrawingBrush.width = 14;
-    this.canvas.renderAll();
+    fabric.Path.prototype.selectable = false;
+    fabric.Path.prototype;
   }
   eraser() {
-    this.canvas.isDrawingMode =false;
+    this.canvas.isDrawingMode = false;
     this.canvas.remove(this.canvas.getActiveObject());
 
 
   }
   ///Shape
   drawCircle() {
-    this.canvas.isDrawingMode =false;
+    this.canvas.isDrawingMode = false;
     this.circle = new fabric.Circle({
       radius: 50,
-      fill: 'blue'
-
-    })
+      fill: 'blue',
+    });
     this.canvas.add(this.circle);
     this.canvas.renderAll();
-
   }
   drawRectangle() {
-    this.canvas.isDrawingMode =false;
+    this.canvas.isDrawingMode = false;
     this.rect = new fabric.Rect({
       width: 100,
       height: 100,
-      fill: 'blue'
-
-    })
+      fill: 'blue',
+    });
     this.canvas.add(this.rect);
     this.canvas.renderAll();
   }
-@ViewChild("canvas") mycanvas;
-
-// previewFile() {
-//   let preview = document.querySelector('img');
-//   const newLocal = document.querySelector('input[type=file]').files[0];
-//   const file = newLocal;
-//   const reader = new FileReader();
-
-//   reader.addEventListener("load", () => {
-//      this.preview.src = reader.result;
-
-//     }, false);
-
-//   if (file) {
-//     reader.readAsDataURL(file);
-//   }
-// }
-
+  //Choose color
 }

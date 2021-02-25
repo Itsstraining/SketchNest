@@ -3,16 +3,21 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { BrowserModule } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
-import {MatIconModule} from '@angular/material/icon';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+
 import { from } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-
+import { ConnectService } from './services/connect.service';
+import { HttpClientModule } from '@angular/common/http';
+import { DialogExampleComponent } from './dialog-example/dialog-example.component';
+import { DialogCreateRoomComponent } from './dialog-create-room/dialog-create-room.component';
 @NgModule({
-  declarations: [AppComponent, NavbarComponent],
+  declarations: [AppComponent, NavbarComponent, DialogExampleComponent, DialogCreateRoomComponent],
+  entryComponents: [DialogExampleComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -22,7 +27,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     MatIconModule,
     MatDialogModule,
   ],
-  providers: [],
+  providers: [ConnectService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

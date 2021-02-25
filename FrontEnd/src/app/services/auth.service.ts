@@ -13,7 +13,6 @@ export class AuthService {
       if (user) {
         this.user = user;
         localStorage.setItem('user', JSON.stringify(this.user));
-
         console.log(user.displayName);
         console.log('login success! ' + user.displayName);
       } else {
