@@ -2,7 +2,7 @@ import { BLACK_ON_WHITE_CSS_CLASS } from '@angular/cdk/a11y/high-contrast-mode/h
 import { NONE_TYPE } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { fabric } from 'fabric';
+import { fabric } from 'fabric'
 import { Canvas, Circle } from 'fabric/fabric-impl';
 import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.component';
 
@@ -75,5 +75,8 @@ export class DrawComponent implements OnInit {
     this.canvas.add(this.rect);
     this.canvas.renderAll();
   }
-  //Choose color
+ 
 }
+ 
+
+
