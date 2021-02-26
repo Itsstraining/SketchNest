@@ -3,7 +3,7 @@ import { NONE_TYPE } from '@angular/compiler';
 import {
   AfterViewInit,
   Component,
-  Input,
+  HostListener,
   OnDestroy,
   OnInit,
 } from '@angular/core';
@@ -22,28 +22,16 @@ import { RoomService } from 'src/app/services/room.service';
   styleUrls: ['./draw.component.scss'],
 })
 export class DrawComponent implements OnInit, OnDestroy {
-  @Input()
-  pageID: PageID;
-
   brush: any;
   canvas: any;
-
-  something: any;
-  normal: any;
   circle: any;
+  image: any;
+  normal: any;
   rect: any;
   currentMode: any;
   color: any;
   json: any;
-  modes = {
-    draw: 'draw',
-  };
-  constructor(
-    public dialog: MatDialog,
-    public auth: AuthService,
-    public room: RoomService
-  ) {}
-
+  constructor(public dialog: MatDialog) {}
   openDialog() {
     this.dialog.open(DialogExampleComponent);
   }
@@ -52,6 +40,12 @@ export class DrawComponent implements OnInit, OnDestroy {
       width: 1500,
       height: 800,
     });
+    //load canvas:
+    // this.canvas.clear();
+    // this.canvas.loadFromJSON(this.json, function () {
+    //   this.canvas.renderAll();
+    // });
+
     //xac dinh vi tri con chuot trong canvas
     // this.canvas.on('mouse:move', function (event) {
     //   console.log(event.e.clientX, event.e.clientY);
@@ -59,7 +53,6 @@ export class DrawComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.json = JSON.stringify(this.canvas.toJSON());
-    this.auth.user.displayName = this.json;
   }
   //default
   pointer() {
@@ -77,27 +70,78 @@ export class DrawComponent implements OnInit, OnDestroy {
     fabric.Path.prototype.selectable = false;
   }
   eraser() {
-    this.canvas.isDrawingMode = false;
-    this.canvas.remove(this.canvas.getActiveObject());
+    this.canvas.isDrawingMode = true;
+    this.canvas.freeDrawingBrush.color = 'white';
+    this.canvas.freeDrawingBrush.width = 14;
+    fabric.Path.prototype.selectable = false;
   }
-  ///Shape
+  url: any;
+  picture(event) {
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]); // read file as data url
+      reader.onload = (event) => {
+        // called once readAsDataURL is completed
+        this.url = event.target.result;
+        // console.log(this.url)
+        fabric.Image.fromURL(this.url, (test) => {
+          this.canvas.add(test);
+          this.canvas.renderAll();
+        });
+      };
+    }
+  }
+  // /Shape
+
   drawCircle() {
     this.canvas.isDrawingMode = false;
     this.circle = new fabric.Circle({
-      radius: 50,
-      fill: 'blue',
+      radius: 20,
+      fill: this.chooseColor(),
     });
     this.canvas.add(this.circle);
     this.canvas.renderAll();
+    // let x,y;
+    // this.canvas.isDrawingMode = false;
+
+    // await this.canvas.on('mouse:down', function (event) {
+
+    // x=event.e.clientX
+    // y=event.e.clientY
+    // this.circle = new fabric.Circle({
+    //   radius: 50,
+    //   fill: '',
+    //   stroke: 'red',
+    //   strokeWidth: 3,
+    //   left: x,
+    //   top: y,
+    // });
+    // this.canvas.add(this.circle);
+
+    // this.canvas.renderAll();
+
+    //   })
+    // };
+
+    ///////////////////////
   }
+  deleteShape() {
+    this.canvas.isDrawingMode = false;
+    this.canvas.remove(this.canvas.getActiveObject());
+    this.json = JSON.stringify(this.canvas.toJSON());
+    console.log(this.json);
+  }
+
   drawRectangle() {
     this.canvas.isDrawingMode = false;
     this.rect = new fabric.Rect({
       width: 100,
       height: 100,
-      fill: 'blue',
+      fill: this.chooseColor(),
     });
     this.canvas.add(this.rect);
     this.canvas.renderAll();
   }
+  //ShapeOption
+  shapeOption() {}
 }

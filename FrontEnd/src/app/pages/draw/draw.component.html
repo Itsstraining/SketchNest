@@ -1,6 +1,6 @@
 <body>
   <div id="page">
-    <button id="pageBtn">{{ pageID.id }}</button>
+    <button id="pageBtn"></button>
   </div>
   <div id="drawFunction">
     <div id="drawTool">
@@ -24,11 +24,45 @@
         <span class="material-icons">insert_photo</span>
       </button>
     </div>
-    <div id="drawBoard">
-      <canvas id="canvas"></canvas>
+    <div id="drawFunction">
+      <div id="drawTool">
+        <input type="color" id="color" (onValueChange)="chooseColor()" />
+        <input
+          type="file"
+          id="chooseImage"
+          (click)="picture($event)"
+          accept="image/*"
+        />
+
+        <button id="btnFunction" (click)="startDrawing()">
+          <span class="material-icons">create</span>
+        </button>
+        <button id="btnFunction" (click)="pointer()">
+          <span class="material-icons">near_me</span>
+        </button>
+        <button id="btnFunction" (click)="eraser()">
+          <span class="material-icons">near_me</span>
+        </button>
+        <button id="btnFunction" (click)="deleteShape()">
+          <span class="material-icons">clear</span>
+        </button>
+        <button id="btnFunction" (click)="drawCircle()">
+          <span class="material-icons">brightness_1</span>
+        </button>
+        <button id="btnFunction" (click)="drawRectangle()">
+          <span class="material-icons">crop_din</span>
+        </button>
+        <button id="btnFunction" id="btnFunction">
+          <span class="material-icons">insert_photo</span>
+        </button>
+      </div>
+      <div id="drawBoard">
+        <canvas id="canvas"></canvas>
+      </div>
+      <div id="userBoard">
+        <button mat-raised-button (click)="openDialog()">Share</button>
+      </div>
     </div>
-    <div id="userBoard">
-      <button mat-raised-button (click)="openDialog()">Share</button>
-    </div>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.7.17/fabric.min.js"></script> -->
   </div>
 </body>
