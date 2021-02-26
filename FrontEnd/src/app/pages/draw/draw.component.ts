@@ -4,10 +4,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { fabric } from 'fabric'
 import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.component';
 
-import { Canvas, Color } from 'fabric/fabric-impl';
+import { Color } from 'fabric/fabric-impl';
+import { bufferToggle } from 'rxjs/operators';
+import { WHITE_ON_BLACK_CSS_CLASS } from '@angular/cdk/a11y/high-contrast-mode/high-contrast-mode-detector';
 @Component({
   selector: 'app-draw',
-  templateUrl: './draw.component.html',
+  templateUrl:'./draw.component.html',
   styleUrls: ['./draw.component.scss'],
 })
 
@@ -38,8 +40,8 @@ export class DrawComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.canvas = new fabric.Canvas('canvas', {
-      width: 1500,
-      height: 800,
+      width: 1823,
+      height: 735,
     });
     // this.keyboardEvents();
     //load canvas:
@@ -202,9 +204,9 @@ export class DrawComponent implements OnInit, OnDestroy {
   //ShapeOption
   shapeOption() {
     this.shapeColor=document.getElementById('shapecolor');
-    this.canvas.on('selected',function(){
-      this.canvas.fill(this.shapeColor.value);
-    })
+    // this.canvas.on('selected',function(){
+    //   this.canvas.fill(this.shapeColor.value);
+    // })
     // this.canvas.getActiveObject().set("fill",this.shapeColor.value);
     
 
