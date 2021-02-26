@@ -5,9 +5,11 @@ import { fabric } from 'fabric'
 import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.component';
 
 import { Color } from 'fabric/fabric-impl';
+import { bufferToggle } from 'rxjs/operators';
+import { WHITE_ON_BLACK_CSS_CLASS } from '@angular/cdk/a11y/high-contrast-mode/high-contrast-mode-detector';
 @Component({
   selector: 'app-draw',
-  templateUrl: './draw.component.html',
+  templateUrl:'./draw.component.html',
   styleUrls: ['./draw.component.scss'],
 })
 
@@ -33,8 +35,8 @@ export class DrawComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.canvas = new fabric.Canvas('canvas', {
-      width: 1500,
-      height: 800,
+      width: 1823,
+      height: 735,
     });
     // this.keyboardEvents();
     //load canvas:
