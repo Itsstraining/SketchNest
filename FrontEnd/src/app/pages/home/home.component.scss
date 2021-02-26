@@ -358,6 +358,7 @@ div.container-footer.w-container:before {
 div.w-row {
     box-sizing: border-box;
     background-color: black;
+    ;
 }
 
 div.w-row:after {
@@ -615,4 +616,21 @@ strong.link-email-footer {
     box-sizing: border-box;
     font-weight: 700;
 }
+}
+.Title{
+  color: white;
+text-align: center;
+margin-bottom: 10%;
+}
+h1
+{
+// font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+font-size: 120px;
+font-style: normal;
+font-family: "Brush Script MT, Brush Script Std, cursive";
+
+}
+h3{
+  font-size: 45px;
+  font-family: "Brush Script MT, Brush Script Std, cursive";
 }

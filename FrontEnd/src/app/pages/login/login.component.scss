@@ -80,7 +80,7 @@ input:focus {
 }
 
 .label {
-  color: #757575;
+  color: #ffffff;
   position: absolute;
   top: 20px;
   left: 5px;
@@ -120,7 +120,7 @@ input:focus {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #757575;
+  color: #ffffff;
   font-size: 12px;
   margin-top: -20px;
   margin-bottom: 16px;
@@ -239,4 +239,7 @@ input:focus {
   color: white;
   height: 40px;
   border-radius: 8px;
+}
+.forgot{
+  color: white;
 }
