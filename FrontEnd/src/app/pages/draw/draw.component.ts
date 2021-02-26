@@ -1,9 +1,7 @@
-import { BLACK_ON_WHITE_CSS_CLASS } from '@angular/cdk/a11y/high-contrast-mode/high-contrast-mode-detector';
-import { NONE_TYPE } from '@angular/compiler';
+
 import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fabric } from 'fabric'
-import { Canvas, Circle } from 'fabric/fabric-impl';
 import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.component';
 
 import { Color } from 'fabric/fabric-impl';
@@ -15,9 +13,9 @@ import { Color } from 'fabric/fabric-impl';
 
 export class DrawComponent implements OnInit, OnDestroy {
   numberOfClicks
-  @HostListener('onkeydown', ['$event.target'])
+  @HostListener('click', ['$event.target'])
   onClick(btn) {
-    this.keyboardEvents();
+    console.log('button', btn, 'number of clicks:', this.numberOfClicks++);
   }
   brush: any;
   canvas: any;

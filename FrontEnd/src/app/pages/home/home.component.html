@@ -1,44 +1,134 @@
-
 <body>
-    
-    <div>
-        <div class="Title">
-        <h1>SketchNest</h1>
-        <br><br>
-       <h3>a collaborative painting application</h3>
+  <div>
+    <div class="Title">
+      <h1>SketchNest</h1>
+      <br /><br />
+      <h3>a collaborative painting application</h3>
     </div>
-        <button *ngIf="!this.auth.user" (click)='alert("Please sign in to continue")' class="popup-btn">GO TO LOBBY</button>
-        <button  *ngIf="this.auth.user" routerLink="lobby" class="popup-btn">GO TO LOBBY</button>
-    </div>
-  
+    <button
+      *ngIf="!this.auth.user"
+      (click)="alert('Please sign in to continue')"
+      class="popup-btn"
+    >
+      GO TO LOBBY
+    </button>
+    <button *ngIf="this.auth.user" routerLink="lobby" class="popup-btn">
+      GO TO LOBBY
+    </button>
+  </div>
 </body>
 
 <footer>
   <!-- <div class="container-footer w-container">
     <div class="w-row">
+      <div class="footer-column w-clearfix w-col w-col-4">
+        <img
+          src="https://lh6.googleusercontent.com/1QFbAEHv4rEJxhgTn284sBAaZu82hmUlQd48pm7azDHJYbqhm34fNRXYs7Ym7oTYF9s1UyRw0ZUoaDpkbBtujUs=w16383"
+          alt=""
+          style="height: 50px"
+        />
+        <h3 class="footer-failory-name">Itsstraining</h3>
+        <p class="footer-description-failory">
+          <b>CÔNG TY TNHH DỊCH VỤ ĐÀO TẠO VÀ GIẢI PHÁP ITSS</b><br />
+        </p>
+      </div>
+      <div class="footer-column w-col w-col-8">
+        <div class="w-row">
+          <div class="w-col w-col-8">
+            <div class="w-row">
+              <div class="w-col w-col-7 w-col-small-6 w-col-tiny-7">
+                <h3 class="footer-titles">Thành viên</h3>
+                <p class="footer-links">
+                  <a href="" target="_blank"
+                    ><span class="footer-link"
+                      >Phạm Đức Khánh Duy<br /></span></a
+                  ><a href=""
+                    ><span class="footer-link">Trần Thế Gian<br /></span></a
+                  ><a href=""
+                    ><span class="footer-link">Nguyễn Hoàng Trung</span></a
+                  ><br /><span class="footer-link">Lê Thành Long<br /></span
+                  ><span><br /></span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="column-center-mobile w-col w-col-4">
+            <h3 class="footer-titles">Follow Us!</h3>
+            <a
+              href=""
+              target="_blank"
+              class="footer-social-network-icons w-inline-block"
+              ><img
+                src="https://uploads-ssl.webflow.com/5966ea9a9217ca534caf139f/5c8dbf0a2f2b67e3b3ba079c_Twitter%20Icon.svg"
+                width="20"
+                alt="Twitter icon"
+            /></a>
+            <a
+              href=""
+              target="_blank"
+              class="footer-social-network-icons w-inline-block"
+              ><img
+                src="https://uploads-ssl.webflow.com/5966ea9a9217ca534caf139f/5c8dbfe70fcf5a0514c5b1da_Instagram%20Icon.svg"
+                width="20"
+                alt="Instagram icon"
+            /></a>
+            <a
+              href=""
+              target="_blank"
+              class="footer-social-network-icons w-inline-block"
+              ><img
+                src="https://uploads-ssl.webflow.com/5966ea9a9217ca534caf139f/5c8dbe42e1e6034fdaba46f6_Facebook%20Icon.svg"
+                width="20"
+                alt="Facebook Icon"
+            /></a>
+            <a
+              href=""
+              target="_blank"
+              class="footer-social-network-icons w-inline-block"
+              ><img
+                src="https://uploads-ssl.webflow.com/5966ea9a9217ca534caf139f/5c8dc0002f2b676eb4ba0869_LinkedIn%20Icon.svg"
+                width="20"
+                alt="LinkedIn Icon"
+            /></a>
+            <a
+              href=""
+              target="_blank"
+              class="footer-social-network-icons w-inline-block"
+              ><img
+                src="https://uploads-ssl.webflow.com/5966ea9a9217ca534caf139f/5c8dc0112f2b6739c9ba0871_Pinterest%20Icon.svg"
+                width="20"
+                alt="Pinterest Icon"
+                class=""
+            /></a>
+            <p class="footer-description">
+              Email me at: example123@gmail.com
+              <a href=""><strong class="link-email-footer"></strong></a><br />
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
         <div class="footer-column w-clearfix w-col w-col-4">
           <img src="https://lh5.googleusercontent.com/JmzlC2Q3EggJirsvlEdYx7gpPXKPUT0iSErb5Jj7a9y3dNGnpVPngVFiX3c84f3QqTCyUnI86BMxwbDAntVOtXM=w16383" alt="" style="height: 50px;">
-            <!-- <h3 class="footer-failory-name">Itsstraining</h3> -->
-            <p class="footer-description-failory"><b>CÔNG TY TNHH DỊCH VỤ ĐÀO TẠO VÀ GIẢI PHÁP ITSS</b><br></p>
+             <h3 class="footer-failory-name">Itsstraining</h3> -->
 
-<div class="bo-wrap clr3">
+  <div class="bo-wrap clr3">
     <div class="bo-footer">
       <div class="bo-footer-smap">
-       <p>Contact Us:</p>
-       <p>Company ITSS Training</p>
-       <p>Team: ITSS Team Blue</p>
-       <p>Address : 34/31 Cu Xa Lu Gia, Q11, Ho Chi Minh City</p>
+        <p>Contact Us:</p>
+        <p>Company ITSS Training</p>
+        <p>Team: ITSS Team Blue</p>
+        <p>Address : 34/31 Cu Xa Lu Gia, Q11, Ho Chi Minh City</p>
       </div>
-  <div class="bo-footer-power">
-    Powered By ITSS21S-Team Blue
+      <div class="bo-footer-power">Powered By ITSS21S-Team Blue</div>
+      <div class="clearfix"></div>
+    </div>
   </div>
-  <div class="clearfix"></div>
-</div>
-</div>
-<div class="bo-wrap clr4">
-<div class="bo-footer">
-  <div class="bo-footer-copyright">&copy;2021  All rights reserved.</div>
-</div>
-</div>
-
+  <div class="bo-wrap clr4">
+    <div class="bo-footer">
+      <div class="bo-footer-copyright">&copy;2021 All rights reserved.</div>
+    </div>
+  </div>
 </footer>
