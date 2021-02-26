@@ -33,11 +33,8 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/draw/draw.module').then((m) => m.DrawModule),
   },
-<<<<<<< HEAD
   { path: 'pricing', loadChildren: () => import('./pricing/pricing.module').then(m => m.PricingModule) },
-=======
   { path: 'about', loadChildren: () => import('./pages/about/about.module').then(m => m.AboutModule) },
->>>>>>> 4a2d6228c791867518c9ca15a046ff1e79b335be
 ];
 
 @NgModule({
