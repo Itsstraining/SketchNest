@@ -1,7 +1,6 @@
-<div
-  class="box pink"
-  style="border-style: solid; display: flex; justify-content: center"
->
-  <h3>{{ room.id }}</h3>
-  <p>{{ room.picture }}</p>
+<div class="box pink">
+  <div id="picture" (click)="mouseDown()">{{ room.picture }}</div>
+  <div id="id">
+    <div id="name" (click)="mouseDown()">{{ room.id }}</div>
+  </div>
 </div>

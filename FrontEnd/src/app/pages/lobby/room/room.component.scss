@@ -21,3 +21,37 @@ h3 {
   padding: 1rem;
   justify-content: space-between;
 }
+
+.box.pink {
+  vertical-align: top;
+
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+  box-sizing: border-box;
+  outline: none;
+  overflow: hidden;
+}
+
+#picture {
+  background-image: url(https://lh3.googleusercontent.com/d/1ESXI9FrQITZExyxgfItx6eKKsXACnxCUMJo=h250?authuser=2);
+  background-position-x: 0px;
+  transform: translateX(0px);
+  height: 152px;
+  width: 100%;
+}
+#id {
+  height: 68px;
+  position: relative;
+  width: 100%;
+}
+#name {
+  color: #3c4043;
+  font: 500 14px/20px "Google Sans", Arial, sans-serif;
+  font-variant-ligatures: no-contextual;
+  letter-spacing: 0.3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0px 15px;
+  font-weight: bold;
+}

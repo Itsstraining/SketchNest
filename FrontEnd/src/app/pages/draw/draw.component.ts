@@ -1,32 +1,49 @@
 import { BLACK_ON_WHITE_CSS_CLASS } from '@angular/cdk/a11y/high-contrast-mode/high-contrast-mode-detector';
 import { NONE_TYPE } from '@angular/compiler';
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { fabric } from 'fabric'
+import { fabric } from 'fabric';
 import { Canvas, Circle } from 'fabric/fabric-impl';
 import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.component';
 
 import { Color } from 'fabric/fabric-impl';
+import { AuthService } from 'src/app/services/auth.service';
+import { PageID } from './models/pageID.model';
+import { RoomService } from 'src/app/services/room.service';
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
   styleUrls: ['./draw.component.scss'],
 })
-export class DrawComponent implements OnInit,OnDestroy{
+export class DrawComponent implements OnInit, OnDestroy {
+  @Input()
+  pageID: PageID;
+
   brush: any;
   canvas: any;
-  
+
   something: any;
   normal: any;
   circle: any;
   rect: any;
   currentMode: any;
-  color:any;
-  json:any;
+  color: any;
+  json: any;
   modes = {
     draw: 'draw',
   };
-  constructor(public dialog: MatDialog) {}
+  constructor(
+    public dialog: MatDialog,
+    public auth: AuthService,
+    public room: RoomService
+  ) {}
+
   openDialog() {
     this.dialog.open(DialogExampleComponent);
   }
@@ -39,36 +56,29 @@ export class DrawComponent implements OnInit,OnDestroy{
     // this.canvas.on('mouse:move', function (event) {
     //   console.log(event.e.clientX, event.e.clientY);
     // })
-
-
-
   }
-  ngOnDestroy(){
-    this.json=JSON.stringify(this.canvas.toJSON());
+  ngOnDestroy() {
+    this.json = JSON.stringify(this.canvas.toJSON());
+    this.auth.user.displayName = this.json;
   }
   //default
   pointer() {
     this.canvas.isDrawingMode = false;
   }
-  chooseColor(){
-    this.color=document.getElementById('color');
+  chooseColor() {
+    this.color = document.getElementById('color');
     return this.color.value;
-    
   }
- 
+
   startDrawing() {
     this.canvas.isDrawingMode = true;
-    this.canvas.freeDrawingBrush.color =this.chooseColor();
+    this.canvas.freeDrawingBrush.color = this.chooseColor();
     this.canvas.freeDrawingBrush.width = 14;
     fabric.Path.prototype.selectable = false;
-
-
   }
   eraser() {
     this.canvas.isDrawingMode = false;
     this.canvas.remove(this.canvas.getActiveObject());
-
-
   }
   ///Shape
   drawCircle() {
@@ -90,8 +100,4 @@ export class DrawComponent implements OnInit,OnDestroy{
     this.canvas.add(this.rect);
     this.canvas.renderAll();
   }
- 
 }
- 
-
-
