@@ -5,7 +5,7 @@
     <label for="check" class="checkbtn">
       <i class="fas fa-bars"></i>
     </label>
-    <label class="logo"><img src="https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.15752-9/152957362_1400385440293685_8382703701793146260_n.png?_nc_cat=101&ccb=3&_nc_sid=ae9488&_nc_ohc=Ng06sIqqRpoAX-yZ8Dw&_nc_ht=scontent.fsgn5-1.fna&oh=1057fccc79ee06c4d446c53ee6d006b8&oe=605860B4" style="width: 300px;"></label>
+    <label class="logo" ><img src="https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.15752-9/152957362_1400385440293685_8382703701793146260_n.png?_nc_cat=101&ccb=3&_nc_sid=ae9488&_nc_ohc=Ng06sIqqRpoAX-yZ8Dw&_nc_ht=scontent.fsgn5-1.fna&oh=1057fccc79ee06c4d446c53ee6d006b8&oe=605860B4" style="width: 300px;"></label>
     <ul>
       <li><a class="active" href="#">Home</a></li>
       <li><a href="#">About</a></li>
@@ -13,9 +13,8 @@
       <li><a href="#" *ngIf="!this.auth.user" [routerLink]="'register'">Sign Up</a></li>
       <li><a href="#" *ngIf="!this.auth.user" [routerLink]="'login'">Sign In</a></li>
       <li><a href="#" [routerLink]="'home'"  *ngIf="this.auth.user" (click)="logOut()">Sign Out</a></li>
-
+      
     </ul>
-    <a href=""><img *ngIf="this.auth.user" style="border-radius: 50%;margin-top: 15px;" src="{{this.auth.user.photoURL}}" height="45px">
-</a>
+
   </nav>
 

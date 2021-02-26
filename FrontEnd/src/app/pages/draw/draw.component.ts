@@ -1,6 +1,6 @@
 import { BLACK_ON_WHITE_CSS_CLASS } from '@angular/cdk/a11y/high-contrast-mode/high-contrast-mode-detector';
 import { NONE_TYPE } from '@angular/compiler';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fabric } from 'fabric'
 import { Canvas, Circle } from 'fabric/fabric-impl';
@@ -12,19 +12,18 @@ import { Color } from 'fabric/fabric-impl';
   templateUrl: './draw.component.html',
   styleUrls: ['./draw.component.scss'],
 })
-export class DrawComponent implements OnInit {
+export class DrawComponent implements OnInit, OnDestroy {
   brush: any;
   canvas: any;
-  
+  circle: any;
   something: any;
   normal: any;
-  circle: any;
   rect: any;
   currentMode: any;
-  modes = {
-    draw: 'draw',
-  };
-  constructor(public dialog: MatDialog) {}
+  color: any;
+  json: any;
+
+  constructor(public dialog: MatDialog) { }
   openDialog() {
     this.dialog.open(DialogExampleComponent);
   }
@@ -34,37 +33,76 @@ export class DrawComponent implements OnInit {
       height: 800,
     });
     //xac dinh vi tri con chuot trong canvas
-    this.canvas.on('mouse:move', function (event) {
-      console.log(event.e.clientX, event.e.clientY);
-    });
+    // this.canvas.on('mouse:move', function (event) {
+    //   console.log(event.e.clientX, event.e.clientY);
+    // })
+
+
+
+  }
+  ngOnDestroy() {
+ 
   }
   //default
   pointer() {
     this.canvas.isDrawingMode = false;
   }
+  chooseColor() {
+    this.color = document.getElementById('color');
+    return this.color.value;
+
+  }
+
   startDrawing() {
     this.canvas.isDrawingMode = true;
-    this.canvas.freeDrawingBrush.color = 'black';
+    this.canvas.freeDrawingBrush.color = this.chooseColor();
     this.canvas.freeDrawingBrush.width = 14;
     fabric.Path.prototype.selectable = false;
-    fabric.Path.prototype;
+
+
   }
   eraser() {
     this.canvas.isDrawingMode = false;
     this.canvas.remove(this.canvas.getActiveObject());
-
+    this.json = JSON.stringify(this.canvas.toJSON());
+    console.log(this.json);
 
   }
-  ///Shape
-  drawCircle() {
+
+  picture() {
+
+  }
+  // /Shape
+
+   async drawCircle() {
+    let x,y;
     this.canvas.isDrawingMode = false;
+
+    await this.canvas.on('mouse:down', function (event) {
+     
+ 
+  
+    x=event.e.clientX
+    y=event.e.clientY
     this.circle = new fabric.Circle({
       radius: 50,
-      fill: 'blue',
+      fill: '',
+      stroke: 'red',
+      strokeWidth: 3,
+      left: x,
+      top: y,
     });
     this.canvas.add(this.circle);
+
     this.canvas.renderAll();
-  }
+
+
+
+    ///////////////////////
+  })
+  };
+  
+
   drawRectangle() {
     this.canvas.isDrawingMode = false;
     this.rect = new fabric.Rect({
@@ -75,8 +113,7 @@ export class DrawComponent implements OnInit {
     this.canvas.add(this.rect);
     this.canvas.renderAll();
   }
- 
 }
- 
+
 
 
