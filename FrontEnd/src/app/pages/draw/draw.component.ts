@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { fabric } from 'fabric'
 import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.component';
 
-import { Color } from 'fabric/fabric-impl';
+import { Canvas, Color } from 'fabric/fabric-impl';
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
@@ -12,11 +12,14 @@ import { Color } from 'fabric/fabric-impl';
 })
 
 export class DrawComponent implements OnInit, OnDestroy {
-  numberOfClicks
-  @HostListener('click', ['$event.target'])
-  onClick(btn) {
-    console.log('button', btn, 'number of clicks:', this.numberOfClicks++);
-  }
+  // @HostListener('keypress', ['$event.target'])
+  // handleKeyboardEvent(event: KeyboardEvent) {
+  //   console.log(event);
+  //   let x = event.keyCode;
+  //   if (x === 27) {
+  //       console.log('Escape!');
+  //   }
+  // }
   brush: any;
   canvas: any;
   circle: any;
@@ -27,6 +30,8 @@ export class DrawComponent implements OnInit, OnDestroy {
   color: any;
   json: any;
   triangle: any;
+  url: any;
+  shapeColor: any;
   constructor(public dialog: MatDialog) { }
   openDialog() {
     this.dialog.open(DialogExampleComponent);
@@ -69,10 +74,20 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas.freeDrawingBrush.color = this.chooseColor();
     this.canvas.freeDrawingBrush.width = 14;
     fabric.Path.prototype.selectable = false;
-
-
-
   }
+  // highlightPen() {
+  //   this.canvas.isDrawingMode = true;
+  //   this.canvas.setActiveObject(fabric.Path);
+  //   var activeObj = this.canvas.getActiveObject();
+  //   activeObj.setOpacity(1);
+  //   activeObj.animate('opacity', '0', {
+  //     duration: 1000,
+  //     onChange: this.canvas.renderAll.bind(this.canvas),
+  //     onComplete: function () {
+  //       this.canvas.remove(activeObj);
+  //     }
+  //   });
+  // }
   eraser() {
     this.canvas.isDrawingMode = true;
     this.canvas.freeDrawingBrush.color = 'white';
@@ -81,8 +96,9 @@ export class DrawComponent implements OnInit, OnDestroy {
     console.log(this.json);
   }
 
-  url: any;
+
   picture(event) {
+    this.canvas.isDrawingMode = false;
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]); // read file as data url
@@ -95,6 +111,13 @@ export class DrawComponent implements OnInit, OnDestroy {
         })
       }
     }
+  }
+  textField() {
+    this.canvas.add(new fabric.IText('lorem ipsum', {
+      fontFamily: 'arial black',
+      left: 100,
+      top: 100,
+    }));
   }
   ///Keyboard events
   keyboardEvents() {
@@ -128,6 +151,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     });
     this.canvas.add(this.circle);
     this.canvas.renderAll();
+    ///////////////////
     // let x,y;
     // this.canvas.isDrawingMode = false;
 
@@ -155,10 +179,6 @@ export class DrawComponent implements OnInit, OnDestroy {
 
     ///////////////////////
   }
-
-
-
-
   drawRectangle() {
     this.canvas.isDrawingMode = false;
     this.rect = new fabric.Rect({
@@ -181,9 +201,15 @@ export class DrawComponent implements OnInit, OnDestroy {
 
   //ShapeOption
   shapeOption() {
+    this.shapeColor=document.getElementById('shapecolor');
+    this.canvas.on('selected',function(){
+      this.canvas.fill(this.shapeColor.value);
+    })
+    // this.canvas.getActiveObject().set("fill",this.shapeColor.value);
+    
+
 
   }
 
 }
-
 

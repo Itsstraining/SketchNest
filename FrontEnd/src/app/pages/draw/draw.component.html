@@ -4,7 +4,7 @@
   </div>
     <div id="drawFunction">
       <div id="drawTool">
-        <input type="color" id="color" (onValueChange)="chooseColor()" />
+        <input type="color" id="color" (blur)="chooseColor()" />
         <input type="file"id="chooseImage"(click)="picture($event)" accept="image/*"/>
         <button id="btnFunction" (click)="startDrawing()">
           <span class="material-icons">create</span>
@@ -24,9 +24,7 @@
         <button id="btnFunction" (click)="drawRectangle()">
           <span class="material-icons">crop_din</span>
         </button>
-        <button id="btnFunction" id="btnFunction">
-          <span class="material-icons">insert_photo</span>
-        </button>
+        <input type="color" id="shapecolor" (blur)="shapeOption()" />
       </div>
       <div id="drawBoard">
         <canvas id="canvas"></canvas>
