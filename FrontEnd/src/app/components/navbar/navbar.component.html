@@ -10,7 +10,6 @@
     <li><a href="#" *ngIf="!this.auth.user" [routerLink]="'register'">Sign Up</a></li>
     <li><a href="#" *ngIf="!this.auth.user" [routerLink]="'login'">Sign In</a></li>
     <li><a href="#" [routerLink]="'home'"  *ngIf="this.auth.user" (click)="logOut()">Sign Out</a></li>
-  <img  id="userImg"  *ngIf="this.auth.user" src="{{this.auth.user.photoURL}}" alt="user">
 
   </ul>
 
