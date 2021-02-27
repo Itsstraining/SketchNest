@@ -40,8 +40,8 @@ export class DrawComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.canvas = new fabric.Canvas('canvas', {
-      width: 1823,
-      height: 735,
+      width: 1500,
+      height: 800,
     });
     // this.keyboardEvents();
     //load canvas:
