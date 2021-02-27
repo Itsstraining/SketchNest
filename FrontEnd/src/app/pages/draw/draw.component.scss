@@ -121,17 +121,15 @@ body {
 
 // etc
 
-header {
-  padding: 2rem;
-  grid-column: 1 / 4;
-}
 
 .left-sidebar {
+
   grid-column: 1 / 2;
 }
 
 main {
   // background: rgb(226, 47, 47);
+  margin-top: 1%;
   grid-column: 2 / 3;
 }
 

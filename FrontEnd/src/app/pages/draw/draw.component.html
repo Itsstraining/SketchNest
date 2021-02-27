@@ -1,7 +1,7 @@
 
 <body>
   <header>
-    <button id="btnShare" mat-raised-button (click)="openDialog()">Share</button>
+   
 
   </header>
   <div class="left-sidebar" >
@@ -44,9 +44,14 @@
         </button>
         <br>
         <input title="Color" type="color" id="shapecolor" (blur)="shapeOption()" />
+        <br>
+        <button title="Rectangle" id="btnFunction" (click)="textField()">
+          <span class="material-icons">crop_din</span>
+        </button>
   </div>
   <main > <canvas  id="canvas"></canvas></main>
   <div class="right-sidebar" >
+    <button id="btnShare" mat-raised-button (click)="openDialog()">Share</button>
   </div>
 
 </body>
