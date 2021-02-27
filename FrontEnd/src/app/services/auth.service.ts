@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
+// import { userInfo } from 'os';
 @Injectable({
   providedIn: 'root',
 })
@@ -32,5 +33,25 @@ export class AuthService {
       localStorage.removeItem('user');
       this.user = null;
     });
+  }
+
+  isLoggedIn = false;
+  async SignIn(email: string, password: string) {
+    await this.afAuth
+      .signInWithEmailAndPassword(email, password)
+      .then((res) => {
+        this.isLoggedIn = true;
+        localStorage.setItem('user', JSON.stringify(res.user));
+      });
+  }
+
+  async SignUp(email: string, password: string) {
+    await this.afAuth
+      .createUserWithEmailAndPassword(email, password)
+      .then((res) => {
+        console.log(res);
+        this.isLoggedIn = true;
+        localStorage.setItem('user', JSON.stringify(res.user));
+      });
   }
 }
