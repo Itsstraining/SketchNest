@@ -1,95 +1,97 @@
-body{
-  display:flex;
-  flex-direction: column;
-  width: 100%;
+// body{
+//   display:flex;
+//   flex-direction: column;
+//   width: 100%;
 
-  background-color: rgb(190, 204, 241);
-  height: 100%;
+//   background-color: rgb(190, 204, 241);
+//   height: 100%;
+//   flex-direction: column;
+//   justify-content: space-between;
   
   
-}
-#drawFunction{
-  display:flex;
-  flex-direction: row;
-  margin-top:1%
-}
-#drawTool{
-  display:flex;
-  flex-direction: column;
-}
-#userBoard{
-  display:flex;
-  flex-direction: column;
-}
-#page{
-  display:flex;
-  flex-direction: row;
-  border:none;
-}
-#pageBtn{
-  margin-left: 45%;
-  width: 100px;
-  height: 50px
-}
-#canvas{
-  background-color: white;
-
-}
-#btnFunction{
-  width: 50px;
-  height: 50px;
-  margin-top: 5%;
-  border-radius: 50%;
-}
-#imgFunction{
-  width: 50px;
-  height:50px;
-}
-#drawBoard{
-  margin-left: 2%;
-}
-#userBoard{
-  border:1px solid black;
-  margin-left: 2%;
-  width: 20%;
-
-}
-#pageBtn{
-  margin-top: 50px;
-}
-#btnshare{
-  background-color: blue;
-  color: white;
-}
-#color{
-  height: 25px;
-  margin-left: 8px;
-}
-// #drawContent {
-//   display: flex;
+// }
+// #drawFunction{
+//   display:flex;
+//   flex-direction: row;
+//   margin-top:1%
+// }
+// #drawTool{
+//   display:flex;
 //   flex-direction: column;
 // }
-// #drawSpace{
-//   margin-left: 10%;
+// #userBoard{
+//   display:flex;
+//   flex-direction: column;
 // }
-// button {
-//   width: 50px;
-//   height: 50px;
-//   margin-top: 10%;
-// }
-// canvas {
-//   background-color: white;
-//   border: 1px solid black;
-// }
-// img{
-//   width: 50px;
-//   height: 50px;
-// }
-// #body{
-//   display: flex;
+// #page{
+//   display:flex;
 //   flex-direction: row;
-//   margin-left: 10%;
+//   border:none;
 // }
+// #pageBtn{
+//   margin-left: 45%;
+//   width: 100px;
+//   height: 50px
+// }
+// #canvas{
+//   background-color: white;
+
+// }
+// #btnFunction{
+//   width: 50px;
+//   height: 50px;
+//   margin-top: 6%;
+//   border-radius: 50%;
+// }
+// #imgFunction{
+//   width: 50px;
+//   height:50px;
+// }
+// #drawBoard{
+//   margin-left: 2%;
+// }
+// #userBoard{
+//   border:1px solid black;
+//   margin-left: 2%;
+//   width: 20%;
+
+// }
+// #pageBtn{
+//   margin-top: 50px;
+// }
+// #btnshare{
+//   background-color: blue;
+//   color: white;
+// }
+// #color{
+//   width: 50px;
+//   height: 35px;
+// }
+// // #drawContent {
+// //   display: flex;
+// //   flex-direction: column;
+// // }
+// // #drawSpace{
+// //   margin-left: 10%;
+// // }
+// // button {
+// //   width: 50px;
+// //   height: 50px;
+// //   margin-top: 10%;
+// // }
+// // canvas {
+// //   background-color: white;
+// //   border: 1px solid black;
+// // }
+// // img{
+// //   width: 50px;
+// //   height: 50px;
+// // }
+// // #body{
+// //   display: flex;
+// //   flex-direction: row;
+// //   margin-left: 10%;
+// // }
 .image-upload > input
 {
     display: none;
@@ -102,4 +104,77 @@ body{
     cursor: pointer;
 	  border-radius: 50%;
     border: solid 1px;
+}
+//fix layout here
+body {
+  background-image: url("https://images.wallpaperscraft.com/image/universe_galaxy_multicolored_125246_1920x1080.jpg");
+  display: grid;
+  height: 100%;
+  grid-template: auto 1fr auto / auto 1fr auto;
+  background-blend-mode: multiply;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  
+}
+
+// etc
+
+header {
+  padding: 2rem;
+  grid-column: 1 / 4;
+}
+
+.left-sidebar {
+  grid-column: 1 / 2;
+}
+
+main {
+  // background: rgb(226, 47, 47);
+  grid-column: 2 / 3;
+}
+
+.right-sidebar {
+  grid-column: 3 / 4;
+}
+
+footer {
+  padding: 2rem;
+  text-align: center;
+  grid-column: 1 / 4;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+}
+
+.left-sidebar,
+.right-sidebar {
+  padding: 1rem;
+}
+
+//canvas
+canvas{
+  background-color: white;
+  border: solid black 4px;
+}
+#btnFunction{
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background-color: white;
+  margin-top: 10%;
+}
+#btnShare{
+  width: 150px;
+  height: 35px;
+  float: right;
+ background-color: rgb(97, 97, 255);
+  color: white;
+  font-size: x-large  ;
+  border-radius: 10px;
+}
+#btnShare:hover{
+  color: rgb(255, 249, 249);
+  background: rgb(0, 0, 255);
 }

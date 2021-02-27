@@ -22,6 +22,5 @@ export class RoomListComponent implements OnInit {
     { id: 'sketch 7', picture: 'p7' },
     { id: 'sketch 8', picture: 'p8' },
     { id: 'sketch 9', picture: 'p9' },
-    { id: 'sketch 10', picture: 'p10' },
   ];
 }
