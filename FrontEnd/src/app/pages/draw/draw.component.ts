@@ -1,15 +1,24 @@
 import { BLACK_ON_WHITE_CSS_CLASS } from '@angular/cdk/a11y/high-contrast-mode/high-contrast-mode-detector';
 import { NONE_TYPE } from '@angular/compiler';
-import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  HostListener,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { fabric } from 'fabric'
+import { fabric } from 'fabric';
 import { Canvas, Circle } from 'fabric/fabric-impl';
 import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.component';
 
 import { Color } from 'fabric/fabric-impl';
+import { AuthService } from 'src/app/services/auth.service';
+import { PageID } from './models/pageID.model';
+import { RoomService } from 'src/app/services/room.service';
 @Component({
   selector: 'app-draw',
-  templateUrl: './draw.component.html',
+  templateUrl:'./draw.component.html',
   styleUrls: ['./draw.component.scss'],
 })
 export class DrawComponent implements OnInit, OnDestroy {
@@ -22,7 +31,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   currentMode: any;
   color: any;
   json: any;
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog) {}
   openDialog() {
     this.dialog.open(DialogExampleComponent);
   }
@@ -37,17 +46,12 @@ export class DrawComponent implements OnInit, OnDestroy {
     //   this.canvas.renderAll();
     // });
 
-
     //xac dinh vi tri con chuot trong canvas
     // this.canvas.on('mouse:move', function (event) {
     //   console.log(event.e.clientX, event.e.clientY);
     // })
-
-
-
   }
   ngOnDestroy() {
-
     this.json = JSON.stringify(this.canvas.toJSON());
   }
   //default
@@ -57,7 +61,6 @@ export class DrawComponent implements OnInit, OnDestroy {
   chooseColor() {
     this.color = document.getElementById('color');
     return this.color.value;
-
   }
 
   startDrawing() {
@@ -65,8 +68,6 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas.freeDrawingBrush.color = this.chooseColor();
     this.canvas.freeDrawingBrush.width = 14;
     fabric.Path.prototype.selectable = false;
-
-
   }
   eraser() {
     this.canvas.isDrawingMode = true;
@@ -79,19 +80,16 @@ export class DrawComponent implements OnInit, OnDestroy {
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]); // read file as data url
-      reader.onload = (event) => { // called once readAsDataURL is completed
+      reader.onload = (event) => {
+        // called once readAsDataURL is completed
         this.url = event.target.result;
         // console.log(this.url)
         fabric.Image.fromURL(this.url, (test) => {
           this.canvas.add(test);
           this.canvas.renderAll();
-        })
-      }
-     
-
-
+        });
+      };
     }
-
   }
   // /Shape
 
@@ -108,8 +106,6 @@ export class DrawComponent implements OnInit, OnDestroy {
 
     // await this.canvas.on('mouse:down', function (event) {
 
-
-
     // x=event.e.clientX
     // y=event.e.clientY
     // this.circle = new fabric.Circle({
@@ -124,7 +120,6 @@ export class DrawComponent implements OnInit, OnDestroy {
 
     // this.canvas.renderAll();
 
-
     //   })
     // };
 
@@ -135,10 +130,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas.remove(this.canvas.getActiveObject());
     this.json = JSON.stringify(this.canvas.toJSON());
     console.log(this.json);
-
   }
-
-
 
   drawRectangle() {
     this.canvas.isDrawingMode = false;
@@ -151,10 +143,5 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas.renderAll();
   }
   //ShapeOption
-  shapeOption() {
-
-  }
-
+  shapeOption() {}
 }
-
-

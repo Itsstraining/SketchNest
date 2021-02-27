@@ -1,38 +1,39 @@
-
 <body>
-    
-    <div>
-        <div class="Title">
-        <h1>SketchNest</h1>
-        <br><br>
-       <h3>a collaborative painting application</h3>
+  <div>
+    <div class="Title">
+      <h1>SketchNest</h1>
+      <br /><br />
+      <h3>a collaborative painting application</h3>
     </div>
-        <button *ngIf="!this.auth.user" (click)='alert("Please sign in to continue")' class="popup-btn">GO TO LOBBY</button>
-        <button  *ngIf="this.auth.user" routerLink="lobby" class="popup-btn">GO TO LOBBY</button>
-    </div>
-  
+    <button
+      *ngIf="!this.auth.user"
+      (click)="alert('Please sign in to continue')"
+      class="popup-btn"
+    >
+      GO TO LOBBY
+    </button>
+    <button *ngIf="this.auth.user" routerLink="lobby" class="popup-btn">
+      GO TO LOBBY
+    </button>
+  </div>
 </body>
 
 <footer>
-
-<div class="bo-wrap clr3">
+  <div class="bo-wrap clr3">
     <div class="bo-footer">
       <div class="bo-footer-smap">
-       <p>Contact Us:</p>
-       <p>Company ITSS Training</p>
-       <p>Team: ITSS Team Blue</p>
-       <p>Address : 34/31 Cu Xa Lu Gia, Q11, Ho Chi Minh City</p>
+        <p>Contact Us:</p>
+        <p>Company ITSS Training</p>
+        <p>Team: ITSS Team Blue</p>
+        <p>Address : 34/31 Cu Xa Lu Gia, Q11, Ho Chi Minh City</p>
       </div>
-  <div class="bo-footer-power">
-    Powered By ITSS21S-Team Blue
+      <div class="bo-footer-power">Powered By ITSS21S-Team Blue</div>
+      <div class="clearfix"></div>
+    </div>
   </div>
-  <div class="clearfix"></div>
-</div>
-</div>
-<div class="bo-wrap clr4">
-<div class="bo-footer">
-  <div class="bo-footer-copyright">&copy;2021  All rights reserved.</div>
-</div>
-</div>
-
+  <div class="bo-wrap clr4">
+    <div class="bo-footer">
+      <div class="bo-footer-copyright">&copy;2021 All rights reserved.</div>
+    </div>
+  </div>
 </footer>
