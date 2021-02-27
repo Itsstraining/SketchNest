@@ -107,7 +107,7 @@
 }
 //fix layout here
 body {
-  background-image: url("https://images.wallpaperscraft.com/image/universe_galaxy_multicolored_125246_1920x1080.jpg");
+  // background-image: url("https://images.wallpaperscraft.com/image/universe_galaxy_multicolored_125246_1920x1080.jpg");
   display: grid;
   height: 100%;
   grid-template: auto 1fr auto / auto 1fr auto;
@@ -115,6 +115,7 @@ body {
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
+  background-color: rgba(192, 192, 192, 0.377);
   
 }
 
@@ -156,7 +157,6 @@ body {
 //canvas
 canvas{
   background-color: white;
-  border: solid black 4px;
 }
 #btnFunction{
   height: 50px;
