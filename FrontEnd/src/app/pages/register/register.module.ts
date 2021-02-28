@@ -11,8 +11,8 @@ import { environment } from 'src/environments/environment';
   declarations: [RegisterComponent],
   imports: [
     CommonModule,
-    AngularFireModule.initializeApp(environment.firebase),
     RegisterRoutingModule,
+    AngularFireModule.initializeApp(environment.firebase),
   ],
 })
 export class RegisterModule {}

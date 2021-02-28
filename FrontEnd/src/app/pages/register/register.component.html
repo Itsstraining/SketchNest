@@ -13,9 +13,10 @@
         <div class="form-group">
           <input
             class="input"
-            type="text"
-            #emailSignup
+            type="email"
+            formControlName="email"
             placeholder="Email"
+            #userEmail
             required
           />
           <label class="label" for="email"> Email </label>
@@ -24,9 +25,10 @@
         <div class="form-group">
           <input
             class="input"
-            type="text"
-            #passwordSignup
+            type="password"
+            formControlName="password"
             placeholder="Password"
+            #userPwd
             required
             pattern=".{5,}"
           />
@@ -52,8 +54,10 @@
         </div>
 
         <button
+          type="submit"
           class="btn"
-          (click)="onSignup(emailSignup.value, passwordSignup.value)"
+          ((click)="auth.register(userEmail.value, userPwd.value)"
+          )
         >
           SIGN UP
         </button>
