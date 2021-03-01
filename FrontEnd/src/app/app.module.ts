@@ -6,7 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
-import { NgxSpinnerModule } from "ngx-spinner";
+
 import { from } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -29,7 +29,6 @@ import { DialogCreateRoomComponent } from './dialog-create-room/dialog-create-ro
     AngularFireAuthModule,
     MatIconModule,
     MatDialogModule,
-    NgxSpinnerModule,
     FormsModule,
   ],
   // schemas: [CUSTOM_ELEMENTS_SCHEMA],
