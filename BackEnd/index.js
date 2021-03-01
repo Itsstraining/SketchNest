@@ -22,27 +22,19 @@
 
 const config = require("./config");
 const app = require("express")();
-const cors = require("cors")();
-app.use(cors);
-
 const http = require("http").createServer(app);
-const io = require("socket.io")(http, {
-  cors: {
-    origins: ["http://localhost:4200"],
-  },
-});
+const io = require("socket.io")(http);
+ 
+
+
 app.get("/", (req, res) => {
-  res.send(__dirname + "index.html");
+  res.send("hello!");
 });
 
 io.on("connection", (socket) => {
   console.log("A user connected");
-  socket.on('my message', (msg) => {
-    console.log('message: ' + msg);
-  }); 
 });
 
 http.listen(3000, function () {
   console.log("Server is running on port 3000");
 });
-
