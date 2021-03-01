@@ -1,29 +1,48 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import * as firebase from 'firebase'
+import * as firebase from 'firebase';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { ViewChild, TemplateRef } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  @ViewChild('firstDialog') firstDialog: TemplateRef<any>;
 
-  constructor(public auth: AuthService, private afAuth: AngularFireAuth, public router:Router) { }
+  constructor(
+    public auth: AuthService,
+    private afAuth: AngularFireAuth,
+    public router: Router,
+    private dialog: MatDialog
+  ) {}
+  public email: string;
+  public password: string;
   public user = this.auth.user;
 
-  ngOnInit(): void {
-
-  }
-  async login() {
+  ngOnInit(): void {}
+  async loginGG() {
     try {
       await this.auth.oAuthLogin();
       await this.router.navigate(['']);
     } catch (err) {
       throw err;
     }
-    
+  }
+  openDialogWithRef(ref: TemplateRef<any>) {
+    this.dialog.open(ref);
+  }
+  async login() {
+    try {
+      await this.auth.login(this.email, this.password);
+      this.openDialogWithRef(this.firstDialog);
+    } catch (err) {
+      console.log(err);
+    }
   }
   async logout() {
     await this.auth.logout();

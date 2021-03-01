@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client/dist/socket.io';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,10 @@ export class ConnectService {
   socket;
   private url: 'http://localhost:3000';
   constructor(private http: HttpClient) {}
-  // setupSocketConnection() {
-  //   this.socket = io(this.url);
-  // }
+  public setupSocketConnection() {
+    this.socket = io(environment.SOCKET_ENDPOINT);
+    // this.socket.emit('connection', 'Hello there from Angular.');
+
+    this.socket.emit('my message', 'Hello there from Angular.');
+  }
 }
