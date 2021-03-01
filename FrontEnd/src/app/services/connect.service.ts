@@ -14,8 +14,5 @@ export class ConnectService {
   constructor(private http: HttpClient) {}
   public setupSocketConnection() {
     this.socket = io(environment.SOCKET_ENDPOINT);
-    // this.socket.emit('connection', 'Hello there from Angular.');
-
-    this.socket.emit('my message', 'Hello there from Angular.');
   }
 }

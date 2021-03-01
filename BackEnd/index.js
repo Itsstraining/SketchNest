@@ -23,6 +23,8 @@
 const config = require("./config");
 const app = require("express")();
 const cors = require("cors")();
+const body = require("body-parser");
+app.use(body.json());
 app.use(cors);
 
 const http = require("http").createServer(app);
@@ -32,17 +34,22 @@ const io = require("socket.io")(http, {
   },
 });
 app.get("/", (req, res) => {
-  res.send(__dirname + "index.html");
+  res.send("Cái con cặc hello world!!!");
+});
+app.get("/test", (req, res) => {
+  let { a, b } = req.query;
+  let c = parseInt(a) + parseInt(b);
+  console.log(c);
+  res.send(c.toString());
 });
 
 io.on("connection", (socket) => {
   console.log("A user connected");
-  socket.on('my message', (msg) => {
-    console.log('message: ' + msg);
-  }); 
+  socket.on("a", (msg) => {
+    console.log(`User: ${msg} is connected`);
+  });
 });
 
 http.listen(3000, function () {
   console.log("Server is running on port 3000");
 });
-
