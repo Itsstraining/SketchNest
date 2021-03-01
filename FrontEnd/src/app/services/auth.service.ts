@@ -34,9 +34,9 @@ export class AuthService {
       this.user = null;
     });
   }
-  async login(email: string, password: string) {
+  async SignUp(email: string, password: string) {
     var result = await this.afAuth.signInWithEmailAndPassword(email, password);
-    this.router.navigate(['/lobby']);
+    this.router.navigate(['lobby']);
   }
   async register(email: string, password: string) {
     var result = await this.afAuth.createUserWithEmailAndPassword(
@@ -48,4 +48,11 @@ export class AuthService {
     const user = JSON.parse(localStorage.getItem('user'));
     return user !== null;
   }
+
+  //   async SendVerificationMail() {
+  //   await this.afAuth.sendEmailVerification()
+  //   .then(() => {
+  //     this.router.navigate(['verify-email-address']);
+  //   })
+  // }
 }
