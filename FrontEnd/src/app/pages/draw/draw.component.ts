@@ -19,7 +19,6 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./draw.component.scss'],
 })
 export class DrawComponent implements OnInit, OnDestroy {
- 
   brush: any;
   canvas: any;
   circle: any;
@@ -33,7 +32,11 @@ export class DrawComponent implements OnInit, OnDestroy {
   url: any;
   shapeColor: any;
   shapeChosen: any;
-  constructor(public dialog: MatDialog,public socket:ConnectService,public auth:AuthService) {}
+  constructor(
+    public dialog: MatDialog,
+    public socket: ConnectService,
+    public auth: AuthService
+  ) {}
   openDialog() {
     this.dialog.open(DialogExampleComponent);
   }
@@ -43,28 +46,33 @@ export class DrawComponent implements OnInit, OnDestroy {
       height: 800,
     });
     this.socket.setupSocketConnection();
+    this.socket.socket.emit('a', this.auth.user.displayName);
 
+    this.socket.updateCanvas().subscribe((canvas) => {
+      this.canvas.loadFromJSON(canvas);
+      this.canvas.renderAll();
+    });
     // this.keyboardEvents();
     //load canvas:
-    this.canvas.clear();
-    
-    this.canvas.loadFromJSON(this.json, function () {
-      this.canvas.renderAll();
-      // });
-      //xac dinh vi tri con chuot trong canvas
-      // this.canvas.on('mouse:move', function (event) {
-      //   console.log(event.e.clientX, event.e.clientY);
-    });
-    this.canvas.on('mouse:move', function (e) {
-      switch (e.keyCode) {
-        case 46:
-          alert('deleted');
-      }
-    });
+    // this.canvas.clear();
+
+    ///load canvas
+    // this.canvas.loadFromJSON(this.json, function () {
+    //   this.canvas.renderAll();
+    // });
+    //xac dinh vi tri con chuot trong canvas
+    // this.canvas.on('mouse:move', function (event) {
+    //   console.log(event.e.clientX, event.e.clientY);
+    // });
+    // this.canvas.on('mouse:move', function (e) {
+    //   switch (e.keyCode) {
+    //     case 46:
+    //       alert('deleted');
+    //   }
+    // });
   }
-  ngOnDestroy() {
-    
-    this.json = JSON.stringify(this.canvas.toJSON());
+  ngOnDestroy(): void {
+    this.json = JSON.stringify(this.canvas.toJSON().objects);
   }
 
   @HostListener('document:keyup', ['$event'])
@@ -73,10 +81,12 @@ export class DrawComponent implements OnInit, OnDestroy {
       this.deleteShape();
     }
   }
+
   //default
   pointer() {
     this.canvas.isDrawingMode = false;
-    // console.log(this.json = JSON.stringify(this.canvas.toJSON()));
+    
+    // console.log(this.json = JSON.stringify(this.canvas.toJSON().objects));
   }
   chooseColor() {
     this.color = document.getElementById('color');
@@ -89,6 +99,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas.freeDrawingBrush.width = 14;
     fabric.Path.prototype.selectable = false;
     this.canvas.defaultCursor = 'create';
+    this.socket.sendCanvas(this.canvas.toJSON().objects);
   }
 
   eraser() {
@@ -97,6 +108,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas.freeDrawingBrush.width = 14;
     fabric.Path.prototype.selectable = false;
     console.log(this.json);
+    this.socket.sendCanvas(this.canvas.toJSON().objects);
   }
 
   picture(event) {
@@ -111,6 +123,7 @@ export class DrawComponent implements OnInit, OnDestroy {
         fabric.Image.fromURL(this.url, (test) => {
           this.canvas.add(test);
           this.canvas.renderAll();
+          this.socket.sendCanvas(this.canvas.toJSON().objects);
         });
       };
     }
@@ -133,7 +146,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     console.log(this.canvas.getActiveObject());
 
     this.canvas.remove(this.canvas.getActiveObject());
-
+    this.socket.sendCanvas(this.canvas.toJSON().objects);
     console.log(this.json);
   }
   drawCircle() {
@@ -144,9 +157,15 @@ export class DrawComponent implements OnInit, OnDestroy {
     });
     this.canvas.add(this.circle);
     this.canvas.renderAll();
-    this.socket.socket.emit("a", this.auth.user.displayName);
+    this.canvas.loadFromJSON(this.json, function () {
+      this.canvas.renderAll();
+      // });
+      //xac dinh vi tri con chuot trong canvas
+      // this.canvas.on('mouse:move', function (event) {
+      //   console.log(event.e.clientX, event.e.clientY);
+    });
 
-
+    this.socket.sendCanvas(this.canvas.toJSON().objects);
   }
   drawRectangle() {
     this.canvas.isDrawingMode = false;
@@ -157,6 +176,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     });
     this.canvas.add(this.rect);
     this.canvas.renderAll();
+    this.socket.sendCanvas(this.canvas.toJSON().objects);
   }
   drawTriangle() {
     this.canvas.isDrawingMode = false;
@@ -168,6 +188,8 @@ export class DrawComponent implements OnInit, OnDestroy {
       left: 10,
     });
     this.canvas.add(this.triangle);
+    this.canvas.renderAll();
+    this.socket.sendCanvas(this.canvas.toJSON().objects);
   }
   chooseShape() {
     // this.shapeChosen=document.getElementById('')
