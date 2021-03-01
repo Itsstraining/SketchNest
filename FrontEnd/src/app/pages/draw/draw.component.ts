@@ -90,27 +90,32 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
     fabric.Path.prototype.selectable = false;
     this.canvas.defaultCursor = 'create';
   }
-//bug
+  //bug
   highlightPen() {
 
-    this.canvas.isDrawingMode=true;
-    this.canvas.on('path:created',function(){
+    this.canvas.isDrawingMode = true;
+    this.canvas.on('path:created', function (opt) {
+      opt.path.globalCompositeOperation = 'source-over';
+      opt.path.stroke = 'red';
+      opt.path.animate('opacity', '0', {
+        duration: 5000,
+        // onChange: this.canvas.renderAll().bind(opt.path),
+      })
+
+      // fabric.Path.prototype.animate('opacity','0', {
+      //   duration: 4000,
+     
+      //   // onComplete:a.remove()
+      // })
+
+
+
+
+
     })
-
-    fabric.Path.prototype.animate('opacity','0', {
-      duration: 4000,
-      onChange: this.canvas.renderAll.bind(this.canvas),
-      // onComplete:a.remove()
-    })
-   
-    
-    
-
-
-  }
   // this.canvas.freeDrawingBrush.color = this.chooseColor();
 
-
+  }
 
   eraser() {
     this.canvas.isDrawingMode = true;
