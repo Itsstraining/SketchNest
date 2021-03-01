@@ -23,7 +23,16 @@
 const config = require("./config");
 const app = require("express")();
 const cors = require("cors")();
+const body = require("body-parser");
+app.use(body.json());
 app.use(cors);
+
+// const admin = require("firebase-admin");
+// const serviceAccount = require("");
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+// });
+// const db = admin.firestore();
 
 const http = require("http").createServer(app);
 const io = require("socket.io")(http, {
@@ -31,18 +40,29 @@ const io = require("socket.io")(http, {
     origins: ["http://localhost:4200"],
   },
 });
+
+// const document = db.collection("users").doc("user1");
+// document.set({
+//   uid: "1",
+//   name: "duy",
+// });
 app.get("/", (req, res) => {
-  res.send(__dirname + "index.html");
+  res.send("Cái con cặc hello world!!!");
+});
+app.get("/test", (req, res) => {
+  let { a, b } = req.query;
+  let c = parseInt(a) + parseInt(b);
+  console.log(c);
+  res.send(c.toString());
 });
 
 io.on("connection", (socket) => {
   console.log("A user connected");
-  socket.on('my message', (msg) => {
-    console.log('message: ' + msg);
-  }); 
+  socket.on("a", (msg) => {
+    console.log(`User: ${msg} is connected`);
+  });
 });
 
 http.listen(3000, function () {
   console.log("Server is running on port 3000");
 });
-

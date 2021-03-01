@@ -11,20 +11,15 @@ import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.co
 import { Color } from 'fabric/fabric-impl';
 import { bufferToggle } from 'rxjs/operators';
 import { WHITE_ON_BLACK_CSS_CLASS } from '@angular/cdk/a11y/high-contrast-mode/high-contrast-mode-detector';
+import { ConnectService } from 'src/app/services/connect.service';
+import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
   styleUrls: ['./draw.component.scss'],
 })
 export class DrawComponent implements OnInit, OnDestroy {
-  // @HostListener('keypress', ['$event.target'])
-  // handleKeyboardEvent(event: KeyboardEvent) {
-  //   console.log(event);
-  //   let x = event.keyCode;
-  //   if (x === 27) {
-  //       console.log('Escape!');
-  //   }
-  // }
+ 
   brush: any;
   canvas: any;
   circle: any;
@@ -38,7 +33,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   url: any;
   shapeColor: any;
   shapeChosen: any;
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog,public socket:ConnectService,public auth:AuthService) {}
   openDialog() {
     this.dialog.open(DialogExampleComponent);
   }
@@ -47,194 +42,12 @@ export class DrawComponent implements OnInit, OnDestroy {
       width: 1500,
       height: 800,
     });
+    this.socket.setupSocketConnection();
+
     // this.keyboardEvents();
     //load canvas:
     this.canvas.clear();
-    this.json = {
-      version: '4.3.1',
-      objects: [
-        {
-          type: 'circle',
-          version: '4.3.1',
-          originX: 'left',
-          originY: 'top',
-          left: 90,
-          top: 180,
-          width: 40,
-          height: 40,
-          fill: 'blue',
-          stroke: null,
-          strokeWidth: 1,
-          strokeDashArray: null,
-          strokeLineCap: 'butt',
-          strokeDashOffset: 0,
-          strokeLineJoin: 'miter',
-          strokeUniform: false,
-          strokeMiterLimit: 4,
-          scaleX: 1,
-          scaleY: 1,
-          angle: 0,
-          flipX: false,
-          flipY: false,
-          opacity: 1,
-          shadow: null,
-          visible: true,
-          backgroundColor: '',
-          fillRule: 'nonzero',
-          paintFirst: 'fill',
-          globalCompositeOperation: 'source-over',
-          skewX: 0,
-          skewY: 0,
-          radius: 20,
-          startAngle: 0,
-          endAngle: 6.283185307179586,
-        },
-        {
-          type: 'circle',
-          version: '4.3.1',
-          originX: 'left',
-          originY: 'top',
-          left: 392,
-          top: 145,
-          width: 40,
-          height: 40,
-          fill: 'blue',
-          stroke: null,
-          strokeWidth: 1,
-          strokeDashArray: null,
-          strokeLineCap: 'butt',
-          strokeDashOffset: 0,
-          strokeLineJoin: 'miter',
-          strokeUniform: false,
-          strokeMiterLimit: 4,
-          scaleX: 1,
-          scaleY: 1,
-          angle: 0,
-          flipX: false,
-          flipY: false,
-          opacity: 1,
-          shadow: null,
-          visible: true,
-          backgroundColor: '',
-          fillRule: 'nonzero',
-          paintFirst: 'fill',
-          globalCompositeOperation: 'source-over',
-          skewX: 0,
-          skewY: 0,
-          radius: 20,
-          startAngle: 0,
-          endAngle: 6.283185307179586,
-        },
-        {
-          type: 'circle',
-          version: '4.3.1',
-          originX: 'left',
-          originY: 'top',
-          left: 414,
-          top: 326,
-          width: 40,
-          height: 40,
-          fill: 'blue',
-          stroke: null,
-          strokeWidth: 1,
-          strokeDashArray: null,
-          strokeLineCap: 'butt',
-          strokeDashOffset: 0,
-          strokeLineJoin: 'miter',
-          strokeUniform: false,
-          strokeMiterLimit: 4,
-          scaleX: 1,
-          scaleY: 1,
-          angle: 0,
-          flipX: false,
-          flipY: false,
-          opacity: 1,
-          shadow: null,
-          visible: true,
-          backgroundColor: '',
-          fillRule: 'nonzero',
-          paintFirst: 'fill',
-          globalCompositeOperation: 'source-over',
-          skewX: 0,
-          skewY: 0,
-          radius: 20,
-          startAngle: 0,
-          endAngle: 6.283185307179586,
-        },
-        {
-          type: 'circle',
-          version: '4.3.1',
-          originX: 'left',
-          originY: 'top',
-          left: 249,
-          top: 355,
-          width: 40,
-          height: 40,
-          fill: 'blue',
-          stroke: null,
-          strokeWidth: 1,
-          strokeDashArray: null,
-          strokeLineCap: 'butt',
-          strokeDashOffset: 0,
-          strokeLineJoin: 'miter',
-          strokeUniform: false,
-          strokeMiterLimit: 4,
-          scaleX: 1,
-          scaleY: 1,
-          angle: 0,
-          flipX: false,
-          flipY: false,
-          opacity: 1,
-          shadow: null,
-          visible: true,
-          backgroundColor: '',
-          fillRule: 'nonzero',
-          paintFirst: 'fill',
-          globalCompositeOperation: 'source-over',
-          skewX: 0,
-          skewY: 0,
-          radius: 20,
-          startAngle: 0,
-          endAngle: 6.283185307179586,
-        },
-        {
-          type: 'circle',
-          version: '4.3.1',
-          originX: 'left',
-          originY: 'top',
-          left: 631,
-          top: 151,
-          width: 40,
-          height: 40,
-          fill: 'blue',
-          stroke: null,
-          strokeWidth: 1,
-          strokeDashArray: null,
-          strokeLineCap: 'butt',
-          strokeDashOffset: 0,
-          strokeLineJoin: 'miter',
-          strokeUniform: false,
-          strokeMiterLimit: 4,
-          scaleX: 1,
-          scaleY: 1,
-          angle: 0,
-          flipX: false,
-          flipY: false,
-          opacity: 1,
-          shadow: null,
-          visible: true,
-          backgroundColor: '',
-          fillRule: 'nonzero',
-          paintFirst: 'fill',
-          globalCompositeOperation: 'source-over',
-          skewX: 0,
-          skewY: 0,
-          radius: 20,
-          startAngle: 0,
-          endAngle: 6.283185307179586,
-        },
-      ],
-    };
+    
     this.canvas.loadFromJSON(this.json, function () {
       this.canvas.renderAll();
       // });
@@ -250,14 +63,10 @@ export class DrawComponent implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy() {
-    //xuat canva thanh JSON
+    
     this.json = JSON.stringify(this.canvas.toJSON());
   }
-  // this.canvas.on('keydown') = function(e) {
-  //   if (46 === e.keyCode) {
-  //   // 46 is Delete key
-  //   // do stuff to delete selected elem ents
-  // }
+
   @HostListener('document:keyup', ['$event'])
   handleDeleteKeyboardEvent(event: KeyboardEvent) {
     if (event.key === 'Delete') {
@@ -281,19 +90,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     fabric.Path.prototype.selectable = false;
     this.canvas.defaultCursor = 'create';
   }
-  // highlightPen() {
-  //   this.canvas.isDrawingMode = true;
-  //   this.canvas.setActiveObject(fabric.Path);
-  //   var activeObj = this.canvas.getActiveObject();
-  //   activeObj.setOpacity(1);
-  //   activeObj.animate('opacity', '0', {
-  //     duration: 1000,
-  //     onChange: this.canvas.renderAll.bind(this.canvas),
-  //     onComplete: function () {
-  //       this.canvas.remove(activeObj);
-  //     }
-  //   });
-  // }
+
   eraser() {
     this.canvas.isDrawingMode = true;
     this.canvas.freeDrawingBrush.color = 'white';
@@ -347,30 +144,9 @@ export class DrawComponent implements OnInit, OnDestroy {
     });
     this.canvas.add(this.circle);
     this.canvas.renderAll();
-    ///////////////////
-    // let x,y;
-    // this.canvas.isDrawingMode = false;
+    this.socket.socket.emit("a", this.auth.user.displayName);
 
-    // await this.canvas.on('mouse:down', function (event) {
 
-    // x=event.e.clientX
-    // y=event.e.clientY
-    // this.circle = new fabric.Circle({
-    //   radius: 50,
-    //   fill: '',
-    //   stroke: 'red',
-    //   strokeWidth: 3,
-    //   left: x,
-    //   top: y,
-    // });
-    // this.canvas.add(this.circle);
-
-    // this.canvas.renderAll();
-
-    //   })
-    // };
-
-    ///////////////////////
   }
   drawRectangle() {
     this.canvas.isDrawingMode = false;

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { RoomService } from 'src/app/services/room.service';
 import { Room } from '../room/models/room.model';
 
@@ -8,7 +9,7 @@ import { Room } from '../room/models/room.model';
   styleUrls: ['./room-list.component.scss'],
 })
 export class RoomListComponent implements OnInit {
-  constructor(public room: RoomService) {}
+  constructor(public room: RoomService,public router:Router) {}
 
   ngOnInit(): void {}
   @Input()
@@ -23,4 +24,8 @@ export class RoomListComponent implements OnInit {
     { id: 'sketch 8', picture: 'p8' },
     { id: 'sketch 9', picture: 'p9' },
   ];
+  mouseDown() {
+    
+    this.router.navigate(['draw']);
+  }
 }

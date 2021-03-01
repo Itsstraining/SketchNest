@@ -22,5 +22,10 @@
         >Sign Out</a
       >
     </li>
+    <li>
+      <div *ngIf="this.auth.user">
+        {{ this.auth.user.displayName }}
+      </div>
+    </li>
   </ul>
 </nav>
