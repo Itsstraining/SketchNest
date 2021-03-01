@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as io from 'socket.io-client/dist/socket.io';
+import { ConnectService } from './services/connect.service';
 const SOCKET_ENDPOINT = 'localhost:3000';
 
 
@@ -11,11 +12,7 @@ const SOCKET_ENDPOINT = 'localhost:3000';
 export class AppComponent implements OnInit {
   title = 'SketchNest';
   constructor() {}
-  socket;
   ngOnInit() {
-    // this.setupSocketConnection();
   }
-  setupSocketConnection() {
-    this.socket = io(SOCKET_ENDPOINT);
-  }
+ 
 }
