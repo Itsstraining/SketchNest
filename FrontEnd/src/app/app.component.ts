@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as io from 'socket.io-client/dist/socket.io';
+import { ConnectService } from './services/connect.service';
 const SOCKET_ENDPOINT = 'localhost:3000';
 @Component({
   selector: 'app-root',
@@ -8,12 +9,9 @@ const SOCKET_ENDPOINT = 'localhost:3000';
 })
 export class AppComponent implements OnInit {
   title = 'SketchNest';
-  constructor() {}
-  socket;
+  constructor(public socket:ConnectService) {}
   ngOnInit() {
-    // this.setupSocketConnection();
+    this.socket.setupSocketConnection();
   }
-  setupSocketConnection() {
-    this.socket = io(SOCKET_ENDPOINT);
-  }
+ 
 }

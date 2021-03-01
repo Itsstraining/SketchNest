@@ -13,11 +13,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ConnectService } from './services/connect.service';
+import { FormsModule } from '@angular/forms';
 
 import { DialogExampleComponent } from './dialog-example/dialog-example.component';
 import { DialogCreateRoomComponent } from './dialog-create-room/dialog-create-room.component';
 @NgModule({
-  declarations: [AppComponent, NavbarComponent, DialogExampleComponent, DialogCreateRoomComponent],
+  declarations: [
+    AppComponent,
+    NavbarComponent,
+    DialogExampleComponent,
+    DialogCreateRoomComponent,
+  ],
   entryComponents: [DialogExampleComponent],
   imports: [
     BrowserModule,
@@ -28,6 +34,7 @@ import { DialogCreateRoomComponent } from './dialog-create-room/dialog-create-ro
     AngularFireAuthModule,
     MatIconModule,
     MatDialogModule,
+    FormsModule,
   ],
   providers: [ConnectService],
   bootstrap: [AppComponent],
