@@ -1,39 +1,4 @@
 
-        .left{
-            height: 500px;
-            background: yellow;
-            width: 200px;
-            float: left;
-        }
-        .body{
-            height: 400px;
-            background: green;
-            margin-left:210px;
-            margin-right:210px;
-        }
-        .right{
-            background: pink;
-            width: 200px;           
-            float:right;
-            height: 500px;
-
-        }
-        .middle{
-            
-            margin-left: 5px;
-            margin-right:5px;
-        }
-        .middle::after{
-            content:"";
-            display:block;
-            clear:both;
-        }
-        .purple-square-container {
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
           
  button{
      width: 350px;
@@ -46,9 +11,7 @@
      background-color: white;
      color: black;
  }
- .btnLB{
-     height: 50px;
- }
+
 
 /* Please ❤ this if you like it! */
 
@@ -60,16 +23,16 @@
 }
 
 body {
-  height: ;
+  height: 73%;
+
   margin: 0px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
   padding: 2rem;
   font-family: "Luckiest Guy", cursive;
   color: #333333;
-  background-color: cadetblue;
+  // background-color: cadetblue;
   background-image: url("https://images.wallpaperscraft.com/image/paint_light_line_shape_83475_1920x1080.jpg"); /* Photo by Roberto Nickson from Pexels */
   background-blend-mode: multiply;
   background-size: cover;
