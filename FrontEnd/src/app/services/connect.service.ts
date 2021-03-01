@@ -11,7 +11,7 @@ export class ConnectService {
   socket;
   private url: 'http://localhost:3000';
   constructor(private http: HttpClient) {}
-  setupSocketConnection() {
-    this.socket = io(this.url);
-  }
+  // setupSocketConnection() {
+  //   this.socket = io(this.url);
+  // }
 }

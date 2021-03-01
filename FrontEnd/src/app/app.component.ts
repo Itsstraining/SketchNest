@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   constructor() {}
   socket;
   ngOnInit() {
-    this.setupSocketConnection();
+    // this.setupSocketConnection();
   }
   setupSocketConnection() {
     this.socket = io(SOCKET_ENDPOINT);
