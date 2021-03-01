@@ -11,7 +11,6 @@
   nav{
 	background:black;
 	height: 100px;
-	// width: 100%;
   }
   label.logo{
 	color: white;
@@ -52,7 +51,7 @@
   #check{
 	display: none;
   }
-  @media (max-width: 952px){
+  @media (max-width: 1920px){
 	label.logo{
 	  font-size: 30px;
 	  padding-left: 50px;
