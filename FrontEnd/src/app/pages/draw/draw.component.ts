@@ -8,18 +8,19 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { fabric } from 'fabric';
 import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.component';
-import { Color } from 'fabric/fabric-impl';
+import { Canvas, Color, Path } from 'fabric/fabric-impl';
 import { bufferToggle } from 'rxjs/operators';
 import { WHITE_ON_BLACK_CSS_CLASS } from '@angular/cdk/a11y/high-contrast-mode/high-contrast-mode-detector';
 import { ConnectService } from 'src/app/services/connect.service';
 import { AuthService } from 'src/app/services/auth.service';
+import 'fabric-history';
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
   styleUrls: ['./draw.component.scss'],
 })
-export class DrawComponent implements OnInit, OnDestroy {
- 
+export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
+
   brush: any;
   canvas: any;
   circle: any;
@@ -33,7 +34,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   url: any;
   shapeColor: any;
   shapeChosen: any;
-  constructor(public dialog: MatDialog,public socket:ConnectService,public auth:AuthService) {}
+  constructor(public dialog: MatDialog, public socket: ConnectService, public auth: AuthService) { }
   openDialog() {
     this.dialog.open(DialogExampleComponent);
   }
@@ -47,7 +48,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     // this.keyboardEvents();
     //load canvas:
     this.canvas.clear();
-    
+
     this.canvas.loadFromJSON(this.json, function () {
       this.canvas.renderAll();
       // });
@@ -55,15 +56,14 @@ export class DrawComponent implements OnInit, OnDestroy {
       // this.canvas.on('mouse:move', function (event) {
       //   console.log(event.e.clientX, event.e.clientY);
     });
-    this.canvas.on('mouse:move', function (e) {
-      switch (e.keyCode) {
-        case 46:
-          alert('deleted');
-      }
-    });
   }
+  ngAfterViewInit(): void {
+
+
+  }
+
   ngOnDestroy() {
-    
+
     this.json = JSON.stringify(this.canvas.toJSON());
   }
 
@@ -73,6 +73,7 @@ export class DrawComponent implements OnInit, OnDestroy {
       this.deleteShape();
     }
   }
+
   //default
   pointer() {
     this.canvas.isDrawingMode = false;
@@ -85,11 +86,31 @@ export class DrawComponent implements OnInit, OnDestroy {
 
   startDrawing() {
     this.canvas.isDrawingMode = true;
-    // this.canvas.freeDrawingBrush.color = this.chooseColor();
     this.canvas.freeDrawingBrush.width = 14;
     fabric.Path.prototype.selectable = false;
     this.canvas.defaultCursor = 'create';
   }
+//bug
+  highlightPen() {
+
+    this.canvas.isDrawingMode=true;
+    this.canvas.on('path:created',function(){
+    })
+
+    fabric.Path.prototype.animate('opacity','0', {
+      duration: 4000,
+      onChange: this.canvas.renderAll.bind(this.canvas),
+      // onComplete:a.remove()
+    })
+   
+    
+    
+
+
+  }
+  // this.canvas.freeDrawingBrush.color = this.chooseColor();
+
+
 
   eraser() {
     this.canvas.isDrawingMode = true;
@@ -110,7 +131,7 @@ export class DrawComponent implements OnInit, OnDestroy {
         // console.log(this.url)
         fabric.Image.fromURL(this.url, (test) => {
           this.canvas.add(test);
-          this.canvas.renderAll();
+
         });
       };
     }
