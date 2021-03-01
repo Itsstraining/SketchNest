@@ -16,6 +16,8 @@ import { ConnectService } from './services/connect.service';
 
 import { DialogExampleComponent } from './dialog-example/dialog-example.component';
 import { DialogCreateRoomComponent } from './dialog-create-room/dialog-create-room.component';
+import { CanActivate} from '@angular/router'
+import { AuthGuardService } from './services/auth-guard.service';
 @NgModule({
   declarations: [AppComponent, NavbarComponent, DialogExampleComponent, DialogCreateRoomComponent],
   entryComponents: [DialogExampleComponent],
@@ -28,8 +30,10 @@ import { DialogCreateRoomComponent } from './dialog-create-room/dialog-create-ro
     AngularFireAuthModule,
     MatIconModule,
     MatDialogModule,
+    
   ],
-  providers: [ConnectService],
+  providers: [ConnectService, AuthGuardService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

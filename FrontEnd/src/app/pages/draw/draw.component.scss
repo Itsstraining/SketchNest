@@ -164,7 +164,7 @@ canvas{
   margin-top: 10%;
 }
 #btnShare{
-  width: 150px;
+  width: 200px;
   height: 35px;
   float: right;
  background-color: rgb(97, 97, 255);
@@ -175,4 +175,10 @@ canvas{
 #btnShare:hover{
   color: rgb(255, 249, 249);
   background: rgb(0, 0, 255);
+
 }
+.userOnl{
+  width: 10vw;
+  border-radius: 50%;
+}
+

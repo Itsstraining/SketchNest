@@ -7,6 +7,7 @@ import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.co
 import { Color } from 'fabric/fabric-impl';
 import { bufferToggle } from 'rxjs/operators';
 import { WHITE_ON_BLACK_CSS_CLASS } from '@angular/cdk/a11y/high-contrast-mode/high-contrast-mode-detector';
+import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
@@ -22,6 +23,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   //       console.log('Escape!');
   //   }
   // }
+ 
   brush: any;
   canvas: any;
   circle: any;
@@ -35,7 +37,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   url: any;
   shapeColor: any;
   shapeChosen: any;
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog,public auth: AuthService) { }
   openDialog() {
     this.dialog.open(DialogExampleComponent);
   }

@@ -44,14 +44,38 @@
         </button>
         <br>
         <input title="Color" type="color" id="shapecolor" (blur)="shapeOption()" />
+        
         <br>
-        <button title="Rectangle" id="btnFunction" (click)="textField()">
-          <span class="material-icons">crop_din</span>
+        <button title="Text" id="btnFunction" (click)="textField()">
+          <span class="material-icons">text_format</span>
         </button>
   </div>
   <main > <canvas  id="canvas"></canvas></main>
   <div class="right-sidebar" >
     <button id="btnShare" mat-raised-button (click)="openDialog()">Share</button>
+    <br>
+    <br>
+    <div class="userOnl">
+      <img style="width: 40px; border-radius: 50px;" src="{{this.auth.user.photoURL}}" >
+      <label for="UserName">{{this.auth.user.displayName}}</label>
+
+    </div>
+    <div class="userOnl">
+      <img style="width: 40px; border-radius: 50px;" src="{{this.auth.user.photoURL}}" >
+      <label for="UserName">{{this.auth.user.displayName}}</label>
+
+    </div>
+    <div class="userOnl">
+      <img style="width: 40px; border-radius: 50px;" src="{{this.auth.user.photoURL}}" >
+      <label for="UserName">{{this.auth.user.displayName}}</label>
+
+    </div>
+    <div class="userOnl">
+      <img style="width: 40px; border-radius: 50px;" src="{{this.auth.user.photoURL}}" >
+      <label for="UserName">{{this.auth.user.displayName}}</label>
+
+    </div>
+    
   </div>
 
 </body>
