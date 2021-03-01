@@ -17,7 +17,6 @@ import { ConnectService } from './services/connect.service';
 import { FormsModule } from '@angular/forms';
 import { DialogExampleComponent } from './dialog-example/dialog-example.component';
 import { DialogCreateRoomComponent } from './dialog-create-room/dialog-create-room.component';
-
 @NgModule({
   declarations: [AppComponent, NavbarComponent, DialogExampleComponent, DialogCreateRoomComponent],
   entryComponents: [DialogExampleComponent],
