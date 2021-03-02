@@ -37,10 +37,9 @@ export class AuthService {
   async login(email: any, password: string) {
     var result = await this.afAuth.signInWithEmailAndPassword(email, password);
     console.log(result);
-    this.user=email
-    console.log(this.user)
+    this.user = email;
+    console.log(this.user);
     this.router.navigate(['/lobby']);
-    
   }
   async register(email: string, password: string) {
     var result = await this.afAuth.createUserWithEmailAndPassword(
@@ -53,7 +52,7 @@ export class AuthService {
     return user !== null;
   }
   public isAuthenticated(): boolean {
-    if(this.user){
+    if (this.user) {
       return true;
     }
     return false;

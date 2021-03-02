@@ -26,18 +26,26 @@
           <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="35px" height="35px" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41z" fill="black"/></svg>
         </button>
 <br>
-        <button title="Circle" id="btnFunction" (click)="drawCircle()">
+        <!-- shape menu -->
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" style="border: none;width: 55px;height: 55px;background-color: white;">
           <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="35px" height="35px" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none"><circle cx="12" cy="12" r="9" stroke="black" stroke-width="2"/></g></svg>
         </button>
-   <br>
-        <button title="Rectangle" id="btnFunction" (click)="drawRectangle()">
-          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="35px" height="35px" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 512 512"><path fill="black" d="M36 416h440a20.023 20.023 0 0 0 20-20V116a20.023 20.023 0 0 0-20-20H36a20.023 20.023 0 0 0-20 20v280a20.023 20.023 0 0 0 20 20zm12-288h416v256H48z"/></svg>
-        </button>
- <br>
-        <button title="Triangle" id="btnFunction" (click)="drawTriangle()">
+        <mat-menu #menu="matMenu" >
+          <button (click)="drawCircle()" mat-menu-item style="padding-left: 38px;" >
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="35px" height="35px" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none"><circle cx="12" cy="12" r="9" stroke="black" stroke-width="2"/></g></svg>
+          </button>
+          <button  mat-menu-item (click)="drawRectangle()" style="padding-left: 38px;" >
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="35px" height="35px" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 512 512"><path fill="black" d="M36 416h440a20.023 20.023 0 0 0 20-20V116a20.023 20.023 0 0 0-20-20H36a20.023 20.023 0 0 0-20 20v280a20.023 20.023 0 0 0 20 20zm12-288h416v256H48z"/></svg>
+          </button>
+          <button mat-menu-item (click)="drawTriangle()" style="padding-left: 38px;" >
           <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="35px" height="35px" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 512 512"><path fill="black" d="M273.342 66.038a20 20 0 0 0-34.684 0L29.569 430.007a20 20 0 0 0 17.342 29.963h418.178a20 20 0 0 0 17.342-29.962zM67.644 427.97L256 100.091L444.356 427.97z"/></svg>
-        </button>
+          </button>
+
+
+        </mat-menu>
+
 <br>
+
         <button title="Text" id="btnFunction" (click)="textField()">
           <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="35px" height="35px" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M21 7V3h-4v1H7V3H3v4h1v10H3v4h4v-1h10v1h4v-4h-1V7h1m-3-3h2v2h-2V4M4 4h2v2H4V4m2 16H4v-2h2v2m14 0h-2v-2h2v2m-2-3h-1v1H7v-1H6V7h1V6h10v1h1v10m-2-9v2h-3v6h-2v-6H8V8h8z" fill="black"/></svg>
         </button>
@@ -53,14 +61,14 @@
           <button id="btnFunction" style="border-radius: 0px 0px 20px 20px ;">
         <input style="width: 35px;height: 35px;" title="Shape Color" type="color" id="shapecolor" (blur)="shapeOption()" />
           </button>
-        
+
   </div>
   <main > <canvas  id="canvas"></canvas></main>
   <div class="right-sidebar" >
     <button id="btnShare" mat-raised-button (click)="openDialog()">Share</button>
     <br>
     <br>
-    <div class="userOnl">
+    <!-- <div class="userOnl">
       <img style="width: 40px; border-radius: 50px;" src="{{this.auth.user.photoURL}}" >
       <label for="UserName">{{this.auth.user.displayName}}</label>
 
@@ -79,7 +87,7 @@
       <img style="width: 40px; border-radius: 50px;" src="{{this.auth.user.photoURL}}" >
       <label for="UserName">{{this.auth.user.displayName}}</label>
 
-    </div>
+    </div> -->
     
   </div>
 

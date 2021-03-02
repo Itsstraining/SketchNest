@@ -17,7 +17,7 @@ import { ConnectService } from './services/connect.service';
 import { FormsModule } from '@angular/forms';
 import { DialogExampleComponent } from './dialog-example/dialog-example.component';
 import { DialogCreateRoomComponent } from './dialog-create-room/dialog-create-room.component';
-
+import {MatMenuModule} from '@angular/material/menu';
 @NgModule({
   declarations: [AppComponent, NavbarComponent, DialogExampleComponent, DialogCreateRoomComponent],
   entryComponents: [DialogExampleComponent],
@@ -31,6 +31,7 @@ import { DialogCreateRoomComponent } from './dialog-create-room/dialog-create-ro
     MatIconModule,
     MatDialogModule,
     FormsModule,
+    MatMenuModule,
   ],
   // schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [ConnectService],
