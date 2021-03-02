@@ -1,8 +1,7 @@
 const router = require("express").Router();
 const db = require("../database");
 const body = require("body-parser");
-const { doc } = require("../database");
-const { Socket } = require("socket.io");
+
 router.use(body.json());
 //create room
 router.post("/create", async (req, res) => {
@@ -56,8 +55,18 @@ router.put("/update", async (req, res) => {
   res.send(result);
 });
 //create user
-router.post("/create", (req, res) => {
+router.post("/create", async (req, res) => {
   let { uid, displayName, photoURL, email } = req.body;
+  let a = await db.collection("user").doc(uid).get();
+  if (!a.exists) {
+    await db.collection("user").doc(uid).create({
+      uid: uid,
+      displayName: displayName,
+      photoURL: photoURL,
+      email: email,
+    });
+    res.send({ message: `create user with id ${uid}` });
+  }
 });
 
 module.exports = router;

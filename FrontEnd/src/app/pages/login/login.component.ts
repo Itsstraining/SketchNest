@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   ) {}
   public email: string;
   public password: string;
-  public user:any = this.auth.user;
+  public user: any = this.auth.user;
 
   ngOnInit(): void {}
   async loginGG() {
@@ -40,8 +40,8 @@ export class LoginComponent implements OnInit {
     try {
       await this.auth.login(this.email, this.password);
       this.openDialogWithRef(this.firstDialog);
-      this.user=this.email;
-      console.log(this.user)
+      this.user = this.email;
+      console.log(this.user);
     } catch (err) {
       console.log(err);
     }
