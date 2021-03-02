@@ -8,9 +8,6 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { fabric } from 'fabric';
 import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.component';
-import { Canvas, Color, Path } from 'fabric/fabric-impl';
-import { bufferToggle } from 'rxjs/operators';
-import { WHITE_ON_BLACK_CSS_CLASS } from '@angular/cdk/a11y/high-contrast-mode/high-contrast-mode-detector';
 import { ConnectService } from 'src/app/services/connect.service';
 import { AuthService } from 'src/app/services/auth.service';
 import 'fabric-history';
@@ -32,6 +29,7 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
   json: any;
   triangle: any;
   url: any;
+  mode: any;
   shapeColor: any;
   shapeChosen: any;
   constructor(public dialog: MatDialog, public socket: ConnectService, public auth: AuthService) { }
@@ -62,6 +60,7 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
+
   ngOnDestroy() {
 
     this.json = JSON.stringify(this.canvas.toJSON());
@@ -75,6 +74,9 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   //default
+  clearCanvas() {
+    this.canvas.clear();
+  }
   pointer() {
     this.canvas.isDrawingMode = false;
     // console.log(this.json = JSON.stringify(this.canvas.toJSON()));
@@ -92,29 +94,24 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   //bug
   highlightPen() {
-
-    this.canvas.isDrawingMode = true;
+    let temp = [];
+    if (this.mode == "hightlightPen")
+      this.canvas.isDrawingMode = true;
+    this.canvas.freeDrawingBrush.color = 'red'
+    this.canvas.freeDrawingBrush.width = 14;
     this.canvas.on('path:created', function (opt) {
-      opt.path.globalCompositeOperation = 'source-over';
-      opt.path.stroke = 'red';
-      opt.path.animate('opacity', '0', {
-        duration: 5000,
-        // onChange: this.canvas.renderAll().bind(opt.path),
-      })
-
-      // fabric.Path.prototype.animate('opacity','0', {
-      //   duration: 4000,
-     
-      //   // onComplete:a.remove()
-      // })
-
-
-
+      temp.push(opt.path);
+      for (let i = 0; i < temp.length; i++) {
+        temp[i].globalCompositeOperation = 'source-over';
+        temp[i].stroke = 'red';
+        temp[i].animate('opacity', '0', {
+          duration: 5000,
+          // onComplete: this.canvas.remove(temp[i])
+        })
+      }
 
 
     })
-  // this.canvas.freeDrawingBrush.color = this.chooseColor();
-
   }
 
   eraser() {
@@ -122,7 +119,6 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
     this.canvas.freeDrawingBrush.color = 'white';
     this.canvas.freeDrawingBrush.width = 14;
     fabric.Path.prototype.selectable = false;
-    console.log(this.json);
   }
 
   picture(event) {
@@ -195,18 +191,6 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.canvas.add(this.triangle);
   }
-  chooseShape() {
-    // this.shapeChosen=document.getElementById('')
-    switch (this.shapeChosen) {
-      case 'Circle':
-        this.drawCircle();
-      case 'Rectangle':
-        this.drawRectangle();
-      case 'Triangle':
-        this.drawTriangle();
-    }
-  }
-
   //ShapeOption
   shapeOption() {
     this.shapeColor = document.getElementById('shapecolor');
