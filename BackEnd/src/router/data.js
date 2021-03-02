@@ -55,4 +55,9 @@ router.put("/update", async (req, res) => {
   }
   res.send(result);
 });
+//create user
+router.post("/create", (req, res) => {
+  let { uid, displayName, photoURL, email } = req.body;
+});
+
 module.exports = router;
