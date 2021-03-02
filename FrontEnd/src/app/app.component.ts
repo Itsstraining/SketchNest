@@ -9,9 +9,8 @@ const SOCKET_ENDPOINT = 'localhost:3000';
 })
 export class AppComponent implements OnInit {
   title = 'SketchNest';
-  constructor(public socket:ConnectService) {}
+  constructor() {}
   ngOnInit() {
-    this.socket.setupSocketConnection();
   }
  
 }
