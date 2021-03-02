@@ -31,6 +31,8 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
   mode: any;
   shapeColor: any;
   shapeChosen: any;
+  isRedoing: Boolean;
+  stack: [];
   constructor(public dialog: MatDialog, public socket: ConnectService, public auth: AuthService) { }
   openDialog() {
     this.dialog.open(DialogExampleComponent);
@@ -40,6 +42,7 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
       width: 1500,
       height: 800,
     });
+
     this.socket.setupSocketConnection();
 
     // this.keyboardEvents();
@@ -55,6 +58,13 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   ngAfterViewInit(): void {
+    this.canvas.isDrawingMode = true;
+    this.canvas.on('object:added', function () {
+      if (!this.isRedoing) {
+        this.stack = [];
+      }
+      this.isRedoing = false;
+    });
   }
   ngOnDestroy() {
     this.json = JSON.stringify(this.canvas.toJSON());
@@ -64,6 +74,10 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
   handleDeleteKeyboardEvent(event: KeyboardEvent) {
     if (event.key === 'Delete') {
       this.deleteShape();
+    }
+    if (event.ctrlKey && event.key == '90') {
+      console.log("redo đc bấm")
+      this.redo();
     }
   }
 
@@ -81,6 +95,7 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   startDrawing() {
+    this.mode = "drawing";
     this.canvas.isDrawingMode = true;
     this.canvas.freeDrawingBrush.width = 14;
     fabric.Path.prototype.selectable = false;
@@ -88,30 +103,31 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   //bug
   highlightPen() {
-    let temp = [];
-    if (this.mode == "hightlightPen")
-      this.canvas.isDrawingMode = true;
+    this.canvas.isDrawingMode = true;
+
     this.canvas.freeDrawingBrush.color = 'red'
     this.canvas.freeDrawingBrush.width = 14;
+
     this.canvas.on('path:created', function (opt) {
-      temp.push(opt.path);
-      for (let i = 0; i < temp.length; i++) {
-        temp[i].globalCompositeOperation = 'source-over';
-        temp[i].stroke = 'red';
-        temp[i].animate('opacity', '0', {
-          duration: 5000,
-          // onComplete: this.canvas.remove(temp[i])
-        })
-      }
-
-
+      opt.path.globalCompositeOperation = 'source-over';
+      opt.path.stroke = 'red';
+      opt.path.animate('opacity', '0', {
+        duration: 3000,
+        // onComplete: this.canvas.remove(temp[i])
+      })
     })
   }
+  
 
   eraser() {
     this.canvas.isDrawingMode = true;
-    this.canvas.freeDrawingBrush.color = 'white';
+    this.canvas.freeDrawingBrush.color = 'black';
     this.canvas.freeDrawingBrush.width = 14;
+    this.canvas.on("path:created", function (opt) {
+      opt.path.stroke='white';
+
+    })
+
     fabric.Path.prototype.selectable = false;
   }
 
@@ -193,8 +209,23 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
     //   this.canvas.fill(this.shapeColor.value);
     // })
   }
-  downloadCanvas(){
-    
+  downloadCanvas() {
+    this.canvas.toDataUrl();
+    console.log(this.canvas.toDataUrl());
   }
+  // undo(){
+  //   if(this.canvas._objects.length>0){
+  //     this.stack.push(this.canvas._objects.pop());
+  //     this.canvas.renderAll();
+  //    }
+  // }
+  redo() {
+    if (this.stack.length > 0) {
+      this.isRedoing = true;
+      this.canvas.add(this.stack.pop());
+    }
+  }
+
+
 
 }
