@@ -1,8 +1,11 @@
 <nav>
   <img
     src="https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.15752-9/155476306_372920370890744_2502763262767184981_n.png?_nc_cat=101&ccb=3&_nc_sid=ae9488&_nc_ohc=b4YOM808Z0UAX9-UHGd&_nc_ht=scontent.fsgn5-1.fna&oh=fd501930f8261a39185677d4d7066693&oe=606192E6"
-    style="width: 240px"
-  />
+    style="width: 240px" />
+    <!-- <img *ngIf="this.auth.user" style="float: right;border-radius: 50% ; width: 70px;" src="{{this.auth.user.photoURL}}"
+      alt=""> -->
+
+
   <ul>
     <li><a href="" class="#">Home</a></li>
     <li><a href="#" routerLink="about">About</a></li>
@@ -13,20 +16,36 @@
     <li>
       <a href="#" *ngIf="!this.auth.user" [routerLink]="'/login'">Sign In</a>
     </li>
-    <li>
-      <a
-        href="#"
-        [routerLink]="'home'"
-        *ngIf="this.auth.user"
-        (click)="logOut()"
-        >Sign Out</a
-      >
-    </li>
+    <!-- <li>
+      <a href="#"  *ngIf="this.auth.user" (click)="logOut()">Sign Out</a>
+    </li> -->
     <li
-      *ngIf="this.auth.user"
-      style="font-size: larger; color: rgb(77, 210, 255)"
-    >
-      {{ this.auth.user.displayName }}
+      *ngIf="this.auth.user" style="font-size: larger; color: rgb(77, 210, 255)">{{ this.auth.user.displayName }}
+    </li>
+    <li>
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" style="background-color: black;color:white; border: none ;">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>account_circle</mat-icon>
+          <span>Infomation</span>
+        </button>
+        <button mat-menu-item >
+          <mat-icon>help</mat-icon>
+          <span>Help</span>
+        </button>
+        <button mat-menu-item >
+          <mat-icon>settings</mat-icon>
+          <span>Settings</span>
+        </button>
+        <button *ngIf="this.auth.user" (click)="logOut()" mat-menu-item>
+        
+          <mat-icon>logout</mat-icon>
+          <span>Sign out</span>
+        </button>
+      </mat-menu>
     </li>
   </ul>
+
 </nav>
