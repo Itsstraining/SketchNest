@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
+import { UserService } from './user.service';
 // import { userInfo } from 'os';
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,11 @@ import * as firebase from 'firebase/app';
 export class AuthService {
   public user: firebase.default.User;
   public provider;
-  constructor(private afAuth: AngularFireAuth, private router: Router) {
+  constructor(
+    private afAuth: AngularFireAuth,
+    private router: Router,
+    private userService: UserService
+  ) {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.user = user;
@@ -26,6 +31,15 @@ export class AuthService {
     await this.afAuth.signInWithPopup(
       new firebase.default.auth.GoogleAuthProvider()
     );
+    if (this.user.uid != null) {
+      this.userService.createUser(
+        this.user.displayName,
+        this.user.email,
+        this.user.photoURL,
+        this.user.uid
+      );
+    }
+    this.userService.user = this.user;
   }
   async logout() {
     this.afAuth.signOut().then(async () => {
@@ -37,10 +51,9 @@ export class AuthService {
   async login(email: any, password: string) {
     var result = await this.afAuth.signInWithEmailAndPassword(email, password);
     console.log(result);
-    this.user=email
-    console.log(this.user)
+    this.user = email;
+    console.log(this.user);
     this.router.navigate(['/lobby']);
-    
   }
   async register(email: string, password: string) {
     var result = await this.afAuth.createUserWithEmailAndPassword(
@@ -53,7 +66,7 @@ export class AuthService {
     return user !== null;
   }
   public isAuthenticated(): boolean {
-    if(this.user){
+    if (this.user) {
       return true;
     }
     return false;

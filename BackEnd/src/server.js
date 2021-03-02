@@ -10,5 +10,5 @@ app.get("/test", (req, res) => {
   res.send(c.toString());
 });
 app.use("/get", require("./router/GetAll"));
-
+app.use("/room", require("./router/data"));
 module.exports = app;

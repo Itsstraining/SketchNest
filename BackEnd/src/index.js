@@ -1,5 +1,5 @@
 const config = require("./config");
-const app = require('./server')
+const app = require("./server");
 const cors = require("cors")();
 const body = require("body-parser");
 app.use(body.json());
@@ -11,7 +11,6 @@ const io = require("socket.io")(http, {
   },
 });
 
-
 io.on("connection", (socket) => {
   console.log("A user connected");
   socket.on("a", (msg) => {
@@ -19,7 +18,7 @@ io.on("connection", (socket) => {
   });
 });
 
-http.listen(config.PORT,config.HOST, function () {
+http.listen(config.PORT, config.HOST, function () {
   console.log(`Server is running on  http://${config.HOST}:${config.PORT}`);
 });
 module.exports = app;

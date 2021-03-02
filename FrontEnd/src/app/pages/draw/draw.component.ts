@@ -10,7 +10,6 @@ import { fabric } from 'fabric';
 import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.component';
 import { ConnectService } from 'src/app/services/connect.service';
 import { AuthService } from 'src/app/services/auth.service';
-import 'fabric-history';
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
@@ -56,13 +55,8 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   ngAfterViewInit(): void {
-
-
   }
-
-
   ngOnDestroy() {
-
     this.json = JSON.stringify(this.canvas.toJSON());
   }
 
@@ -199,4 +193,8 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
     //   this.canvas.fill(this.shapeColor.value);
     // })
   }
+  downloadCanvas(){
+    
+  }
+
 }
