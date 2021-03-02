@@ -13,7 +13,9 @@ import { bufferToggle } from 'rxjs/operators';
 import { WHITE_ON_BLACK_CSS_CLASS } from '@angular/cdk/a11y/high-contrast-mode/high-contrast-mode-detector';
 import { ConnectService } from 'src/app/services/connect.service';
 import { AuthService } from 'src/app/services/auth.service';
+
 import 'fabric-history';
+
 
 @Component({
   selector: 'app-draw',
@@ -21,7 +23,6 @@ import 'fabric-history';
   styleUrls: ['./draw.component.scss'],
 })
 export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
-
   brush: any;
   canvas: any;
   circle: any;
@@ -37,6 +38,12 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
   shapeChosen: any;
 
   constructor(public dialog: MatDialog, public socket: ConnectService, public auth: AuthService) { }
+
+  constructor(
+    public dialog: MatDialog,
+    public socket: ConnectService,
+    public auth: AuthService
+  ) {}
   openDialog() {
     this.dialog.open(DialogExampleComponent);
   }
@@ -59,13 +66,9 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
       //   console.log(event.e.clientX, event.e.clientY);
     });
   }
-  ngAfterViewInit(): void {
-
-
-  }
+  ngAfterViewInit(): void {}
 
   ngOnDestroy() {
-
     this.json = JSON.stringify(this.canvas.toJSON());
   }
 
@@ -92,27 +95,18 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
     fabric.Path.prototype.selectable = false;
     this.canvas.defaultCursor = 'create';
   }
-//bug
+  //bug
   highlightPen() {
+    this.canvas.isDrawingMode = true;
+    this.canvas.on('path:created', function () {});
 
-    this.canvas.isDrawingMode=true;
-    this.canvas.on('path:created',function(){
-    })
-
-    fabric.Path.prototype.animate('opacity','0', {
+    fabric.Path.prototype.animate('opacity', '0', {
       duration: 4000,
       onChange: this.canvas.renderAll.bind(this.canvas),
       // onComplete:a.remove()
-    })
-   
-    
-    
-
-
+    });
   }
   // this.canvas.freeDrawingBrush.color = this.chooseColor();
-
-
 
   eraser() {
 
@@ -134,7 +128,6 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
         // console.log(this.url)
         fabric.Image.fromURL(this.url, (test) => {
           this.canvas.add(test);
-
         });
       };
     }
@@ -168,9 +161,7 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.canvas.add(this.circle);
     this.canvas.renderAll();
-    this.socket.socket.emit("a", this.auth.user.displayName);
-
-
+    this.socket.socket.emit('a', this.auth.user.displayName);
   }
   drawRectangle() {
     this.canvas.isDrawingMode = false;
