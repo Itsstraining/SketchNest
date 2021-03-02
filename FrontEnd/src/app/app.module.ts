@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { BrowserModule } from '@angular/platform-browser';
@@ -14,6 +14,7 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ConnectService } from './services/connect.service';
 
+import { FormsModule } from '@angular/forms';
 import { DialogExampleComponent } from './dialog-example/dialog-example.component';
 import { DialogCreateRoomComponent } from './dialog-create-room/dialog-create-room.component';
 
@@ -29,7 +30,9 @@ import { DialogCreateRoomComponent } from './dialog-create-room/dialog-create-ro
     AngularFireAuthModule,
     MatIconModule,
     MatDialogModule,
+    FormsModule,
   ],
+  // schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [ConnectService],
   bootstrap: [AppComponent],
 })
