@@ -1,12 +1,19 @@
 <body>
   <p mat-dialog-title>CREATE NEW ROOM</p>
   <div>
-    <input type="text" placeholder="Enter room ID..." />
+    <input type="text" #name placeholder="Enter room name..." />
   </div>
   <br />
   <div>
-    <input type="text" placeholder="Enter password..." />
+    <input type="password" #password placeholder="Enter password..." />
   </div>
   <br />
-  <button >Create</button>
+  <button
+    (click)="createRoom(name.value, password.value)"
+    [routerLink]="['/draw']"
+    routerLinkActive="router-link-active"
+    [mat-dialog-close]
+  >
+    Create
+  </button>
 </body>

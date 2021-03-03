@@ -14,9 +14,6 @@ import { WHITE_ON_BLACK_CSS_CLASS } from '@angular/cdk/a11y/high-contrast-mode/h
 import { ConnectService } from 'src/app/services/connect.service';
 import { AuthService } from 'src/app/services/auth.service';
 
-import 'fabric-history';
-
-
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
@@ -37,13 +34,12 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
   shapeColor: any;
   shapeChosen: any;
 
-  constructor(public dialog: MatDialog, public socket: ConnectService, public auth: AuthService) { }
-
   constructor(
     public dialog: MatDialog,
     public socket: ConnectService,
     public auth: AuthService
   ) {}
+
   openDialog() {
     this.dialog.open(DialogExampleComponent);
   }
@@ -109,7 +105,6 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
   // this.canvas.freeDrawingBrush.color = this.chooseColor();
 
   eraser() {
-
     this.canvas.isDrawingMode = true;
     this.canvas.freeDrawingBrush.color = 'white';
     this.canvas.freeDrawingBrush.width = 14;
