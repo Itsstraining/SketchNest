@@ -30,12 +30,16 @@ export class DrawComponent implements OnInit, OnDestroy {
   mode: any;
   shapeColor: any;
   shapeChosen: any;
+  download = document.getElementById('download');
+  link = document.createElement('a');
+
   isRedoing: Boolean;
   stack: [];
   constructor(public dialog: MatDialog, public socket: ConnectService, public auth: AuthService) { }
   openDialog() {
     this.dialog.open(DialogExampleComponent);
   }
+
   ngOnInit(): void {
     this.canvas = new fabric.Canvas('canvas', {
       width: 1500,
@@ -74,6 +78,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
   }
 
+
   //default
   clearCanvas() {
     this.canvas.clear();
@@ -86,6 +91,11 @@ export class DrawComponent implements OnInit, OnDestroy {
   public chooseColor() {
     this.color = document.getElementById('color');
     this.canvas.freeDrawingBrush.color = this.color.value;
+  }
+  convertImg(){
+ this.link.download = 'download.png';
+ this.link.href = this.canvas.toDataURL()
+ this.link.click();
   }
 
   startDrawing() {
