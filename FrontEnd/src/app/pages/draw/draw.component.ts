@@ -16,24 +16,31 @@ import { HttpEventType } from '@angular/common/http';
   templateUrl: './draw.component.html',
   styleUrls: ['./draw.component.scss'],
 })
-export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
-
+export class DrawComponent implements OnInit, OnDestroy {
   brush: any;
-  canvas: any;
+  canvas;
   circle: any;
   image: any;
   color: any;
   normal: any;
   rect: any;
   currentMode: any;
-  json: any;
+  json;
   triangle: any;
   url: any;
   mode: any;
   shapeColor: any;
   shapeChosen: any;
   isRedoing: Boolean;
-  stack: [];
+  stack:Array<[]>;
+  private keyCodes = {
+    'C': 67,
+    'S': 83, //New key code
+    'V': 86,
+    'X': 88,
+    'Y': 89,
+    'Z': 90
+}
   constructor(public dialog: MatDialog, public socket: ConnectService, public auth: AuthService) { }
   openDialog() {
     this.dialog.open(DialogExampleComponent);
@@ -44,24 +51,19 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
       width: 1500,
       height: 800,
     });
-
     this.socket.setupSocketConnection();
-
-    // this.keyboardEvents();
-    //load canvas:
-    this.canvas.clear();
-
-    this.canvas.loadFromJSON(this.json, function () {
+    console.log(this.socket.socket.emit('a', 'hello a'));
+    this.json = this.socket.updateCanvas();
+    this.json.subscribe((data) => {
+      console.log(data);
+      console.log(this.json);
+      this.canvas.loadFromJSON(this.socket.canvas);
       this.canvas.renderAll();
-      // });
-      //xac dinh vi tri con chuot trong canvas
-      // this.canvas.on('mouse:move', function (event) {
-      //   console.log(event.e.clientX, event.e.clientY);
     });
   }
   ngAfterViewInit(): void {
     this.canvas.isDrawingMode = true;
-    this.canvas.on('object:added', function () {
+    this.canvas.on('object:created', function () {
       if (!this.isRedoing) {
         this.stack = [];
       }
@@ -73,24 +75,35 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   @HostListener('document:keyup', ['$event'])
-  handleDeleteKeyboardEvent(event: KeyboardEvent) {
+  handleKeyboardEvent(event: KeyboardEvent) {
     if (event.key === 'Delete') {
       this.deleteShape();
     }
+    if(event.ctrlKey){
+      switch(event.keyCode){
+        case   this.keyCodes['Z']:
+          this.undo();
+          console.log("done undo");
+          break;
+        case this.keyCodes['Y']:
+          this.redo();
+          console.log("done redo");
+          break;
+      }
 
+    }
   }
-  undoKeyboardEvent(event: KeyboardEvent) {
-  }
-
+ 
   //default
   clearCanvas() {
     this.canvas.clear();
   }
   pointer() {
     this.canvas.isDrawingMode = false;
-    // console.log(this.json = JSON.stringify(this.canvas.toJSON()));
+    this.socket.canvas = this.canvas.toJSON().objects;
+    console.log(this.socket.canvas);
   }
-  chooseColor() {
+  public chooseColor() {
     this.color = document.getElementById('color');
     this.canvas.freeDrawingBrush.color = this.color.value;
   }
@@ -98,10 +111,12 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
   startDrawing() {
 
     this.canvas.isDrawingMode = true;
+    // this.canvas.freeDrawingBrush.color = this.chooseColor();
     this.canvas.freeDrawingBrush.width = 14;
     this.canvas.freeDrawingBrush.color = 'black';
     fabric.Path.prototype.selectable = false;
     this.canvas.defaultCursor = 'create';
+    this.socket.sendCanvas(this.canvas.toJSON().objects);
   }
   //bug
   highlightPen() {
@@ -109,7 +124,6 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
     this.canvas.freeDrawingBrush.color = 'red'
     this.canvas.freeDrawingBrush.width = 14;
     this.canvas.on('path:created', function (opt) {
-
       opt.path.globalCompositeOperation = 'source-over';
       opt.path.stroke = 'red';
       opt.path.animate('opacity', '0', {
@@ -119,14 +133,14 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-  eraser() {
+  public eraser() {
     this.canvas.isDrawingMode = true;
     this.canvas.freeDrawingBrush.color = 'white';
     this.canvas.freeDrawingBrush.width = 14;
     fabric.Path.prototype.selectable = false;
   }
 
-  picture(event) {
+  public picture(event) {
     this.canvas.isDrawingMode = false;
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
@@ -137,12 +151,13 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
         // console.log(this.url)
         fabric.Image.fromURL(this.url, (test) => {
           this.canvas.add(test);
-
+          this.canvas.renderAll();
+          this.socket.sendCanvas(this.canvas.toJSON().objects);
         });
       };
     }
   }
-  textField() {
+  public textField() {
     this.canvas.add(
       new fabric.IText('lorem ipsum', {
         fontFamily: 'arial black',
@@ -154,28 +169,28 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
   ///Keyboard events
 
   // /Shape
-  deleteShape() {
+  public deleteShape() {
     this.canvas.isDrawingMode = false;
     // console.log(this.canvas.getActiveObject().objects)
     console.log(this.canvas.getActiveObject());
 
     this.canvas.remove(this.canvas.getActiveObject());
-
+    this.socket.sendCanvas(this.canvas.toJSON().objects);
     console.log(this.json);
   }
-  drawCircle() {
+  public drawCircle() {
     this.canvas.isDrawingMode = false;
     this.circle = new fabric.Circle({
       radius: 20,
       fill: 'blue',
     });
     this.canvas.add(this.circle);
-    this.canvas.renderAll();
-    this.socket.socket.emit("a", this.auth.user.displayName);
+    this.socket.sendCanvas(this.canvas.toJSON().objects);
 
-
+    // this.canvas.renderAll();
+    // this.json = this.socket.canvas;
   }
-  drawRectangle() {
+  public drawRectangle() {
     this.canvas.isDrawingMode = false;
     this.rect = new fabric.Rect({
       width: 100,
@@ -184,8 +199,9 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.canvas.add(this.rect);
     this.canvas.renderAll();
+    this.socket.sendCanvas(this.canvas.toJSON().objects);
   }
-  drawTriangle() {
+  public drawTriangle() {
     this.canvas.isDrawingMode = false;
     this.triangle = new fabric.Triangle({
       width: 100,
@@ -195,9 +211,11 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
       left: 10,
     });
     this.canvas.add(this.triangle);
+    this.canvas.renderAll();
+    this.socket.sendCanvas(this.canvas.toJSON().objects);
   }
   //ShapeOption
-  shapeOption() {
+  public shapeOption() {
     this.shapeColor = document.getElementById('shapecolor');
     return this.canvas.getActiveObject().set('fill', this.shapeColor.value);
     //     this.canvas.on('selected',function(){
@@ -208,14 +226,18 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
     this.canvas.toDataUrl();
     console.log(this.canvas.toDataUrl());
   }
-  // undo(){
-  //   if(this.canvas._objects.length>0){
-  //     this.stack.push(this.canvas._objects.pop());
-  //     this.canvas.renderAll();
-  //    }
-  // }
+  undo(){
+    if(this.canvas._objects.length>0){
+      console.log(this.canvas._objects.pop())
+      this.stack.push(this.canvas._objects.pop());
+      this.canvas.renderAll();
+     }
+     return this.stack;
+  }
   redo() {
+    console.log(this.stack);
     if (this.stack.length > 0) {
+      
       this.isRedoing = true;
       this.canvas.add(this.stack.pop());
     }
