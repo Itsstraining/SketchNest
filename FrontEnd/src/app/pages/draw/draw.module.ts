@@ -6,7 +6,6 @@ import { DrawComponent } from './draw.component';
 import {MatMenuModule} from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 
-
 @NgModule({
   declarations: [DrawComponent],
   imports: [

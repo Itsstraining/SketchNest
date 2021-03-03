@@ -8,7 +8,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { fabric } from 'fabric';
 import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.component';
-import { Canvas, Color, Path } from 'fabric/fabric-impl';
+import { Canvas, Color, Image, Path } from 'fabric/fabric-impl';
 import { bufferToggle } from 'rxjs/operators';
 import { WHITE_ON_BLACK_CSS_CLASS } from '@angular/cdk/a11y/high-contrast-mode/high-contrast-mode-detector';
 import { ConnectService } from 'src/app/services/connect.service';
@@ -21,7 +21,7 @@ import 'fabric-history';
   styleUrls: ['./draw.component.scss'],
 })
 export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
-
+  e: Event;
   brush: any;
   canvas: any;
   circle: any;
@@ -35,11 +35,14 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
   url: any;
   shapeColor: any;
   shapeChosen: any;
+  download = document.getElementById('download');
+  link = document.createElement('a');
 
   constructor(public dialog: MatDialog, public socket: ConnectService, public auth: AuthService) { }
   openDialog() {
     this.dialog.open(DialogExampleComponent);
   }
+
   ngOnInit(): void {
     this.canvas = new fabric.Canvas('canvas', {
       width: 1500,
@@ -50,6 +53,8 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.keyboardEvents();
     //load canvas:
     this.canvas.clear();
+
+   
 
     this.canvas.loadFromJSON(this.json, function () {
       this.canvas.renderAll();
@@ -76,6 +81,7 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+
   //default
   pointer() {
     this.canvas.isDrawingMode = false;
@@ -84,6 +90,11 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
   chooseColor() {
     this.color = document.getElementById('color');
     this.canvas.freeDrawingBrush.color = this.color.value;
+  }
+  convertImg(){
+ this.link.download = 'download.png';
+ this.link.href = this.canvas.toDataURL()
+ this.link.click();
   }
 
   startDrawing() {
@@ -111,7 +122,6 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
   // this.canvas.freeDrawingBrush.color = this.chooseColor();
-
 
 
   eraser() {
