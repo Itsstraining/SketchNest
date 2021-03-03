@@ -13,4 +13,5 @@ router.get("/db", async (req, res) => {
   console.log(result);
   res.send(result);
 });
+
 module.exports = router;
