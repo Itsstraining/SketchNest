@@ -32,7 +32,6 @@ export class DrawComponent implements OnInit, OnDestroy {
   shapeChosen: any;
   download = document.getElementById('download');
   link = document.createElement('a');
-
   isRedoing: Boolean;
   stack: [];
   constructor(public dialog: MatDialog, public socket: ConnectService, public auth: AuthService) { }
