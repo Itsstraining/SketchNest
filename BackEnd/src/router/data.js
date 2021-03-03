@@ -54,19 +54,5 @@ router.put("/update", async (req, res) => {
   }
   res.send(result);
 });
-//create user
-router.post("/create", async (req, res) => {
-  let { uid, displayName, photoURL, email } = req.body;
-  let a = await db.collection("user").doc(uid).get();
-  if (!a.exists) {
-    await db.collection("user").doc(uid).create({
-      uid: uid,
-      displayName: displayName,
-      photoURL: photoURL,
-      email: email,
-    });
-    res.send({ message: `create user with id ${uid}` });
-  }
-});
 
 module.exports = router;

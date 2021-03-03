@@ -31,6 +31,9 @@ export class DrawComponent implements OnInit, OnDestroy {
   mode: any;
   shapeColor: any;
   shapeChosen: any;
+  download = document.getElementById('download');
+  link = document.createElement('a');
+
   isRedoing: Boolean;
   stack:Array<[]>;
   private keyCodes = {
@@ -107,9 +110,13 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.color = document.getElementById('color');
     this.canvas.freeDrawingBrush.color = this.color.value;
   }
+  convertImg() {
+    this.link.download = 'download.png';
+    this.link.href = this.canvas.toDataURL();
+    this.link.click();
+  }
 
   startDrawing() {
-
     this.canvas.isDrawingMode = true;
     // this.canvas.freeDrawingBrush.color = this.chooseColor();
     this.canvas.freeDrawingBrush.width = 14;
@@ -242,7 +249,4 @@ export class DrawComponent implements OnInit, OnDestroy {
       this.canvas.add(this.stack.pop());
     }
   }
-
-
-
 }
