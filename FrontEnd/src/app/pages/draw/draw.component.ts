@@ -10,6 +10,7 @@ import { fabric } from 'fabric';
 import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.component';
 import { ConnectService } from 'src/app/services/connect.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { HttpEventType } from '@angular/common/http';
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
@@ -21,10 +22,10 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
   canvas: any;
   circle: any;
   image: any;
+  color: any;
   normal: any;
   rect: any;
   currentMode: any;
-  color: any;
   json: any;
   triangle: any;
   url: any;
@@ -37,6 +38,7 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
   openDialog() {
     this.dialog.open(DialogExampleComponent);
   }
+
   ngOnInit(): void {
     this.canvas = new fabric.Canvas('canvas', {
       width: 1500,
@@ -75,10 +77,9 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
     if (event.key === 'Delete') {
       this.deleteShape();
     }
-    if (event.ctrlKey && event.key == '90') {
-      console.log("redo đc bấm")
-      this.redo();
-    }
+
+  }
+  undoKeyboardEvent(event: KeyboardEvent) {
   }
 
   //default
@@ -95,39 +96,33 @@ export class DrawComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   startDrawing() {
-    this.mode = "drawing";
+
     this.canvas.isDrawingMode = true;
     this.canvas.freeDrawingBrush.width = 14;
+    this.canvas.freeDrawingBrush.color = 'black';
     fabric.Path.prototype.selectable = false;
     this.canvas.defaultCursor = 'create';
   }
   //bug
   highlightPen() {
     this.canvas.isDrawingMode = true;
-
     this.canvas.freeDrawingBrush.color = 'red'
     this.canvas.freeDrawingBrush.width = 14;
-
     this.canvas.on('path:created', function (opt) {
+
       opt.path.globalCompositeOperation = 'source-over';
       opt.path.stroke = 'red';
       opt.path.animate('opacity', '0', {
         duration: 3000,
-        // onComplete: this.canvas.remove(temp[i])
       })
     })
   }
-  
+
 
   eraser() {
     this.canvas.isDrawingMode = true;
-    this.canvas.freeDrawingBrush.color = 'black';
+    this.canvas.freeDrawingBrush.color = 'white';
     this.canvas.freeDrawingBrush.width = 14;
-    this.canvas.on("path:created", function (opt) {
-      opt.path.stroke='white';
-
-    })
-
     fabric.Path.prototype.selectable = false;
   }
 
