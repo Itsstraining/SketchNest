@@ -32,6 +32,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   shapeChosen: any;
   download = document.getElementById('download');
   link = document.createElement('a');
+  
 
   isRedoing: Boolean;
   stack: [];
@@ -235,7 +236,9 @@ export class DrawComponent implements OnInit, OnDestroy {
       this.canvas.add(this.stack.pop());
     }
   }
+  
+  hinhtron(){
 
-
-
+  }
+  
 }
