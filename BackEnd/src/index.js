@@ -19,13 +19,14 @@ io.on("connection", (socket) => {
     console.log(`User: ${msg} is connected`);
     console.log(socket.rooms);
   });
+
   socket.on("update-canvas", (canvas) => {
     io.emit("canvas", canvas);
-    console.log("senddata: "+canvas, socket.rooms);
+    console.log("senddata: " + canvas, socket.rooms);
   });
   socket.on('disconnect', function () {
-    console.log('A user disconnected');
- });
+    console.log('A user disconnected'); 
+  });
 });
 
 http.listen(config.PORT, config.HOST, function () {
