@@ -105,9 +105,12 @@
 	  border-radius: 50%;
     border: solid 1px;
 }
+header{
+  background-color: rgb(204, 204, 204);
+}
 //fix layout here
 body {
-  // background-image: url("https://images.wallpaperscraft.com/image/universe_galaxy_multicolored_125246_1920x1080.jpg");
+  // background-image: url("https://images.unsplash.com/photo-1536599018102-9f803c140fc1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80");
   display: grid;
   height: 100%;
   grid-template: auto 1fr auto / auto 1fr auto;
@@ -115,7 +118,7 @@ body {
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  background-color: rgba(192, 192, 192, 0.466);
+  background-color: rgb(204, 204, 204);
   
 }
 
@@ -148,13 +151,23 @@ body {
 
 .left-sidebar,
 .right-sidebar {
-  padding: 1rem;
+  padding: 10px;
   
 
 }
-
+#clearTb{
+  width: 120px;
+  height: 35px;
+  background-color: rgb(235, 54, 54);
+  color: white;
+  font-size: 15px ;
+  border-radius: 10px;
+}
 //canvas
 canvas{
+  width: 100%;
+  height: 100%;
+  position: relative;
   background-color: white;
 }
 #btnFunction{
@@ -166,15 +179,64 @@ canvas{
 
 }
 #btnShare{
-  width: 180px;
-  height: 35px;
-  float: right;
+  width: 100%;
+  height: 30px;
+
  background-color: rgb(97, 97, 255);
   color: white;
-  font-size: x-large  ;
-  border-radius: 10px;
+  font-size: x-large ;
+
 }
 #btnShare:hover{
   color: rgb(255, 249, 249);
   background: rgb(0, 0, 255);
+}
+
+
+.list-wrapper {
+  max-width: auto;
+  margin: 0px auto;
+  border: solid rgb(0, 0, 0) 1px;
+}
+
+.list {
+  background: rgba(255, 255, 255, 0);
+  border-radius: 2px;
+  list-style: none;
+  padding: 0px;
+
+}
+
+.list-item {
+ background: rgba(0, 0, 0, 0);
+  width: 350px;
+  display: flex;
+  margin: 15px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  &:last-child{
+    border-bottom: none;
+  
+  }
+  &-image {
+    border-radius: 50%;
+    width: 60px;
+  }
+  &-content{
+    margin-left: 15px;
+    color: #000000;
+    h4, p{
+      margin: 0;
+    }
+    h4{
+      margin-top: 10px;
+      font-size: 18px;
+    }
+    p{
+      margin-top: 5px;
+      color: #000000;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+  }
 }
