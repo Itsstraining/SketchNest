@@ -1,7 +1,7 @@
 import { Image } from 'fabric/fabric-impl';
 
 export interface Room {
-  id: String;
+  name: String;
 
-  picture: String;
+  password: String;
 }

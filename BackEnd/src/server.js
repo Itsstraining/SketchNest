@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 app.get("/", (req, res) => {
-  res.send("Cái con cặc hello world!!!");
+  res.send(" hello world!!!");
 });
 app.get("/test", (req, res) => {
   let { a, b } = req.query;
@@ -11,4 +11,5 @@ app.get("/test", (req, res) => {
 });
 app.use("/get", require("./router/GetAll"));
 app.use("/room", require("./router/data"));
+app.use("/user", require("./router/user"));
 module.exports = app;

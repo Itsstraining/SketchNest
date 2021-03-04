@@ -10,6 +10,7 @@ import { fabric } from 'fabric';
 import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.component';
 import { ConnectService } from 'src/app/services/connect.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { HttpEventType } from '@angular/common/http';
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
@@ -20,10 +21,10 @@ export class DrawComponent implements OnInit, OnDestroy {
   canvas;
   circle: any;
   image: any;
+  color: any;
   normal: any;
   rect: any;
   currentMode: any;
-  color: any;
   json;
   triangle: any;
   url: any;
@@ -35,7 +36,15 @@ export class DrawComponent implements OnInit, OnDestroy {
   
 
   isRedoing: Boolean;
-  stack: [];
+  stack:Array<[]>;
+  private keyCodes = {
+    'C': 67,
+    'S': 83, //New key code
+    'V': 86,
+    'X': 88,
+    'Y': 89,
+    'Z': 90
+}
   constructor(public dialog: MatDialog, public socket: ConnectService, public auth: AuthService) { }
   openDialog() {
     this.dialog.open(DialogExampleComponent);
@@ -51,13 +60,14 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.json = this.socket.updateCanvas();
     this.json.subscribe((data) => {
       console.log(data);
+      console.log(this.json);
       this.canvas.loadFromJSON(this.socket.canvas);
       this.canvas.renderAll();
     });
   }
   ngAfterViewInit(): void {
     this.canvas.isDrawingMode = true;
-    this.canvas.on('object:added', function () {
+    this.canvas.on('object:created', function () {
       if (!this.isRedoing) {
         this.stack = [];
       }
@@ -69,17 +79,25 @@ export class DrawComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('document:keyup', ['$event'])
-  handleDeleteKeyboardEvent(event: KeyboardEvent) {
+  handleKeyboardEvent(event: KeyboardEvent) {
     if (event.key === 'Delete') {
       this.deleteShape();
     }
-    if (event.ctrlKey && event.key == '90') {
-      console.log("redo đc bấm")
-      this.redo();
+    if(event.ctrlKey){
+      switch(event.keyCode){
+        case   this.keyCodes['Z']:
+          this.undo();
+          console.log("done undo");
+          break;
+        case this.keyCodes['Y']:
+          this.redo();
+          console.log("done redo");
+          break;
+      }
+
     }
   }
-
-
+ 
   //default
   clearCanvas() {
     this.canvas.clear();
@@ -93,17 +111,17 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.color = document.getElementById('color');
     this.canvas.freeDrawingBrush.color = this.color.value;
   }
-  convertImg(){
- this.link.download = 'download.png';
- this.link.href = this.canvas.toDataURL()
- this.link.click();
+  convertImg() {
+    this.link.download = 'download.png';
+    this.link.href = this.canvas.toDataURL();
+    this.link.click();
   }
 
   startDrawing() {
-    this.mode = "drawing";
     this.canvas.isDrawingMode = true;
     // this.canvas.freeDrawingBrush.color = this.chooseColor();
     this.canvas.freeDrawingBrush.width = 14;
+    this.canvas.freeDrawingBrush.color = 'black';
     fabric.Path.prototype.selectable = false;
     this.canvas.defaultCursor = 'create';
     this.socket.sendCanvas(this.canvas.toJSON().objects);
@@ -111,30 +129,22 @@ export class DrawComponent implements OnInit, OnDestroy {
   //bug
   highlightPen() {
     this.canvas.isDrawingMode = true;
-
     this.canvas.freeDrawingBrush.color = 'red'
     this.canvas.freeDrawingBrush.width = 14;
-
     this.canvas.on('path:created', function (opt) {
       opt.path.globalCompositeOperation = 'source-over';
       opt.path.stroke = 'red';
       opt.path.animate('opacity', '0', {
         duration: 3000,
-        // onComplete: this.canvas.remove(temp[i])
       })
     })
   }
-  
+
 
   public eraser() {
     this.canvas.isDrawingMode = true;
-    this.canvas.freeDrawingBrush.color = 'black';
+    this.canvas.freeDrawingBrush.color = 'white';
     this.canvas.freeDrawingBrush.width = 14;
-    this.canvas.on("path:created", function (opt) {
-      opt.path.stroke='white';
-
-    })
-
     fabric.Path.prototype.selectable = false;
   }
 
@@ -224,21 +234,20 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas.toDataUrl();
     console.log(this.canvas.toDataUrl());
   }
-  // undo(){
-  //   if(this.canvas._objects.length>0){
-  //     this.stack.push(this.canvas._objects.pop());
-  //     this.canvas.renderAll();
-  //    }
-  // }
+  undo(){
+    if(this.canvas._objects.length>0){
+      console.log(this.canvas._objects.pop())
+      this.stack.push(this.canvas._objects.pop());
+      this.canvas.renderAll();
+     }
+     return this.stack;
+  }
   redo() {
+    console.log(this.stack);
     if (this.stack.length > 0) {
+      
       this.isRedoing = true;
       this.canvas.add(this.stack.pop());
     }
   }
-  
-  hinhtron(){
-
-  }
-  
 }
