@@ -25,7 +25,7 @@ export class ConnectService {
       console.log('hello');
       this.socket.on('canvas', (canvas) => {
         // console.log(canvas);
-        observer.next(canvas);
+        observer.add(canvas)
       });
     });
   }
