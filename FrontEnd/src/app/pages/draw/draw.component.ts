@@ -50,7 +50,7 @@ export class DrawComponent implements OnInit, OnDestroy {
       width: 1500,
       height: 800,
     });
-    this.socket.setupSocketConnection();
+
     console.log(this.socket.socket.emit('a', 'hello a'));
     this.json = this.socket.updateCanvas();
     this.json.subscribe((data) => {

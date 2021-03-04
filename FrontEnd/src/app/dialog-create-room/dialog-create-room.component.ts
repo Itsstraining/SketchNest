@@ -14,7 +14,7 @@ export class DialogCreateRoomComponent implements OnInit {
     public dialogRef: MatDialogRef<DialogCreateRoomComponent>,
     public router: Router
   ) {}
-  createRoom(name: string, password: string) {
+  createRoom(name, password) {
     this.room.onCreateRoom(name, password);
   }
 
