@@ -11,14 +11,20 @@ import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.co
 import { ConnectService } from 'src/app/services/connect.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { HttpEventType } from '@angular/common/http';
+import { CompileReflector } from '@angular/compiler';
+import { Canvas, IText } from 'fabric/fabric-impl';
+import { CONTEXT_NAME } from '@angular/compiler/src/render3/view/util';
+// import { cursorTo } from 'readline';
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
   styleUrls: ['./draw.component.scss'],
+
 })
 export class DrawComponent implements OnInit, OnDestroy {
   brush: any;
   canvas;
+  
   circle: any;
   image: any;
   color: any;
@@ -34,7 +40,11 @@ export class DrawComponent implements OnInit, OnDestroy {
   download = document.getElementById('download');
   link = document.createElement('a');
   isRedoing: Boolean;
-  stack:Array<[]>;
+  stack: Array<[]>;
+  activeObject: any;
+memorizeObject: fabric.Object;
+
+
   private keyCodes = {
     'C': 67,
     'S': 83, //New key code
@@ -42,16 +52,16 @@ export class DrawComponent implements OnInit, OnDestroy {
     'X': 88,
     'Y': 89,
     'Z': 90
-}
-  constructor(public dialog: MatDialog, public socket: ConnectService, public auth: AuthService) { }
+  }
+  constructor(public dialog: MatDialog, public socket: ConnectService, public auth: AuthService,) { }
   openDialog() {
     this.dialog.open(DialogExampleComponent);
   }
 
   ngOnInit(): void {
     this.canvas = new fabric.Canvas('canvas', {
-      width: 1500,
-      height: 800,
+      width: 1300,
+      height: 700,
     });
     this.socket.setupSocketConnection();
     console.log(this.socket.socket.emit('a', 'hello a'));
@@ -81,9 +91,9 @@ export class DrawComponent implements OnInit, OnDestroy {
     if (event.key === 'Delete') {
       this.deleteShape();
     }
-    if(event.ctrlKey){
-      switch(event.keyCode){
-        case   this.keyCodes['Z']:
+    if (event.ctrlKey) {
+      switch (event.keyCode) {
+        case this.keyCodes['Z']:
           this.undo();
           console.log("done undo");
           break;
@@ -91,15 +101,17 @@ export class DrawComponent implements OnInit, OnDestroy {
           this.redo();
           console.log("done redo");
           break;
+
       }
 
     }
   }
- 
+
   //default
   clearCanvas() {
     this.canvas.clear();
   }
+
   pointer() {
     this.canvas.isDrawingMode = false;
     this.socket.canvas = this.canvas.toJSON().objects;
@@ -137,7 +149,7 @@ export class DrawComponent implements OnInit, OnDestroy {
       })
     })
   }
-
+ 
 
   public eraser() {
     this.canvas.isDrawingMode = true;
@@ -190,7 +202,9 @@ export class DrawComponent implements OnInit, OnDestroy {
       radius: 20,
       fill: 'blue',
     });
+    
     this.canvas.add(this.circle);
+    
     this.socket.sendCanvas(this.canvas.toJSON().objects);
 
     // this.canvas.renderAll();
@@ -205,6 +219,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     });
     this.canvas.add(this.rect);
     this.canvas.renderAll();
+   
     this.socket.sendCanvas(this.canvas.toJSON().objects);
   }
   public drawTriangle() {
@@ -232,20 +247,23 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas.toDataUrl();
     console.log(this.canvas.toDataUrl());
   }
-  undo(){
-    if(this.canvas._objects.length>0){
+  undo() {
+    if (this.canvas._objects.length > 0) {
       console.log(this.canvas._objects.pop())
       this.stack.push(this.canvas._objects.pop());
       this.canvas.renderAll();
-     }
-     return this.stack;
+    }
+    return this.stack;
   }
+  
   redo() {
     console.log(this.stack);
     if (this.stack.length > 0) {
-      
+
       this.isRedoing = true;
       this.canvas.add(this.stack.pop());
+      this.canvas.renderAll();
     }
   }
+
 }
