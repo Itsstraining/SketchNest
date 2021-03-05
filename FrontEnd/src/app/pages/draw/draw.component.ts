@@ -12,14 +12,14 @@ import { ConnectService } from 'src/app/services/connect.service';
 import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-draw',
-  templateUrl:'./draw.component.html',
+  templateUrl: './draw.component.html',
   styleUrls: ['./draw.component.scss'],
 
 })
 export class DrawComponent implements OnInit, OnDestroy {
   brush: any;
   canvas;
-  
+
   circle: any;
   image: any;
   color: any;
@@ -37,7 +37,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   isRedoing: Boolean;
   stack: Array<[]>;
   activeObject: any;
-memorizeObject: fabric.Object;
+  memorizeObject: fabric.Object;
 
 
   private keyCodes = {
@@ -70,9 +70,10 @@ memorizeObject: fabric.Object;
   }
   ngAfterViewInit(): void {
     this.socket.setupSocketConnection();
-    this.socket.socket.emit('update-canvas',this.json)
+    this.socket.socket.emit('update-canvas', this.json)
     console.log('cai ham nay chua dc chay');
-    this.socket.updateCanvas().subscribe(data=>{;
+    this.socket.updateCanvas().subscribe(data => {
+      ;
       console.log("ham nay duoc chay roi")
       // this.json=this.canvas.loadFromJSON(data,this.canvas.renderAll.bind(data))
     })
@@ -80,10 +81,10 @@ memorizeObject: fabric.Object;
     //   console.log(data)
     //   console.log("hello ban");
     //  this.canvas.loadFromJSON(JSON.stringify(this.json),this.canvas.renderAll.bind(this.json));
- 
- 
+
+
     // });
-    this.getUserCursor();
+
     this.canvas.on('object:created', function () {
       if (!this.isRedoing) {
         this.stack = [];
@@ -92,7 +93,7 @@ memorizeObject: fabric.Object;
     });
   }
   ngOnDestroy() {
-    this.socket.socket.emit('getJSON',this.json = JSON.stringify(this.canvas.toJSON()));
+    this.socket.socket.emit('getJSON', this.json = JSON.stringify(this.canvas.toJSON()));
   }
 
   @HostListener('document:keyup', ['$event'])
@@ -125,7 +126,7 @@ memorizeObject: fabric.Object;
     this.canvas.isDrawingMode = false;
     this.socket.canvas = this.canvas.toJSON().objects;
     console.log(this.socket.canvas);
-    
+
   }
   public chooseColor() {
     this.color = document.getElementById('color');
@@ -159,7 +160,7 @@ memorizeObject: fabric.Object;
       })
     })
   }
- 
+
 
   public eraser() {
     this.canvas.isDrawingMode = true;
@@ -206,19 +207,27 @@ memorizeObject: fabric.Object;
     this.socket.sendCanvas(this.canvas.toJSON().objects);
   }
   public drawCircle() {
+    let X, Y;
     this.canvas.isDrawingMode = false;
-    this.circle = new fabric.Circle({
-      radius: 20,
-      fill: 'blue',
-    });
-    
-    this.canvas.add(this.circle);
-    
-    this.socket.sendCanvas(this.canvas.toJSON().objects);
-
-    // this.canvas.renderAll();
-    // this.json = this.socket.canvas;
+    this.canvas.on("mouse:down", function (e) {
+      X = parseInt(e.e.clientX);
+      Y = parseInt(e.e.clientY);
+      this.canvas.on("mouse:up", function () {
+        this.circle = new fabric.Circle({
+          left: X,
+          top: Y,
+          fill: 'red',
+          radius: 20,
+          stroke: 'red',
+        })
+        this.canvas.add(this.circle);
+        this.canvas.renderAll();
+      })
+    })
   }
+  // this.socket.sendCanvas(this.canvas.toJSON().objects);
+  // this.canvas.renderAll();
+  // this.json = this.socket.canvas;
   public drawRectangle() {
     this.canvas.isDrawingMode = false;
     this.rect = new fabric.Rect({
@@ -228,7 +237,7 @@ memorizeObject: fabric.Object;
     });
     this.canvas.add(this.rect);
     this.canvas.renderAll();
-   
+
     this.socket.sendCanvas(this.canvas.toJSON().objects);
   }
   public drawTriangle() {
@@ -264,7 +273,7 @@ memorizeObject: fabric.Object;
     }
     return this.stack;
   }
-  
+
   redo() {
     console.log(this.stack);
     if (this.stack.length > 0) {
@@ -273,11 +282,5 @@ memorizeObject: fabric.Object;
       this.canvas.add(this.stack.pop());
       this.canvas.renderAll();
     }
-  }
-  getUserCursor(){
-    this.canvas.on('mouse:move',function(e){
-      console.log(e.e.clientX+" "+ e.e.clientY);
-
-    })
   }
 }
