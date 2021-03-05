@@ -2,15 +2,20 @@ const router = require("express").Router();
 const db = require("../database");
 const body = require("body-parser");
 const { name } = require("ejs");
-
+var cors = require("cors");
+router.use(cors());
 router.use(body.json());
+router.get("/hi", (req, res) => {
+  res.send("hello");
+});
 //create room
 router.post("/create", async (req, res) => {
-  let { name, password } = req.body;
+  let { name, password, owner } = req.body;
   // let {canvas} = socket.on()
   let result = await db.collection("room").doc(name).set({
     name: name,
     password: password,
+    owner: owner,
   });
   let check = await checkIdExist(name);
   if (check) {
@@ -41,15 +46,15 @@ router.delete("/delete", async (req, res) => {
 
 //update room
 router.put("/update", async (req, res) => {
-  let { name, password } = req.body;
-  let { id } = req.query;
-  let result = await db.collection("room").doc(id).update({
+  let { password } = req.body;
+  let { name } = req.query;
+  let result = await db.collection("room").doc(name).update({
     name: name,
     password: password,
   });
-  let check = checkIdExist(id);
+  let check = checkIdExist(name);
   if (check) {
-    res.send({ message: `room ${id} updated` });
+    res.send({ message: `room ${name} updated` });
   }
   res.send(result);
 });
