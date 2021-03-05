@@ -16,6 +16,7 @@ export class RoomService {
     let room = {
       name: name,
       password: password,
+      memberList: [],
     };
     this.roomList.push(room);
     try {

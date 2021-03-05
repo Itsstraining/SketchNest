@@ -10,7 +10,7 @@ import * as EventEmitter from 'events';
 })
 export class ConnectService {
   socket;
-  canvas:Observable<Array<JSON>>;
+  canvas:Observable<any>;
   private url: 'http://localhost:3000';
   constructor(private http: HttpClient) {}
   public setupSocketConnection() {
@@ -21,11 +21,10 @@ export class ConnectService {
     this.canvas=canvas
   }
   public updateCanvas() {
-    return this.canvas = new Observable((observer) => {
-      console.log('hello');
-      this.socket.on('canvas', (canvas) => {
-        // console.log(canvas);
-        observer.add(canvas)
+     return this.canvas = new Observable((observer) => {
+       this.socket.on('canvas', (canvas) => {
+        console.log("JSON:"+canvas);
+        observer.add(canvas);
       });
     });
   }
