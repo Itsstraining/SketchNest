@@ -14,8 +14,10 @@ export class DialogCreateRoomComponent implements OnInit {
     public dialogRef: MatDialogRef<DialogCreateRoomComponent>,
     public router: Router
   ) {}
-  createRoom(name, password) {
-    this.room.onCreateRoom(name, password);
+  async createRoom(name, password) {
+    await this.room.onCreateRoom(name, password);
+    await this.router.navigate(['/draw']);
+    // await this.room.getRoom();
   }
 
   ngOnInit(): void {}
