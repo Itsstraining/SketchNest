@@ -5,15 +5,16 @@
   <button id="clearTb" (click)="clearCanvas()"> Clear table</button>
 </header>
 <body>
-
   <div class="left-sidebar">
 
-    <button id="btnFunction" style="border-radius: 20px 20px 0px 0px">
+  
+<br>
+    <button id="btnFunction" style="border-radius: 20px 20px 0px 0px" >
       <input style="width: 35px; height: 35px" title="Pen color" type="color" id="color" (blur)="chooseColor()" />
     </button>
     <br />
-    <button title="Pen" id="btnFunction" (click)="startDrawing()" title="Pen">
-      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+    <div   class="dropdown" >
+      <button  id="btnFunction" class="dropbtn"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
         focusable="false" width="35px" height="35px" style="
           -ms-transform: rotate(360deg);
           -webkit-transform: rotate(360deg);
@@ -22,8 +23,24 @@
         <path
           d="M60.609 3.389c-1.757-1.758-4.528-1.839-6.409-.292l-.829-.829l-2.269 2.281l.192.194l-.806.754l-.183-.176c-1.729-1.731-3.722-3.526-6.375-2.454c-3.609 1.463-5.333 9.273-7.329 12.228c-1.742 2.57-6.112 5.292-10.019 7.343c.195.193.58.771.836.836c1.086-.479 2.192-.906 3.267-1.406c2.244-1.043 4.428-2.258 6.358-3.819c3.95-3.197 5.542-12.783 8.361-12.971c1.179-.085 2.33 1.01 3.306 2.082L28.294 26.25l.806.806L9.407 46.783l-6.188 10.92l.818.818l-1.758 2.333c-.299.352-.369.814-.156 1.027c.209.207.672.137 1.021-.164l2.336-1.752l.817.816l10.92-6.187l19.695-19.727l.016.016l.822.822L59.243 12.69l.219.219l2.267-2.281l-.827-.828c1.548-1.881 1.465-4.652-.293-6.411M6.467 59.537l-2.003-2.003l5.165-9.114l5.952 5.953l-9.114 5.164m31.284-25.245l-8.038-8.039l1.498-1.48l8.029 8.028l-1.489 1.491M59.46 11.493l-6.945-6.945l.858-.863l6.943 6.945l-.856.863"
           fill="black" />
-      </svg>
-    </button>
+      </svg></button>
+      <div class="dropdown-content" style="width: 250px; height: 55px;" >
+      <div>
+        <button id="choosePen"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+          focusable="false" width="35px" height="35px" style="
+            -ms-transform: rotate(360deg);
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+          " preserveAspectRatio="xMidYMid meet" viewBox="0 0 64 64">
+          <path
+            d="M60.609 3.389c-1.757-1.758-4.528-1.839-6.409-.292l-.829-.829l-2.269 2.281l.192.194l-.806.754l-.183-.176c-1.729-1.731-3.722-3.526-6.375-2.454c-3.609 1.463-5.333 9.273-7.329 12.228c-1.742 2.57-6.112 5.292-10.019 7.343c.195.193.58.771.836.836c1.086-.479 2.192-.906 3.267-1.406c2.244-1.043 4.428-2.258 6.358-3.819c3.95-3.197 5.542-12.783 8.361-12.971c1.179-.085 2.33 1.01 3.306 2.082L28.294 26.25l.806.806L9.407 46.783l-6.188 10.92l.818.818l-1.758 2.333c-.299.352-.369.814-.156 1.027c.209.207.672.137 1.021-.164l2.336-1.752l.817.816l10.92-6.187l19.695-19.727l.016.016l.822.822L59.243 12.69l.219.219l2.267-2.281l-.827-.828c1.548-1.881 1.465-4.652-.293-6.411M6.467 59.537l-2.003-2.003l5.165-9.114l5.952 5.953l-9.114 5.164m31.284-25.245l-8.038-8.039l1.498-1.48l8.029 8.028l-1.489 1.491M59.46 11.493l-6.945-6.945l.858-.863l6.943 6.945l-.856.863"
+            fill="black" />
+        </svg></button>
+        <button id="choosePen" (click)="startDrawing()" ><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="35px" height="35px" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 512 512"><path d="M167.02 309.34c-40.12 2.58-76.53 17.86-97.19 72.3c-2.35 6.21-8 9.98-14.59 9.98c-11.11 0-45.46-27.67-55.25-34.35C0 439.62 37.93 512 128 512c75.86 0 128-43.77 128-120.19c0-3.11-.65-6.08-.97-9.13l-88.01-73.34zM457.89 0c-15.16 0-29.37 6.71-40.21 16.45C213.27 199.05 192 203.34 192 257.09c0 13.7 3.25 26.76 8.73 38.7l63.82 53.18c7.21 1.8 14.64 3.03 22.39 3.03c62.11 0 98.11-45.47 211.16-256.46c7.38-14.35 13.9-29.85 13.9-45.99C512 20.64 486 0 457.89 0z" fill="black"/></svg></button>
+        <button id="choosePen"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="35px" height="35px" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 544 512"><path d="M0 479.98L99.92 512l35.45-35.45l-67.04-67.04L0 479.98zm124.61-240.01a36.592 36.592 0 0 0-10.79 38.1l13.05 42.83l-50.93 50.94l96.23 96.23l50.86-50.86l42.74 13.08c13.73 4.2 28.65-.01 38.15-10.78l35.55-41.64l-173.34-173.34l-41.52 35.44zm403.31-160.7l-63.2-63.2c-20.49-20.49-53.38-21.52-75.12-2.35L190.55 183.68l169.77 169.78L530.27 154.4c19.18-21.74 18.15-54.63-2.35-75.13z" fill="black"/></svg></button>
+      </div>
+      </div>
+    </div>
     <br />
     <button title="pointer" id="btnFunction" (click)="pointer()" title="Pointer">
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
@@ -88,6 +105,7 @@
 
 
     <mat-menu title="Circle" #menu="matMenu">
+      
       <button (blur)="drawCircle()" mat-menu-item style="padding-left: 38px">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
           focusable="false" width="35px" height="35px" style="
