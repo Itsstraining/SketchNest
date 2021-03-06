@@ -55,7 +55,7 @@ export class DrawComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.canvas = new fabric.Canvas('canvas', {
-      width: 1300,
+      width: 1400,
       height: 700,
     });
 
@@ -154,12 +154,11 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas.on('path:created', function (opt) {
       opt.path.globalCompositeOperation = 'source-over';
       opt.path.stroke = 'red';
-        a.push(opt.path);
-        this.canvas.add(a);
-        console.log(a);
-      opt.path.animate('opacity', '0', {
-        duration: 3000,
-      })
+      // opt.path.animate('opacity', '0', {
+      //   duration: 3000,
+
+      // })
+      setTimeout(this.canvas.remove(opt.path));
     })
   }
 
