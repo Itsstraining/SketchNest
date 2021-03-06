@@ -17,18 +17,35 @@ export class RoomService {
   }
 
   async onCreateRoom(name, password) {
-    let room = {
-      name: name,
-      password: password,
-      memberList: [],
-    };
-    this.roomList.push(room);
+    // let room = {
+    //   name: name,
+    //   password: password,
+    //   memberList: [],
+    // };
+    // this.roomList.push(room);
     try {
       await this.http
         .post('http://192.168.31.136:3000/room/create', {
           name: name,
           password: password,
           owner: this.user.user.email,
+        })
+        .toPromise()
+        .then((e) => {
+          console.log(e);
+        });
+    } catch (err) {
+      console.log(err);
+    }
+    try {
+      await this.http
+        .put('http://192.168.31.136:3000/user/update', {
+          room: [
+            {
+              name: name,
+              password: password,
+            },
+          ],
         })
         .toPromise()
         .then((e) => {

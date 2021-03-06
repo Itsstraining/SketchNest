@@ -2,19 +2,21 @@ const router = require("express").Router();
 const db = require("../database");
 const body = require("body-parser");
 var cors = require("cors");
+const { doc } = require("../database");
 router.use(body.json());
 router.use(cors());
 
 //tao user
 
 router.post("/create", async (req, res) => {
-  let { displayName, photoURL, email, uid } = req.body;
-  let a = await db.collection("user").doc(uid).get();
-  let result = await db.collection("user").doc(uid).set({
+  let { displayName, photoURL, email, uid, room } = req.body;
+  let a = await db.collection("user").doc(email).get();
+  let result = await db.collection("user").doc(email).set({
     displayName: displayName,
     photoURL: photoURL,
     email: email,
     uid: uid,
+    room: [],
   });
   console.log(result);
   if (!a.exists) {
@@ -24,16 +26,21 @@ router.post("/create", async (req, res) => {
 });
 //chinh sua thong tin user
 router.put("/update", async (req, res) => {
-  let { email } = req.query;
-  let { room, displayName, photoURL } = req.body;
-  let a = await db.collection("user").doc(email).get();
+  let { room, displayName, photoURL, email } = req.body;
+  let a = await db
+    .collection("user")
+    .doc(email)
+    .get()
+    .then((doc) => {});
   let result = await db.collection("user").doc(email).update({
+    email: email,
     room: room,
     displayName: displayName,
     photoURL: photoURL,
+    room: [],
   });
   if (!a.exists) {
-    res.send({ message: `user with email ${email} updated` });
+    res.send({ message: `user updated` });
   }
   res.send({ message: `user doesn't existed` });
 });

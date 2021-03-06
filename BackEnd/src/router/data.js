@@ -58,4 +58,9 @@ router.put("/update", async (req, res) => {
   res.send(result);
 });
 
+//get room by owner email
+// router.get("/get", async (req, res) => {
+//   let { email } = req.body;
+//   let a = await db.collection("room").get();
+// });
 module.exports = router;
