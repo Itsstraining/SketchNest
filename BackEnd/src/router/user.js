@@ -25,25 +25,23 @@ router.post("/create", async (req, res) => {
   res.send({ message: `user already existed` });
 });
 //chinh sua thong tin user
-router.put("/update", async (req, res) => {
+router.get("/get", async (req, res) => {
   let { room, displayName, photoURL, email } = req.body;
   let a = await db
     .collection("user")
     .doc(email)
     .get()
-    .then((doc) => {});
-  let result = await db.collection("user").doc(email).update({
-    email: email,
-    room: room,
-    displayName: displayName,
-    photoURL: photoURL,
-    room: [],
-  });
-  if (!a.exists) {
-    res.send({ message: `user updated` });
-  }
-  res.send({ message: `user doesn't existed` });
+    .then((doc) => doc.data());
+  console.log(a.room);
 });
+router.post("/update", async (req, res) => {
+  let { room, email } = req.body;
+  let result = await db.collection("user").doc(email).set({
+    room: room,
+  });
+  console.log(result);
+});
+
 //xoa user
 router.delete("/delete", async (req, res) => {
   let { email } = req.query;

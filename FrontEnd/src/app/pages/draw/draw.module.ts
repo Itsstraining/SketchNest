@@ -3,8 +3,12 @@ import { CommonModule } from '@angular/common';
 
 import { DrawRoutingModule } from './draw-routing.module';
 import { DrawComponent } from './draw.component';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
+import { FabricModule } from 'ngx-fabric-wrapper';
+import { FABRIC_CONFIG } from 'ngx-fabric-wrapper';
+import { FabricConfigInterface } from 'ngx-fabric-wrapper';
+const DEFAULT_FABRIC_CONFIG: FabricConfigInterface = {};
 
 @NgModule({
   declarations: [DrawComponent],
@@ -13,6 +17,13 @@ import { MatIconModule } from '@angular/material/icon';
     DrawRoutingModule,
     MatMenuModule,
     MatIconModule,
-  ]
+    FabricModule,
+  ],
+  providers: [
+    {
+      provide: FABRIC_CONFIG,
+      useValue: DEFAULT_FABRIC_CONFIG,
+    },
+  ],
 })
-export class DrawModule { }
+export class DrawModule {}
