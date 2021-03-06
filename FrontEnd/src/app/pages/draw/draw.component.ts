@@ -134,9 +134,9 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.link.click();
   }
 
-  startDrawing() {
+  pen() {
     this.canvas.isDrawingMode = true;
-    this.canvas.freeDrawingBrush.width = 14;
+    this.canvas.freeDrawingBrush.width = 1;
     if(!this.color){
       this.color='black';
     }
@@ -145,9 +145,20 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas.defaultCursor = 'create';
     this.socket.sendCanvas(this.canvas.toJSON().objects);
   }
+  paintbrush(){
+    this.canvas.isDrawingMode = true;
+    this.canvas.freeDrawingBrush.width = 15;
+    if(!this.color){
+      this.color='black';
+    }
+    this.canvas.freeDrawingBrush.color = this.color;
+    fabric.Path.prototype.selectable = false;
+    this.canvas.defaultCursor = 'create';
+    this.socket.sendCanvas(this.canvas.toJSON().objects);
+  }
+
   //bug
   highlightPen() {
-    let a=[];
     this.canvas.isDrawingMode = true;
     this.canvas.freeDrawingBrush.color = 'red'
     this.canvas.freeDrawingBrush.width = 14;
