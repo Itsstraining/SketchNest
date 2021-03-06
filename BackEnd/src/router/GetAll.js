@@ -14,4 +14,18 @@ router.get("/db", async (req, res) => {
   res.send(result);
 });
 
+router.get("/room", async (req, res) => {
+  let a = await db.collection("room").get();
+  let result = [];
+  result.push({
+    id: a.docs.map((doc) => doc.id),
+    data: a.docs.map((doc) => doc.data()),
+  });
+  a.docs.map((doc) => {
+    doc.id;
+  });
+  console.log(result);
+  res.send(result);
+});
+
 module.exports = router;

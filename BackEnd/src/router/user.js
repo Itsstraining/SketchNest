@@ -6,9 +6,7 @@ router.use(body.json());
 router.use(cors());
 
 //tao user
-router.get("/hi", (req, res) => {
-  res.send("hello");
-});
+
 router.post("/create", async (req, res) => {
   let { displayName, photoURL, email, uid } = req.body;
   let a = await db.collection("user").doc(uid).get();
