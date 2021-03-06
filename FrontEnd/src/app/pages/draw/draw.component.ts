@@ -10,11 +10,6 @@ import { fabric } from 'fabric';
 import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.component';
 import { ConnectService } from 'src/app/services/connect.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { HttpEventType } from '@angular/common/http';
-import { CompileReflector } from '@angular/compiler';
-import { Canvas, IText } from 'fabric/fabric-impl';
-import { CONTEXT_NAME } from '@angular/compiler/src/render3/view/util';
-// import { cursorTo } from 'readline';
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
@@ -24,7 +19,7 @@ import { CONTEXT_NAME } from '@angular/compiler/src/render3/view/util';
 export class DrawComponent implements OnInit, OnDestroy {
   brush: any;
   canvas;
-  
+
   circle: any;
   image: any;
   color: any;
@@ -42,7 +37,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   isRedoing: Boolean;
   stack: Array<[]>;
   activeObject: any;
-memorizeObject: fabric.Object;
+  memorizeObject: fabric.Object;
 
 
   private keyCodes = {
@@ -60,7 +55,7 @@ memorizeObject: fabric.Object;
 
   ngOnInit(): void {
     this.canvas = new fabric.Canvas('canvas', {
-      width: 1300,
+      width: 1400,
       height: 700,
     });
 
@@ -74,7 +69,14 @@ memorizeObject: fabric.Object;
     });
   }
   ngAfterViewInit(): void {
-    this.canvas.isDrawingMode = true;
+    this.socket.setupSocketConnection();
+    this.socket.socket.emit('update-canvas', this.json)
+    console.log('cai ham nay chua dc chay');
+    this.socket.updateCanvas().subscribe(data => {
+      console.log("ham nay duoc chay roi")
+      // this.json=this.canvas.loadFromJSON(data,this.canvas.renderAll.bind(data))
+    })
+
     this.canvas.on('object:created', function () {
       if (!this.isRedoing) {
         this.stack = [];
@@ -83,23 +85,24 @@ memorizeObject: fabric.Object;
     });
   }
   ngOnDestroy() {
-    this.json = JSON.stringify(this.canvas.toJSON());
+    this.socket.socket.emit('getJSON', this.json = JSON.stringify(this.canvas.toJSON()));
   }
 
   @HostListener('document:keyup', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.key === 'Delete') {
       this.deleteShape();
+      this.canvas.renderAll();
     }
     if (event.ctrlKey) {
       switch (event.keyCode) {
         case this.keyCodes['Z']:
           this.undo();
-          console.log("done undo");
+          
           break;
         case this.keyCodes['Y']:
           this.redo();
-          console.log("done redo");
+          this.canvas.renderAll();    
           break;
 
       }
@@ -116,9 +119,13 @@ memorizeObject: fabric.Object;
     this.canvas.isDrawingMode = false;
     this.socket.canvas = this.canvas.toJSON().objects;
     console.log(this.socket.canvas);
+
   }
   public chooseColor() {
     this.color = document.getElementById('color');
+    this.color.addEventListener('change',function(event){
+      this.color=event.target.value;
+    })
     this.canvas.freeDrawingBrush.color = this.color.value;
   }
   convertImg() {
@@ -127,15 +134,29 @@ memorizeObject: fabric.Object;
     this.link.click();
   }
 
-  startDrawing() {
+  pen() {
     this.canvas.isDrawingMode = true;
-    // this.canvas.freeDrawingBrush.color = this.chooseColor();
-    this.canvas.freeDrawingBrush.width = 14;
-    this.canvas.freeDrawingBrush.color = 'black';
+    this.canvas.freeDrawingBrush.width = 1;
+    if(!this.color){
+      this.color='black';
+    }
+    this.canvas.freeDrawingBrush.color = this.color;
     fabric.Path.prototype.selectable = false;
     this.canvas.defaultCursor = 'create';
     this.socket.sendCanvas(this.canvas.toJSON().objects);
   }
+  paintbrush(){
+    this.canvas.isDrawingMode = true;
+    this.canvas.freeDrawingBrush.width = 15;
+    if(!this.color){
+      this.color='black';
+    }
+    this.canvas.freeDrawingBrush.color = this.color;
+    fabric.Path.prototype.selectable = false;
+    this.canvas.defaultCursor = 'create';
+    this.socket.sendCanvas(this.canvas.toJSON().objects);
+  }
+
   //bug
   highlightPen() {
     this.canvas.isDrawingMode = true;
@@ -144,12 +165,14 @@ memorizeObject: fabric.Object;
     this.canvas.on('path:created', function (opt) {
       opt.path.globalCompositeOperation = 'source-over';
       opt.path.stroke = 'red';
-      opt.path.animate('opacity', '0', {
-        duration: 3000,
-      })
+      // opt.path.animate('opacity', '0', {
+      //   duration: 3000,
+
+      // })
+      setTimeout(this.canvas.remove(opt.path));
     })
   }
- 
+
 
   public eraser() {
     this.canvas.isDrawingMode = true;
@@ -189,27 +212,23 @@ memorizeObject: fabric.Object;
   // /Shape
   public deleteShape() {
     this.canvas.isDrawingMode = false;
-    // console.log(this.canvas.getActiveObject().objects)
     console.log(this.canvas.getActiveObject());
 
     this.canvas.remove(this.canvas.getActiveObject());
     this.socket.sendCanvas(this.canvas.toJSON().objects);
-    console.log(this.json);
   }
   public drawCircle() {
-    this.canvas.isDrawingMode = false;
-    this.circle = new fabric.Circle({
-      radius: 20,
-      fill: 'blue',
-    });
-    
+    this.canvas.isDrawingMode=false;
+    this.circle=new fabric.Circle({
+      radius:20,
+      fill:'blue',
+    })
     this.canvas.add(this.circle);
-    
-    this.socket.sendCanvas(this.canvas.toJSON().objects);
-
-    // this.canvas.renderAll();
-    // this.json = this.socket.canvas;
+    this.canvas.renderAll();
   }
+  // this.socket.sendCanvas(this.canvas.toJSON().objects);
+  // this.canvas.renderAll();
+  // this.json = this.socket.canvas;
   public drawRectangle() {
     this.canvas.isDrawingMode = false;
     this.rect = new fabric.Rect({
@@ -219,7 +238,7 @@ memorizeObject: fabric.Object;
     });
     this.canvas.add(this.rect);
     this.canvas.renderAll();
-   
+
     this.socket.sendCanvas(this.canvas.toJSON().objects);
   }
   public drawTriangle() {
@@ -239,9 +258,6 @@ memorizeObject: fabric.Object;
   public shapeOption() {
     this.shapeColor = document.getElementById('shapecolor');
     return this.canvas.getActiveObject().set('fill', this.shapeColor.value);
-    //     this.canvas.on('selected',function(){
-    //   this.canvas.fill(this.shapeColor.value);
-    // })
   }
   downloadCanvas() {
     this.canvas.toDataUrl();
@@ -253,9 +269,11 @@ memorizeObject: fabric.Object;
       this.stack.push(this.canvas._objects.pop());
       this.canvas.renderAll();
     }
+    this.canvas.renderAll();
     return this.stack;
+    
   }
-  
+
   redo() {
     console.log(this.stack);
     if (this.stack.length > 0) {
@@ -265,26 +283,4 @@ memorizeObject: fabric.Object;
       this.canvas.renderAll();
     }
   }
-  // canvas.on('mouse:move', function(o){
-  //   if (!isDown) return;
-  //   var pointer = canvas.getPointer(o.e);
-  //   var radius = Math.max(Math.abs(origY - pointer.y),Math.abs(origX - pointer.x))/2;
-  //   if (radius > circle.strokeWidth) {
-  //       radius -= circle.strokeWidth/2;
-  //   }
-  // public DrawCircle(){  
-  // this.circle({ radius: Radius});
-
-  //   if(origX>this.pointer.X){
-  //       this.circle.add({originX: 'right' });
-  //   } else {
-  //       this.circle.set({originX: 'left' });
-  //   }
-  //   if(origY>pointer.y){
-  //       this.circle.set({originY: 'bottom'  });
-  //   } else {
-  //      this.circle.set({originY: 'top'  });
-  //   }
-  //     this.canvas.renderAll();
-  // }
 }

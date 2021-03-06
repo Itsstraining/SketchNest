@@ -9,9 +9,7 @@
   </div>
   <br />
   <button
-    (click)="createRoom(name.value, password.value)"
-    [routerLink]="['/draw']"
-    routerLinkActive="router-link-active"
+    (click)="this.createRoom(name.value, password.value)"
     [mat-dialog-close]
   >
     Create

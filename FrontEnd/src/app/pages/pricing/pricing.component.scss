@@ -164,12 +164,17 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300');
 
 body {
-  background:white;
+  
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif ;
   height: 100%;
   display: flex;
   justify-content: center;
+  background-image: url("https://images.wallpaperscraft.com/image/paint_light_line_shape_83475_1920x1080.jpg"); /* Photo by Roberto Nickson from Pexels */
+  background-blend-mode: multiply;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 
 
@@ -214,7 +219,7 @@ body {
   position: relative;
   border-radius: 15px;
   padding: 40px 20px;
-  box-shadow: 5px 5px 15px 5px #FF8080, -9px 5px 15px 5px #FFE488, -7px -5px 15px 5px #8CFF85, 12px -5px 15px 5px #80C7FF, 12px 10px 15px 7px #E488FF, -10px 10px 15px 7px #FF616B, -10px -7px 27px 1px #8E5CFF, 5px 5px 15px 5px rgba(0,0,0,0);;
+  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 5px 5px rgba(0,0,0,0);
   transition: .5s;
   overflow: hidden;
 }
@@ -223,10 +228,15 @@ body {
   transform: scale(1.1);
 }
 
-.basic,
-.basic .title .fa {
+.free,
+.free .title .fa {
   background: linear-gradient(270deg, rgba(131,58,180,1) 0%, rgba(23,20,20,1) 66%);
 }
+
+// .basic,
+// .basic .title .fa {
+//   background: linear-gradient(270deg, rgba(131,58,180,1) 0%, rgba(23,20,20,1) 66%);
+// }
 
 .standard,
 .standard .title .fa{
