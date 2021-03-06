@@ -11,6 +11,10 @@ export class RoomService {
   roomList: Array<Room> = [];
 
   constructor(private http: HttpClient, private user: AuthService) {}
+  async OngetRoomName(name) {
+    let temp = name;
+    return temp;
+  }
 
   async onCreateRoom(name, password) {
     let room = {

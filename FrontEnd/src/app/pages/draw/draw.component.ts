@@ -10,16 +10,17 @@ import { fabric } from 'fabric';
 import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.component';
 import { ConnectService } from 'src/app/services/connect.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { HttpClient } from '@angular/common/http';
+import { RoomService } from 'src/app/services/room.service';
 @Component({
   selector: 'app-draw',
-  templateUrl:'./draw.component.html',
+  templateUrl: './draw.component.html',
   styleUrls: ['./draw.component.scss'],
-
 })
 export class DrawComponent implements OnInit, OnDestroy {
   brush: any;
   canvas;
-  
+
   circle: any;
   image: any;
   color: any;
@@ -37,18 +38,23 @@ export class DrawComponent implements OnInit, OnDestroy {
   isRedoing: Boolean;
   stack: Array<[]>;
   activeObject: any;
-memorizeObject: fabric.Object;
-
+  memorizeObject: fabric.Object;
 
   private keyCodes = {
-    'C': 67,
-    'S': 83, //New key code
-    'V': 86,
-    'X': 88,
-    'Y': 89,
-    'Z': 90
-  }
-  constructor(public dialog: MatDialog, public socket: ConnectService, public auth: AuthService,) { }
+    C: 67,
+    S: 83, //New key code
+    V: 86,
+    X: 88,
+    Y: 89,
+    Z: 90,
+  };
+  constructor(
+    public dialog: MatDialog,
+    public socket: ConnectService,
+    public auth: AuthService,
+    private http: HttpClient,
+    private room: RoomService
+  ) {}
   openDialog() {
     this.dialog.open(DialogExampleComponent);
   }
@@ -68,20 +74,20 @@ memorizeObject: fabric.Object;
       this.canvas.renderAll();
     });
   }
+
   ngAfterViewInit(): void {
     this.socket.setupSocketConnection();
-    this.socket.socket.emit('update-canvas',this.json)
+    this.socket.socket.emit('update-canvas', this.json);
     console.log('cai ham nay chua dc chay');
-    this.socket.updateCanvas().subscribe(data=>{;
-      console.log("ham nay duoc chay roi")
+    this.socket.updateCanvas().subscribe((data) => {
+      console.log('ham nay duoc chay roi');
       // this.json=this.canvas.loadFromJSON(data,this.canvas.renderAll.bind(data))
-    })
+    });
     // this.json.subscribe((data) => {
     //   console.log(data)
     //   console.log("hello ban");
     //  this.canvas.loadFromJSON(JSON.stringify(this.json),this.canvas.renderAll.bind(this.json));
- 
- 
+
     // });
     this.getUserCursor();
     this.canvas.on('object:created', function () {
@@ -92,7 +98,13 @@ memorizeObject: fabric.Object;
     });
   }
   ngOnDestroy() {
-    this.socket.socket.emit('getJSON',this.json = JSON.stringify(this.canvas.toJSON()));
+    this.socket.socket.emit(
+      'getJSON',
+      (this.json = JSON.stringify(this.canvas.toJSON()))
+    );
+    this.http.put('http://192.168.31.136:3000/room/update?name=' + this.room, {
+      canvas: this.json,
+    });
   }
 
   @HostListener('document:keyup', ['$event'])
@@ -104,15 +116,13 @@ memorizeObject: fabric.Object;
       switch (event.keyCode) {
         case this.keyCodes['Z']:
           this.undo();
-          console.log("done undo");
+          console.log('done undo');
           break;
         case this.keyCodes['Y']:
           this.redo();
-          console.log("done redo");
+          console.log('done redo');
           break;
-
       }
-
     }
   }
 
@@ -125,7 +135,6 @@ memorizeObject: fabric.Object;
     this.canvas.isDrawingMode = false;
     this.socket.canvas = this.canvas.toJSON().objects;
     console.log(this.socket.canvas);
-    
   }
   public chooseColor() {
     this.color = document.getElementById('color');
@@ -149,17 +158,16 @@ memorizeObject: fabric.Object;
   //bug
   highlightPen() {
     this.canvas.isDrawingMode = true;
-    this.canvas.freeDrawingBrush.color = 'red'
+    this.canvas.freeDrawingBrush.color = 'red';
     this.canvas.freeDrawingBrush.width = 14;
     this.canvas.on('path:created', function (opt) {
       opt.path.globalCompositeOperation = 'source-over';
       opt.path.stroke = 'red';
       opt.path.animate('opacity', '0', {
         duration: 3000,
-      })
-    })
+      });
+    });
   }
- 
 
   public eraser() {
     this.canvas.isDrawingMode = true;
@@ -211,9 +219,9 @@ memorizeObject: fabric.Object;
       radius: 20,
       fill: 'blue',
     });
-    
+
     this.canvas.add(this.circle);
-    
+
     this.socket.sendCanvas(this.canvas.toJSON().objects);
 
     // this.canvas.renderAll();
@@ -228,7 +236,7 @@ memorizeObject: fabric.Object;
     });
     this.canvas.add(this.rect);
     this.canvas.renderAll();
-   
+
     this.socket.sendCanvas(this.canvas.toJSON().objects);
   }
   public drawTriangle() {
@@ -258,26 +266,24 @@ memorizeObject: fabric.Object;
   }
   undo() {
     if (this.canvas._objects.length > 0) {
-      console.log(this.canvas._objects.pop())
+      console.log(this.canvas._objects.pop());
       this.stack.push(this.canvas._objects.pop());
       this.canvas.renderAll();
     }
     return this.stack;
   }
-  
+
   redo() {
     console.log(this.stack);
     if (this.stack.length > 0) {
-
       this.isRedoing = true;
       this.canvas.add(this.stack.pop());
       this.canvas.renderAll();
     }
   }
-  getUserCursor(){
-    this.canvas.on('mouse:move',function(e){
-      console.log(e.e.clientX+" "+ e.e.clientY);
-
-    })
+  getUserCursor() {
+    this.canvas.on('mouse:move', function (e) {
+      console.log(e.e.clientX + ' ' + e.e.clientY);
+    });
   }
 }

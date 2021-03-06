@@ -46,11 +46,10 @@ router.delete("/delete", async (req, res) => {
 
 //update room
 router.put("/update", async (req, res) => {
-  let { password } = req.body;
+  let { password, canvas } = req.body;
   let { name } = req.query;
   let result = await db.collection("room").doc(name).update({
-    name: name,
-    password: password,
+    canvas: canvas,
   });
   let check = checkIdExist(name);
   if (check) {
