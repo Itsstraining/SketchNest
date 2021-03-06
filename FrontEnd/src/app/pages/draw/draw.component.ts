@@ -61,7 +61,7 @@ export class DrawComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.canvas = new fabric.Canvas('canvas', {
-      width: 1300,
+      width: 1400,
       height: 700,
     });
 
@@ -83,13 +83,7 @@ export class DrawComponent implements OnInit, OnDestroy {
       console.log('ham nay duoc chay roi');
       // this.json=this.canvas.loadFromJSON(data,this.canvas.renderAll.bind(data))
     });
-    // this.json.subscribe((data) => {
-    //   console.log(data)
-    //   console.log("hello ban");
-    //  this.canvas.loadFromJSON(JSON.stringify(this.json),this.canvas.renderAll.bind(this.json));
 
-    // });
-    this.getUserCursor();
     this.canvas.on('object:created', function () {
       if (!this.isRedoing) {
         this.stack = [];
@@ -102,25 +96,23 @@ export class DrawComponent implements OnInit, OnDestroy {
       'getJSON',
       (this.json = JSON.stringify(this.canvas.toJSON()))
     );
-    this.http.put('http://192.168.31.136:3000/room/update?name=' + this.room, {
-      canvas: this.json,
-    });
   }
 
   @HostListener('document:keyup', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.key === 'Delete') {
       this.deleteShape();
+      this.canvas.renderAll();
     }
     if (event.ctrlKey) {
       switch (event.keyCode) {
         case this.keyCodes['Z']:
           this.undo();
-          console.log('done undo');
+
           break;
         case this.keyCodes['Y']:
           this.redo();
-          console.log('done redo');
+          this.canvas.renderAll();
           break;
       }
     }
@@ -138,6 +130,9 @@ export class DrawComponent implements OnInit, OnDestroy {
   }
   public chooseColor() {
     this.color = document.getElementById('color');
+    this.color.addEventListener('change', function (event) {
+      this.color = event.target.value;
+    });
     this.canvas.freeDrawingBrush.color = this.color.value;
   }
   convertImg() {
@@ -148,24 +143,29 @@ export class DrawComponent implements OnInit, OnDestroy {
 
   startDrawing() {
     this.canvas.isDrawingMode = true;
-    // this.canvas.freeDrawingBrush.color = this.chooseColor();
     this.canvas.freeDrawingBrush.width = 14;
-    this.canvas.freeDrawingBrush.color = 'black';
+    if (!this.color) {
+      this.color = 'black';
+    }
+    this.canvas.freeDrawingBrush.color = this.color;
     fabric.Path.prototype.selectable = false;
     this.canvas.defaultCursor = 'create';
     this.socket.sendCanvas(this.canvas.toJSON().objects);
   }
   //bug
   highlightPen() {
+    let a = [];
     this.canvas.isDrawingMode = true;
     this.canvas.freeDrawingBrush.color = 'red';
     this.canvas.freeDrawingBrush.width = 14;
     this.canvas.on('path:created', function (opt) {
       opt.path.globalCompositeOperation = 'source-over';
       opt.path.stroke = 'red';
-      opt.path.animate('opacity', '0', {
-        duration: 3000,
-      });
+      // opt.path.animate('opacity', '0', {
+      //   duration: 3000,
+
+      // })
+      setTimeout(this.canvas.remove(opt.path));
     });
   }
 
@@ -207,7 +207,6 @@ export class DrawComponent implements OnInit, OnDestroy {
   // /Shape
   public deleteShape() {
     this.canvas.isDrawingMode = false;
-    // console.log(this.canvas.getActiveObject().objects)
     console.log(this.canvas.getActiveObject());
 
     this.canvas.remove(this.canvas.getActiveObject());
@@ -219,14 +218,12 @@ export class DrawComponent implements OnInit, OnDestroy {
       radius: 20,
       fill: 'blue',
     });
-
     this.canvas.add(this.circle);
-
-    this.socket.sendCanvas(this.canvas.toJSON().objects);
-
-    // this.canvas.renderAll();
-    // this.json = this.socket.canvas;
+    this.canvas.renderAll();
   }
+  // this.socket.sendCanvas(this.canvas.toJSON().objects);
+  // this.canvas.renderAll();
+  // this.json = this.socket.canvas;
   public drawRectangle() {
     this.canvas.isDrawingMode = false;
     this.rect = new fabric.Rect({
@@ -256,9 +253,6 @@ export class DrawComponent implements OnInit, OnDestroy {
   public shapeOption() {
     this.shapeColor = document.getElementById('shapecolor');
     return this.canvas.getActiveObject().set('fill', this.shapeColor.value);
-    //     this.canvas.on('selected',function(){
-    //   this.canvas.fill(this.shapeColor.value);
-    // })
   }
   downloadCanvas() {
     this.canvas.toDataUrl();
@@ -270,6 +264,7 @@ export class DrawComponent implements OnInit, OnDestroy {
       this.stack.push(this.canvas._objects.pop());
       this.canvas.renderAll();
     }
+    this.canvas.renderAll();
     return this.stack;
   }
 
@@ -280,10 +275,5 @@ export class DrawComponent implements OnInit, OnDestroy {
       this.canvas.add(this.stack.pop());
       this.canvas.renderAll();
     }
-  }
-  getUserCursor() {
-    this.canvas.on('mouse:move', function (e) {
-      console.log(e.e.clientX + ' ' + e.e.clientY);
-    });
   }
 }
