@@ -20,7 +20,7 @@ export class AuthService {
         this.user = user;
         localStorage.setItem('user', JSON.stringify(this.user));
         console.log('login success! ' + user.displayName);
-        alert('Login successfully, '+user.displayName)
+        // alert('Login successfully, '+user.displayName)
         console.log(this.user);
         this.User.createUser(
           this.user.displayName,
@@ -46,7 +46,7 @@ export class AuthService {
       await this.router.navigate(['/']);
       localStorage.removeItem('user');
       this.user = null;
-      alert('Logged out')
+      // alert('Logged out')
     });
   }
   async login(email: any, password: string) {
