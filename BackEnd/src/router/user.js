@@ -1,14 +1,18 @@
 const router = require("express").Router();
 const db = require("../database");
 const body = require("body-parser");
-
+var cors = require("cors");
 router.use(body.json());
+router.use(cors());
+
 //tao user
+router.get("/hi", (req, res) => {
+  res.send("hello");
+});
 router.post("/create", async (req, res) => {
-  let { roomJoined, displayName, photoURL, email, uid } = req.body;
+  let { displayName, photoURL, email, uid } = req.body;
   let a = await db.collection("user").doc(uid).get();
   let result = await db.collection("user").doc(uid).set({
-    room: roomJoined,
     displayName: displayName,
     photoURL: photoURL,
     email: email,

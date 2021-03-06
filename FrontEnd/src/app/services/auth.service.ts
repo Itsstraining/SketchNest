@@ -13,14 +13,20 @@ export class AuthService {
   constructor(
     private afAuth: AngularFireAuth,
     private router: Router,
-    private userService: UserService
+    public User: UserService
   ) {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.user = user;
         localStorage.setItem('user', JSON.stringify(this.user));
-        console.log(user.displayName);
         console.log('login success! ' + user.displayName);
+        console.log(this.user);
+        this.User.createUser(
+          this.user.displayName,
+          this.user.uid,
+          this.user.photoURL,
+          this.user.email
+        );
       } else {
         localStorage.setItem('user', null);
       }
@@ -31,16 +37,8 @@ export class AuthService {
     await this.afAuth.signInWithPopup(
       new firebase.default.auth.GoogleAuthProvider()
     );
-    if (this.user.uid != null) {
-      this.userService.createUser(
-        this.user.displayName,
-        this.user.email,
-        this.user.photoURL,
-        this.user.uid
-      );
-    }
-    this.userService.user = this.user;
   }
+
   async logout() {
     this.afAuth.signOut().then(async () => {
       await this.router.navigate(['/']);

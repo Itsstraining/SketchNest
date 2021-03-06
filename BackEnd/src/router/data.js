@@ -1,28 +1,27 @@
 const router = require("express").Router();
 const db = require("../database");
 const body = require("body-parser");
+const { name } = require("ejs");
 
 router.use(body.json());
 //create room
 router.post("/create", async (req, res) => {
-  let { id, name, password, canvas } = req.body;
+  let { name, password } = req.body;
   // let {canvas} = socket.on()
-  let result = await db.collection("room").doc(id).set({
-    id: id,
+  let result = await db.collection("room").doc(name).set({
     name: name,
     password: password,
-    canvas: canvas,
   });
-  let check = await checkIdExist(id);
+  let check = await checkIdExist(name);
   if (check) {
-    res.send({ message: `Can't create room ${id}` });
+    res.send({ message: `Can't create room ${name}` });
   }
-  res.send({ message: `Room ${id} created` });
+  res.send({ message: `Room ${name} created` });
   console.log(result);
 });
-async function checkIdExist(id) {
+async function checkIdExist(name) {
   let varia = await db.collection("room").get();
-  let arr = varia.docs.map((doc) => (doc.id == id ? 1 : 0));
+  let arr = varia.docs.map((doc) => (doc.name == name ? 1 : 0));
   for (let i of arr) {
     if (i == 0) {
       return 0;
