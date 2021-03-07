@@ -273,12 +273,6 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.x0 = mouseEvent.pointer.x;
     this.y0 = mouseEvent.pointer.y;
     switch (this.tool) {
-      case 'freePen': {
-        break;
-      }
-      case 'freeBrush': {
-        break;
-      }
       case 'Straightline': {
         this.canvas.isDrawingMode = false;
         var coordinates = [this.x0, this.y0, this.x0, this.y0];
@@ -408,13 +402,19 @@ export class DrawComponent implements OnInit, OnDestroy {
     let changeInX = this.x2 - this.x0;
     let changeInY = this.y2 - this.y0;
     switch (this.tool) {
+      case 'freePen':{
+        break;
+      }
+      case 'freeBrush':{
+
+        break;
+      }
       case 'Straightline': {
         if (this.selected !== null) {
           this.selected.set({
-            x2: this.x2,
-            y2: this.y2,
           });
         }
+        this.canvas.isDrawingMode=false;
         this.canvas.renderAll();
         break;
       }
@@ -425,6 +425,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             height: changeInY,
           });
         }
+        this.canvas.isDrawingMode=false;
         this.canvas.renderAll();
         break;
       }
@@ -467,6 +468,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             ry: Math.abs(changeInY),
           });
         }
+        this.canvas.isDrawingMode=false;
         this.canvas.renderAll();
         break;
       }
@@ -480,6 +482,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             radius: Math.abs(changeInX),
           });
         }
+        this.canvas.isDrawingMode=false;
         this.canvas.renderAll();
         break;
       }
@@ -492,10 +495,18 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
   }
   public mouseUp(mouseEvent) {
-    if (this.mode == 'add') {
-      this.selected = null;
-      // this.tool='Pointer'
+    if(this.tool=='freePen'||this.tool=='freeBrush'){
+   
     }
+    else{
+      if (this.mode == 'add') {
+      
+        this.canvas.isDrawingMode=false;
+        this.selected = null;
+        this.tool='Pointer'
+      }
+    }
+   
     this.x0 = 0;
     this.y0 = 0;
   }
