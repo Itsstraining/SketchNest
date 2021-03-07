@@ -24,7 +24,7 @@ import {
 export class DrawComponent implements OnInit, OnDestroy {
   public colorchoose;
   public toogle = true;
-  public tool = 'Rectangle';
+  public tool;
   public action = 'none';
   public color= 'black';
   public x0;
@@ -92,7 +92,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   @ViewChild(FabricComponent, { static: false }) componentRef?: FabricComponent;
   @ViewChild(FabricDirective, { static: false }) directiveRef?: FabricDirective;
   ////////////////////////
-  brush: any;
+
   canvas;
   image: any;
   normal: any;
@@ -124,11 +124,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   openDialog() {
     this.dialog.open(DialogExampleComponent);
   }
-  public freeLine() {
-    this.canvas.isDrawingMode = true;
-    this.canvas.freeDrawingBrush.color=this.color;
-    this.tool = 'Freeline';
-  }
+
 
   ngOnInit(): void {
     console.log(this.socket.socket.emit('a', 'hello a'));
@@ -171,6 +167,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
   }
 
+ 
   //default
   clearCanvas() {
     this.canvas.clear();
@@ -180,18 +177,6 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.link.download = 'download.png';
     this.link.href = this.canvas.toDataURL();
     this.link.click();
-  }
-
-  startDrawing() {
-    this.canvas.isDrawingMode = true;
-    this.canvas.freeDrawingBrush.width = 14;
-    if (!this.color) {
-      this.color = 'black';
-    }
-    this.canvas.freeDrawingBrush.color = this.color;
-    fabric.Path.prototype.selectable = false;
-    this.canvas.defaultCursor = 'create';
-    this.socket.sendCanvas(this.canvas.toJSON().objects);
   }
   //bug
   // highlightPen() {
@@ -272,14 +257,26 @@ export class DrawComponent implements OnInit, OnDestroy {
       this.canvas.renderAll();
     }
   }
-
+  public freePen(){
+    this.canvas.isDrawingMode=true;
+    this.canvas.freeDrawingBrush.width=1;
+    this.tool='freePen'
+  }
+  public freeBrush(){
+    this.canvas.isDrawingMode=true;
+    this.canvas.freeDrawingBrush.width=14;
+    this.tool='freeBrush'
+  }
   //////////////////////////
   public mouseDown(mouseEvent) {
 
     this.x0 = mouseEvent.pointer.x;
     this.y0 = mouseEvent.pointer.y;
     switch (this.tool) {
-      case 'Freeline': {
+      case 'freePen': {
+        break;
+      }
+      case 'freeBrush': {
         break;
       }
       case 'Straightline': {
@@ -497,7 +494,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   public mouseUp(mouseEvent) {
     if (this.mode == 'add') {
       this.selected = null;
-      this.tool='Pointer'
+      // this.tool='Pointer'
     }
     this.x0 = 0;
     this.y0 = 0;

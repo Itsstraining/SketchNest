@@ -18,7 +18,7 @@
     </button>
 <br>
     <div class="dropdown">
-      <button class="dropbtn" id="btnFunction" (click)="freeLine()">
+      <button class="dropbtn" id="btnFunction">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
           focusable="false" width="35px" height="33px" style="
           -ms-transform: rotate(360deg);
@@ -32,7 +32,7 @@
       </button>
       <div class="dropdown-content">
         <div style="width: 230px;">
-          <button id="btnFunction" (click)="freeLine()" style="border: none;">
+          <button id="btnFunction" (click)="freePen()" style="border: none;">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
               focusable="false" width="35px" height="35px" style="
               -ms-transform: rotate(360deg);
@@ -44,7 +44,7 @@
                 fill="black" />
             </svg>
           </button>
-          <button id="btnFunction"> <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+          <button id="btnFunction" (click)="freeBrush()"> <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
               aria-hidden="true" focusable="false" width="35px" height="35px"
               style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
               preserveAspectRatio="xMidYMid meet" viewBox="0 0 1792 1792">
