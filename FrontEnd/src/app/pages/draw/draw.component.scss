@@ -106,19 +106,20 @@
     border: solid 1px;
 }
 header{
-  background-color: rgb(204, 204, 204);
+  background-color: #313131;
 }
+
 //fix layout here
 body {
   // background-image: url("https://images.unsplash.com/photo-1536599018102-9f803c140fc1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80");
   display: grid;
-  height: 100%;
+  height: 90%;
   grid-template: auto 1fr auto / auto 1fr auto;
   background-blend-mode: multiply;
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  background-color: rgb(204, 204, 204);
+  background-color: #313131;
   
 }
 
@@ -182,14 +183,14 @@ canvas{
   width: 100%;
   height: 30px;
 
- background-color: rgb(97, 97, 255);
-  color: white;
+ background-color:rgb(69, 184, 223);
+  color:rgb(255, 255, 255);
   font-size: x-large ;
 
 }
 #btnShare:hover{
-  color: rgb(255, 249, 249);
-  background: rgb(0, 0, 255);
+  color: rgb(255, 255, 255);
+  background:rgb(46, 203, 255);
 }
 
 
@@ -197,10 +198,11 @@ canvas{
   max-width: auto;
   margin: 0px auto;
   border: solid rgb(0, 0, 0) 1px;
+  background: rgb(255, 255, 255);
 }
 
 .list {
-  background: rgba(255, 255, 255, 0);
+  
   border-radius: 2px;
   list-style: none;
   padding: 0px;
@@ -239,4 +241,49 @@ canvas{
       font-family: Arial, Helvetica, sans-serif;
     }
   }
+}
+
+//dropPen
+.dropbtn {
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ffffff}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+#choosePen{
+  width: 55px;
+  height: 55px;
+  border: none;
+}
+
+#shapeMenu{
+  border: none;
 }

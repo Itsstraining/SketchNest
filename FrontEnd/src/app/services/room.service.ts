@@ -11,6 +11,10 @@ export class RoomService {
   roomList: Array<Room> = [];
 
   constructor(private http: HttpClient, private user: AuthService) {}
+  async OngetRoomName(name) {
+    let temp = name;
+    return temp;
+  }
 
   async onCreateRoom(name, password) {
     let room = {
@@ -25,6 +29,23 @@ export class RoomService {
           name: name,
           password: password,
           owner: this.user.user.email,
+        })
+        .toPromise()
+        .then((e) => {
+          console.log(e);
+        });
+    } catch (err) {
+      console.log(err);
+    }
+    try {
+      await this.http
+        .put('http://192.168.31.136:3000/user/update', {
+          room: [
+            {
+              name: name,
+              password: password,
+            },
+          ],
         })
         .toPromise()
         .then((e) => {
