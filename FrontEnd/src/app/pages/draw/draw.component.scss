@@ -106,20 +106,20 @@
     border: solid 1px;
 }
 header{
-  background-color: rgb(204, 204, 204);
+  background-color: #313131;
 }
 
 //fix layout here
 body {
   // background-image: url("https://images.unsplash.com/photo-1536599018102-9f803c140fc1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80");
   display: grid;
-  height: 100%;
+  height: 90%;
   grid-template: auto 1fr auto / auto 1fr auto;
   background-blend-mode: multiply;
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  background-color: rgb(204, 204, 204);
+  background-color: #313131;
   
 }
 
@@ -198,10 +198,11 @@ canvas{
   max-width: auto;
   margin: 0px auto;
   border: solid rgb(0, 0, 0) 1px;
+  background: rgb(255, 255, 255);
 }
 
 .list {
-  background: rgba(255, 255, 255, 0);
+  
   border-radius: 2px;
   list-style: none;
   padding: 0px;
@@ -283,3 +284,6 @@ canvas{
   border: none;
 }
 
+#shapeMenu{
+  border: none;
+}

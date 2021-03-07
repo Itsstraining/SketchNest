@@ -4,339 +4,211 @@
 
 <body>
   <div class="left-sidebar">
-    <button id="btnFunction" style="border-radius: 20px 20px 0px 0px">
-      <input
-        style="width: 35px; height: 35px"
-        title="Pen color"
-        type="color"
-        id="color"
-        (blur)="chooseColor()"
-      />
-    </button>
-    <br />
-    <button title="Pen" id="btnFunction" (click)="freeLine()" title="Pen">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        aria-hidden="true"
-        focusable="false"
-        width="35px"
-        height="35px"
-        style="
+    <button title="pointer" id="btnFunction" (click)="pointer()" title="Pointer" style="border-radius: 20px 20px 0px 0px">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+        focusable="false" width="35px" height="35px" style="
           -ms-transform: rotate(360deg);
           -webkit-transform: rotate(360deg);
           transform: rotate(360deg);
-        "
-        preserveAspectRatio="xMidYMid meet"
-        viewBox="0 0 64 64"
-      >
-        <path
-          d="M60.609 3.389c-1.757-1.758-4.528-1.839-6.409-.292l-.829-.829l-2.269 2.281l.192.194l-.806.754l-.183-.176c-1.729-1.731-3.722-3.526-6.375-2.454c-3.609 1.463-5.333 9.273-7.329 12.228c-1.742 2.57-6.112 5.292-10.019 7.343c.195.193.58.771.836.836c1.086-.479 2.192-.906 3.267-1.406c2.244-1.043 4.428-2.258 6.358-3.819c3.95-3.197 5.542-12.783 8.361-12.971c1.179-.085 2.33 1.01 3.306 2.082L28.294 26.25l.806.806L9.407 46.783l-6.188 10.92l.818.818l-1.758 2.333c-.299.352-.369.814-.156 1.027c.209.207.672.137 1.021-.164l2.336-1.752l.817.816l10.92-6.187l19.695-19.727l.016.016l.822.822L59.243 12.69l.219.219l2.267-2.281l-.827-.828c1.548-1.881 1.465-4.652-.293-6.411M6.467 59.537l-2.003-2.003l5.165-9.114l5.952 5.953l-9.114 5.164m31.284-25.245l-8.038-8.039l1.498-1.48l8.029 8.028l-1.489 1.491M59.46 11.493l-6.945-6.945l.858-.863l6.943 6.945l-.856.863"
-          fill="black"
-        />
-      </svg>
-    </button>
-    <br />
-    <button
-      title="pointer"
-      id="btnFunction"
-      (click)="pointer()"
-      title="Pointer"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        aria-hidden="true"
-        focusable="false"
-        width="35px"
-        height="35px"
-        style="
-          -ms-transform: rotate(360deg);
-          -webkit-transform: rotate(360deg);
-          transform: rotate(360deg);
-        "
-        preserveAspectRatio="xMidYMid meet"
-        viewBox="0 0 24 24"
-      >
+        " preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
         <path
           d="M20.978 13.21a1 1 0 0 0-.396-1.024l-14-10a.999.999 0 0 0-1.575.931l2 17a1 1 0 0 0 1.767.516l3.612-4.416l3.377 5.46l1.701-1.052l-3.357-5.428l6.089-1.218a.995.995 0 0 0 .782-.769z"
-          fill="black"
-        />
+          fill="black" />
       </svg>
     </button>
-    <br />
-
-    <button id="btnFunction" (click)="eraser()" title="Eraser">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        aria-hidden="true"
-        focusable="false"
-        width="35px"
-        height="35px"
-        style="
+<br>
+    <div class="dropdown">
+      <button class="dropbtn" id="btnFunction" (click)="freeLine()">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+          focusable="false" width="35px" height="33px" style="
           -ms-transform: rotate(360deg);
           -webkit-transform: rotate(360deg);
           transform: rotate(360deg);
-        "
-        preserveAspectRatio="xMidYMid meet"
-        viewBox="0 0 20 20"
-      >
+        " preserveAspectRatio="xMidYMid meet" viewBox="0 0 64 64">
+          <path
+            d="M60.609 3.389c-1.757-1.758-4.528-1.839-6.409-.292l-.829-.829l-2.269 2.281l.192.194l-.806.754l-.183-.176c-1.729-1.731-3.722-3.526-6.375-2.454c-3.609 1.463-5.333 9.273-7.329 12.228c-1.742 2.57-6.112 5.292-10.019 7.343c.195.193.58.771.836.836c1.086-.479 2.192-.906 3.267-1.406c2.244-1.043 4.428-2.258 6.358-3.819c3.95-3.197 5.542-12.783 8.361-12.971c1.179-.085 2.33 1.01 3.306 2.082L28.294 26.25l.806.806L9.407 46.783l-6.188 10.92l.818.818l-1.758 2.333c-.299.352-.369.814-.156 1.027c.209.207.672.137 1.021-.164l2.336-1.752l.817.816l10.92-6.187l19.695-19.727l.016.016l.822.822L59.243 12.69l.219.219l2.267-2.281l-.827-.828c1.548-1.881 1.465-4.652-.293-6.411M6.467 59.537l-2.003-2.003l5.165-9.114l5.952 5.953l-9.114 5.164m31.284-25.245l-8.038-8.039l1.498-1.48l8.029 8.028l-1.489 1.491M59.46 11.493l-6.945-6.945l.858-.863l6.943 6.945l-.856.863"
+            fill="black" />
+        </svg>
+      </button>
+      <div class="dropdown-content">
+        <div style="width: 230px;">
+          <button id="btnFunction" (click)="freeLine()" style="border: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+              focusable="false" width="35px" height="35px" style="
+              -ms-transform: rotate(360deg);
+              -webkit-transform: rotate(360deg);
+              transform: rotate(360deg);
+            " preserveAspectRatio="xMidYMid meet" viewBox="0 0 64 64">
+              <path
+                d="M60.609 3.389c-1.757-1.758-4.528-1.839-6.409-.292l-.829-.829l-2.269 2.281l.192.194l-.806.754l-.183-.176c-1.729-1.731-3.722-3.526-6.375-2.454c-3.609 1.463-5.333 9.273-7.329 12.228c-1.742 2.57-6.112 5.292-10.019 7.343c.195.193.58.771.836.836c1.086-.479 2.192-.906 3.267-1.406c2.244-1.043 4.428-2.258 6.358-3.819c3.95-3.197 5.542-12.783 8.361-12.971c1.179-.085 2.33 1.01 3.306 2.082L28.294 26.25l.806.806L9.407 46.783l-6.188 10.92l.818.818l-1.758 2.333c-.299.352-.369.814-.156 1.027c.209.207.672.137 1.021-.164l2.336-1.752l.817.816l10.92-6.187l19.695-19.727l.016.016l.822.822L59.243 12.69l.219.219l2.267-2.281l-.827-.828c1.548-1.881 1.465-4.652-.293-6.411M6.467 59.537l-2.003-2.003l5.165-9.114l5.952 5.953l-9.114 5.164m31.284-25.245l-8.038-8.039l1.498-1.48l8.029 8.028l-1.489 1.491M59.46 11.493l-6.945-6.945l.858-.863l6.943 6.945l-.856.863"
+                fill="black" />
+            </svg>
+          </button>
+          <button id="btnFunction"> <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+              aria-hidden="true" focusable="false" width="35px" height="35px"
+              style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
+              preserveAspectRatio="xMidYMid meet" viewBox="0 0 1792 1792">
+              <path
+                d="M1615 0q70 0 122.5 46.5T1790 163q0 63-45 151q-332 629-465 752q-97 91-218 91q-126 0-216.5-92.5T755 845q0-128 92-212l638-579q59-54 130-54zM706 1034q39 76 106.5 130t150.5 76l1 71q4 213-129.5 347T486 1792q-123 0-218-46.5T115.5 1618T29 1435T0 1215q7 5 41 30t62 44.5t59 36.5t46 17q41 0 55-37q25-66 57.5-112.5t69.5-76t88-47.5t103-25.5t125-10.5z"
+                fill="black" />
+            </svg></button>
+          <button id="btnFunction"> <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+              aria-hidden="true" focusable="false" width="35px" height="35px"
+              style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
+              preserveAspectRatio="xMidYMid meet" viewBox="0 0 544 512">
+              <path
+                d="M0 479.98L99.92 512l35.45-35.45l-67.04-67.04L0 479.98zm124.61-240.01a36.592 36.592 0 0 0-10.79 38.1l13.05 42.83l-50.93 50.94l96.23 96.23l50.86-50.86l42.74 13.08c13.73 4.2 28.65-.01 38.15-10.78l35.55-41.64l-173.34-173.34l-41.52 35.44zm403.31-160.7l-63.2-63.2c-20.49-20.49-53.38-21.52-75.12-2.35L190.55 183.68l169.77 169.78L530.27 154.4c19.18-21.74 18.15-54.63-2.35-75.13z"
+                fill="black" />
+            </svg></button>
+            <button id="btnFunction" >
+              <input style="width: 35px; height: 35px" title="Pen color" type="color" id="color" (blur)="chooseColor()" />
+            </button>
+        </div>
+      </div>
+    </div>
+    <br />
+    
+
+    <button id="btnFunction" (click)="eraser()" title="Eraser">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+        focusable="false" width="35px" height="35px" style="
+          -ms-transform: rotate(360deg);
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        " preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20">
         <g fill="none">
           <path
             d="M11.197 2.44a1.5 1.5 0 0 1 2.121 0l4.243 4.242a1.5 1.5 0 0 1 0 2.121L9.364 17H14.5a.5.5 0 0 1 0 1H7.82a1.496 1.496 0 0 1-1.14-.437L2.437 13.32a1.5 1.5 0 0 1 0-2.121l8.76-8.76zM9.78 15.168l-4.95-4.95l-1.687 1.687a.5.5 0 0 0 0 .707l4.243 4.243a.5.5 0 0 0 .707 0l1.687-1.687z"
-            fill="black"
-          />
+            fill="black" />
         </g>
       </svg>
     </button>
 
     <br />
     <button title="Delete" id="btnFunction" (click)="deleteShape()">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        aria-hidden="true"
-        focusable="false"
-        width="35px"
-        height="35px"
-        style="
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+        focusable="false" width="35px" height="35px" style="
           -ms-transform: rotate(360deg);
           -webkit-transform: rotate(360deg);
           transform: rotate(360deg);
-        "
-        preserveAspectRatio="xMidYMid meet"
-        viewBox="0 0 24 24"
-      >
+        " preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
         <path
           d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41z"
-          fill="black"
-        />
+          fill="black" />
       </svg>
     </button>
     <br />
     <!-- shape menu -->
-    <button
-      title="Shapes"
-      mat-icon-button
-      [matMenuTriggerFor]="menu"
-      aria-label="Example icon-button with a menu"
-      style="border: none; width: 55px; height: 55px; background-color: white"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        aria-hidden="true"
-        focusable="false"
-        width="35px"
-        height="35px"
-        style="
+    <button title="Shapes" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu"
+      style="border: none; width: 55px; height: 55px; background-color: white">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+        focusable="false" width="35px" height="35px" style="
           -ms-transform: rotate(360deg);
           -webkit-transform: rotate(360deg);
           transform: rotate(360deg);
-        "
-        preserveAspectRatio="xMidYMid meet"
-        viewBox="0 0 24 24"
-      >
+        " preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
         <g fill="none">
           <circle cx="12" cy="12" r="9" stroke="black" stroke-width="2" />
         </g>
       </svg>
     </button>
     <mat-menu title="Circle" #menu="matMenu">
-      <button
-        (blur)="this.tool = 'Circle'"
-        mat-menu-item
-        style="padding-left: 38px"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          aria-hidden="true"
-          focusable="false"
-          width="35px"
-          height="35px"
-          style="
+
+      <div mat-menu-item>
+        <button id="shapeMenu" (blur)="this.tool = 'Circle'">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+            focusable="false" width="35px" height="35px" style="
             -ms-transform: rotate(360deg);
             -webkit-transform: rotate(360deg);
             transform: rotate(360deg);
-          "
-          preserveAspectRatio="xMidYMid meet"
-          viewBox="0 0 24 24"
-        >
-          <g fill="none">
-            <circle cx="12" cy="12" r="9" stroke="black" stroke-width="2" />
-          </g>
-        </svg>
-      </button>
-      <button
-        title="Rectangle"
-        mat-menu-item
-        (click)="this.tool = 'Rectangle'"
-        style="padding-left: 38px"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          aria-hidden="true"
-          focusable="false"
-          width="35px"
-          height="35px"
-          style="
+          " preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+            <g fill="none">
+              <circle cx="12" cy="12" r="9" stroke="black" stroke-width="2" />
+            </g>
+          </svg>
+        </button>
+        <button id="shapeMenu" title="Rectangle" (click)="this.tool = 'Rectangle'">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+            focusable="false" width="35px" height="35px" style="
             -ms-transform: rotate(360deg);
             -webkit-transform: rotate(360deg);
             transform: rotate(360deg);
-          "
-          preserveAspectRatio="xMidYMid meet"
-          viewBox="0 0 512 512"
-        >
-          <path
-            fill="black"
-            d="M36 416h440a20.023 20.023 0 0 0 20-20V116a20.023 20.023 0 0 0-20-20H36a20.023 20.023 0 0 0-20 20v280a20.023 20.023 0 0 0 20 20zm12-288h416v256H48z"
-          />
-        </svg>
-      </button>
-      <button
-        title="Triangle"
-        mat-menu-item
-        (click)="this.tool = 'Ellipse'"
-        style="padding-left: 38px"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          aria-hidden="true"
-          focusable="false"
-          width="35px"
-          height="35px"
-          style="
+          " preserveAspectRatio="xMidYMid meet" viewBox="0 0 512 512">
+            <path fill="black"
+              d="M36 416h440a20.023 20.023 0 0 0 20-20V116a20.023 20.023 0 0 0-20-20H36a20.023 20.023 0 0 0-20 20v280a20.023 20.023 0 0 0 20 20zm12-288h416v256H48z" />
+          </svg>
+        </button>
+        <button id="shapeMenu" title="Triangle" (click)="this.tool = 'Ellipse'">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+            focusable="false" width="35px" height="35px" style="
             -ms-transform: rotate(360deg);
             -webkit-transform: rotate(360deg);
             transform: rotate(360deg);
-          "
-          preserveAspectRatio="xMidYMid meet"
-          viewBox="0 0 512 512"
-        >
-          <path
-            fill="black"
-            d="M273.342 66.038a20 20 0 0 0-34.684 0L29.569 430.007a20 20 0 0 0 17.342 29.963h418.178a20 20 0 0 0 17.342-29.962zM67.644 427.97L256 100.091L444.356 427.97z"
-          />
-        </svg>
-      </button>
+          " preserveAspectRatio="xMidYMid meet" viewBox="0 0 512 512">
+            <path fill="black"
+              d="M273.342 66.038a20 20 0 0 0-34.684 0L29.569 430.007a20 20 0 0 0 17.342 29.963h418.178a20 20 0 0 0 17.342-29.962zM67.644 427.97L256 100.091L444.356 427.97z" />
+          </svg>
+        </button>
+      </div>
+
     </mat-menu>
 
     <br />
-
+    <button id="btnFunction">
+      <input style="width: 35px; height: 35px" title="Shape Color" type="color" id="shapecolor"
+        (blur)="shapeOption()" />
+    </button>
+    <br>
     <button title="Text" id="btnFunction" (click)="textField()">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        aria-hidden="true"
-        focusable="false"
-        width="35px"
-        height="35px"
-        style="
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+        focusable="false" width="35px" height="35px" style="
           -ms-transform: rotate(360deg);
           -webkit-transform: rotate(360deg);
           transform: rotate(360deg);
-        "
-        preserveAspectRatio="xMidYMid meet"
-        viewBox="0 0 24 24"
-      >
+        " preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
         <path
           d="M21 7V3h-4v1H7V3H3v4h1v10H3v4h4v-1h10v1h4v-4h-1V7h1m-3-3h2v2h-2V4M4 4h2v2H4V4m2 16H4v-2h2v2m14 0h-2v-2h2v2m-2-3h-1v1H7v-1H6V7h1V6h10v1h1v10m-2-9v2h-3v6h-2v-6H8V8h8z"
-          fill="black"
-        />
+          fill="black" />
       </svg>
     </button>
     <br />
     <div class="image-upload">
       <button id="btnFunction" title="Add Image">
         <label for="file-input">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            aria-hidden="true"
-            focusable="false"
-            width="35px"
-            height="35px"
-            style="
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+            focusable="false" width="35px" height="35px" style="
               -ms-transform: rotate(360deg);
               -webkit-transform: rotate(360deg);
               transform: rotate(360deg);
-            "
-            preserveAspectRatio="xMidYMid meet"
-            viewBox="0 0 24 24"
-          >
+            " preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
             <path
               d="M9 13l3-4l3 4.5V12h4V5c0-1.103-.897-2-2-2H4c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h8v-4H5l3-4l1 2z"
-              fill="black"
-            />
+              fill="black" />
             <path d="M19 14h-2v3h-3v2h3v3h2v-3h3v-2h-3z" fill="#626262" />
           </svg>
         </label>
       </button>
-      <input
-        type="file"
-        id="file-input"
-        (change)="picture($event)"
-        accept="image/*"
-      />
+      <input type="file" id="file-input" (change)="picture($event)" accept="image/*" />
     </div>
-    <button id="btnFunction">
-      <input
-        style="width: 35px; height: 35px"
-        title="Shape Color"
-        type="color"
-        id="shapecolor"
-        (blur)="shapeOption()"
-      />
-    </button>
-    <br />
-    <button
-      title="Download"
-      id="download"
-      id="btnFunction"
-      style="border-radius: 0px 0px 20px 20px"
-      (click)="convertImg()"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        aria-hidden="true"
-        focusable="false"
-        width="35px"
-        height="35px"
-        style="
+    <button title="Download" id="download" id="btnFunction" style="border-radius: 0px 0px 20px 20px"
+      (click)="convertImg()">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+        focusable="false" width="35px" height="35px" style="
           -ms-transform: rotate(360deg);
           -webkit-transform: rotate(360deg);
           transform: rotate(360deg);
-        "
-        preserveAspectRatio="xMidYMid meet"
-        viewBox="0 0 24 24"
-      >
+        " preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
         <path
           d="M22.71 6.29a1 1 0 0 0-1.42 0L20 7.59V2a1 1 0 0 0-2 0v5.59l-1.29-1.3a1 1 0 0 0-1.42 1.42l3 3a1 1 0 0 0 .33.21a.94.94 0 0 0 .76 0a1 1 0 0 0 .33-.21l3-3a1 1 0 0 0 0-1.42zM19 13a1 1 0 0 0-1 1v.38l-1.48-1.48a2.79 2.79 0 0 0-3.93 0l-.7.7l-2.48-2.48a2.85 2.85 0 0 0-3.93 0L4 12.6V7a1 1 0 0 1 1-1h8a1 1 0 0 0 0-2H5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3v-5a1 1 0 0 0-1-1zM5 20a1 1 0 0 1-1-1v-3.57l2.9-2.9a.79.79 0 0 1 1.09 0l3.17 3.17l4.3 4.3zm13-1a.89.89 0 0 1-.18.53L13.31 15l.7-.7a.77.77 0 0 1 1.1 0L18 17.21z"
-          fill="black"
-        />
+          fill="black" />
       </svg>
     </button>
   </div>
   <main>
-    <fabric
-      style="background-color: white; width: 1400px; height: 700px"
-      *ngIf="type == 'component' && show"
-      fxFlex="auto"
-      (mouseDown)="mouseDown($event)"
-      (mouseMove)="mouseMove($event)"
-      (mouseUp)="mouseUp($event)"
-      (objectModified)="updateModifications(true)"
-      (objectAdded)="updateModifications(true)"
-      (objectSelected)="(true)"
-      [data]="data"
-      [config]="config"
-      [disabled]="disabled"
-    >
+    <fabric style="background-color: white; width: 1400px; height: 700px" *ngIf="type == 'component' && show"
+      fxFlex="auto" (mouseDown)="mouseDown($event)" (mouseMove)="mouseMove($event)" (mouseUp)="mouseUp($event)"
+      (objectModified)="updateModifications(true)" (objectAdded)="updateModifications(true)" (objectSelected)="(true)"
+      [data]="data" [config]="config" [disabled]="disabled">
     </fabric>
   </main>
   <div class="right-sidebar">
