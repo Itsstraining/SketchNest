@@ -11,19 +11,11 @@ import { fabric } from 'fabric';
 import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.component';
 import { ConnectService } from 'src/app/services/connect.service';
 import { AuthService } from 'src/app/services/auth.service';
-<<<<<<< HEAD
-import { HttpEventType } from '@angular/common/http';
-import { CompileReflector } from '@angular/compiler';
-import { Canvas, IText } from 'fabric/fabric-impl';
-import { CONTEXT_NAME } from '@angular/compiler/src/render3/view/util';
-// import { cursorTo } from 'readline';
-=======
 import {
   FabricComponent,
   FabricDirective,
   FabricConfigInterface,
 } from 'ngx-fabric-wrapper';
->>>>>>> d5bf15fe1f471c93752cbdf6c508d3b7fd3a11ec
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
@@ -32,7 +24,7 @@ import {
 export class DrawComponent implements OnInit, OnDestroy {
   public toogle = true;
   public tool;
-  public color='black';
+  public color = 'black';
   public action = 'none';
   public chosenColor;
   public x0;
@@ -128,7 +120,6 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.dialog.open(DialogExampleComponent);
   }
 
-
   ngOnInit(): void {
     console.log(this.socket.socket.emit('a', 'hello a'));
     this.json = this.socket.updateCanvas();
@@ -140,18 +131,6 @@ export class DrawComponent implements OnInit, OnDestroy {
     });
   }
   ngAfterViewInit(): void {
-<<<<<<< HEAD
-    this.canvas.isDrawingMode = true;
-    this.canvas.on('object:created', function () {
-      if (!this.isRedoing) {
-        this.stack = [];
-      }
-      this.isRedoing = false;
-    });
-  }
-  ngOnDestroy() {
-    this.json = JSON.stringify(this.canvas.toJSON());
-=======
     this.canvas = this.componentRef.directiveRef.fabric();
     console.log(this.canvas.toDataURL('png'));
   }
@@ -160,7 +139,6 @@ export class DrawComponent implements OnInit, OnDestroy {
       'getJSON',
       (this.json = JSON.stringify(this.canvas.toJSON()))
     );
->>>>>>> d5bf15fe1f471c93752cbdf6c508d3b7fd3a11ec
   }
 
   @HostListener('document:keyup', ['$event'])
@@ -183,24 +161,11 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
   }
 
- 
   //default
   clearCanvas() {
     this.canvas.clear();
   }
 
-<<<<<<< HEAD
-  pointer() {
-    this.canvas.isDrawingMode = false;
-    this.socket.canvas = this.canvas.toJSON().objects;
-    console.log(this.socket.canvas);
-  }
-  public chooseColor() {
-    this.color = document.getElementById('color');
-    this.canvas.freeDrawingBrush.color = this.color.value;
-  }
-=======
->>>>>>> d5bf15fe1f471c93752cbdf6c508d3b7fd3a11ec
   convertImg() {
     this.link.download = 'download.png';
     this.link.href = this.canvas.toDataURL();
@@ -222,7 +187,6 @@ export class DrawComponent implements OnInit, OnDestroy {
   //     setTimeout(this.canvas.remove(opt.path));
   //   });
   // }
-
 
   public picture(event) {
     this.canvas.isDrawingMode = false;
@@ -286,30 +250,27 @@ export class DrawComponent implements OnInit, OnDestroy {
       this.canvas.renderAll();
     }
   }
-<<<<<<< HEAD
-
-=======
-  public freePen(){
-    this.canvas.isDrawingMode=true;
-    this.canvas.freeDrawingBrush.width=1;
-    this.tool='freePen'
+  public freePen() {
+    this.canvas.isDrawingMode = true;
+    this.canvas.freeDrawingBrush.width = 1;
+    this.tool = 'freePen';
   }
-  public freeBrush(){
-    this.canvas.isDrawingMode=true;
-    this.canvas.freeDrawingBrush.width=14;
-    this.tool='freeBrush'
+  public freeBrush() {
+    this.canvas.isDrawingMode = true;
+    this.canvas.freeDrawingBrush.width = 14;
+    this.tool = 'freeBrush';
   }
   //////////////////////////
   public mouseDown(mouseEvent) {
-    let color1;
-    this.chosenColor.addEventListener('change',function(event){
-     color1=event.target.value;
-    })
-    if(!color1){
-      color1='black';
-    }
-    this.x0 = mouseEvent.pointer.x;
-    this.y0 = mouseEvent.pointer.y;
+    // let color1;
+    // this.chosenColor.addEventListener('change', function (event) {
+    //   color1 = event.target.value;
+    // });
+    // if (!color1) {
+    //   color1 = 'black';
+    // }
+    // this.x0 = mouseEvent.pointer.x;
+    // this.y0 = mouseEvent.pointer.y;
     switch (this.tool) {
       case 'Straightline': {
         this.canvas.isDrawingMode = false;
@@ -319,7 +280,7 @@ export class DrawComponent implements OnInit, OnDestroy {
           stroke: this.color,
         });
         this.canvas.add(this.line);
-        this.updateModifications(true);
+        // this.updateModifications(true);
         this.selected = this.line;
         break;
       }
@@ -332,7 +293,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             fill: this.color,
           });
           this.canvas.add(this.rectangle);
-          this.updateModifications(true);
+          // this.updateModifications(true);
           this.selected = this.rectangle;
           break;
         } else {
@@ -343,7 +304,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             fill: null,
           });
           this.canvas.add(this.rectangle);
-          this.updateModifications(true);
+          // this.updateModifications(true);
           this.selected = this.rectangle;
           break;
         }
@@ -365,7 +326,7 @@ export class DrawComponent implements OnInit, OnDestroy {
           });
         }
         this.canvas.add(this.square);
-        this.updateModifications(true);
+        // this.updateModifications(true);
         this.selected = this.square;
         break;
       }
@@ -395,7 +356,7 @@ export class DrawComponent implements OnInit, OnDestroy {
         }
 
         this.canvas.add(this.ellipse);
-        this.updateModifications(true);
+        // this.updateModifications(true);
         this.selected = this.ellipse;
         break;
       }
@@ -407,7 +368,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             originY: 'center',
             top: this.y0,
             left: this.x0,
-            fill: color1,
+            fill: this.color,
             radius: 0,
           });
         } else {
@@ -422,37 +383,34 @@ export class DrawComponent implements OnInit, OnDestroy {
           });
         }
         this.canvas.add(this.circle);
-        this.updateModifications(true);
+        // this.updateModifications(true);
         this.selected = this.circle;
         break;
       }
-      case 'Pointer':{
-        this.canvas.isDrawingMode=false;
+      case 'Pointer': {
+        this.canvas.isDrawingMode = false;
         break;
       }
     }
     // console.log(mouseEvent);
   }
   public mouseMove(mouseEvent) {
-
     this.x2 = mouseEvent.pointer.x;
     this.y2 = mouseEvent.pointer.y;
     let changeInX = this.x2 - this.x0;
     let changeInY = this.y2 - this.y0;
     switch (this.tool) {
-      case 'freePen':{
+      case 'freePen': {
         break;
       }
-      case 'freeBrush':{
-
+      case 'freeBrush': {
         break;
       }
       case 'Straightline': {
         if (this.selected !== null) {
-          this.selected.set({
-          });
+          this.selected.set({});
         }
-        this.canvas.isDrawingMode=false;
+        this.canvas.isDrawingMode = false;
         this.canvas.renderAll();
         break;
       }
@@ -463,7 +421,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             height: changeInY,
           });
         }
-        this.canvas.isDrawingMode=false;
+        this.canvas.isDrawingMode = false;
         this.canvas.renderAll();
         break;
       }
@@ -506,7 +464,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             ry: Math.abs(changeInY),
           });
         }
-        this.canvas.isDrawingMode=false;
+        this.canvas.isDrawingMode = false;
         this.canvas.renderAll();
         break;
       }
@@ -520,7 +478,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             radius: Math.abs(changeInX),
           });
         }
-        this.canvas.isDrawingMode=false;
+        this.canvas.isDrawingMode = false;
         this.canvas.renderAll();
         break;
       }
@@ -529,22 +487,20 @@ export class DrawComponent implements OnInit, OnDestroy {
   public updateModifications(saveModification) {
     if (saveModification === true) {
       this.myjson = JSON.stringify(this.canvas);
+      console.log(this.myjson);
       this.state.push(this.myjson);
     }
   }
   public mouseUp(mouseEvent) {
-    if(this.tool=='freePen'||this.tool=='freeBrush'){
-   
-    }
-    else{
+    if (this.tool == 'freePen' || this.tool == 'freeBrush') {
+    } else {
       if (this.mode == 'add') {
-      
-        this.canvas.isDrawingMode=false;
+        this.canvas.isDrawingMode = false;
         this.selected = null;
-        this.tool='Pointer'
+        this.tool = 'Pointer';
       }
     }
-   
+
     this.x0 = 0;
     this.y0 = 0;
   }
@@ -593,5 +549,4 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
     this.canvas.renderAll();
   }
->>>>>>> d5bf15fe1f471c93752cbdf6c508d3b7fd3a11ec
 }
