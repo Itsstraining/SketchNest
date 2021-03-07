@@ -10,9 +10,14 @@ import { fabric } from 'fabric';
 import { DialogExampleComponent } from 'src/app/dialog-example/dialog-example.component';
 import { ConnectService } from 'src/app/services/connect.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { HttpEventType } from '@angular/common/http';
+import { CompileReflector } from '@angular/compiler';
+import { Canvas, IText } from 'fabric/fabric-impl';
+import { CONTEXT_NAME } from '@angular/compiler/src/render3/view/util';
+// import { cursorTo } from 'readline';
 @Component({
   selector: 'app-draw',
-  templateUrl:'./draw.component.html',
+  templateUrl: './draw.component.html',
   styleUrls: ['./draw.component.scss'],
 
 })
@@ -69,21 +74,7 @@ memorizeObject: fabric.Object;
     });
   }
   ngAfterViewInit(): void {
-    this.socket.setupSocketConnection();
-    this.socket.socket.emit('update-canvas',this.json)
-    console.log('cai ham nay chua dc chay');
-    this.socket.updateCanvas().subscribe(data=>{;
-      console.log("ham nay duoc chay roi")
-      // this.json=this.canvas.loadFromJSON(data,this.canvas.renderAll.bind(data))
-    })
-    // this.json.subscribe((data) => {
-    //   console.log(data)
-    //   console.log("hello ban");
-    //  this.canvas.loadFromJSON(JSON.stringify(this.json),this.canvas.renderAll.bind(this.json));
- 
- 
-    // });
-    this.getUserCursor();
+    this.canvas.isDrawingMode = true;
     this.canvas.on('object:created', function () {
       if (!this.isRedoing) {
         this.stack = [];
@@ -92,7 +83,7 @@ memorizeObject: fabric.Object;
     });
   }
   ngOnDestroy() {
-    this.socket.socket.emit('getJSON',this.json = JSON.stringify(this.canvas.toJSON()));
+    this.json = JSON.stringify(this.canvas.toJSON());
   }
 
   @HostListener('document:keyup', ['$event'])
@@ -125,7 +116,6 @@ memorizeObject: fabric.Object;
     this.canvas.isDrawingMode = false;
     this.socket.canvas = this.canvas.toJSON().objects;
     console.log(this.socket.canvas);
-    
   }
   public chooseColor() {
     this.color = document.getElementById('color');
@@ -204,6 +194,7 @@ memorizeObject: fabric.Object;
 
     this.canvas.remove(this.canvas.getActiveObject());
     this.socket.sendCanvas(this.canvas.toJSON().objects);
+    console.log(this.json);
   }
   public drawCircle() {
     this.canvas.isDrawingMode = false;
@@ -274,10 +265,5 @@ memorizeObject: fabric.Object;
       this.canvas.renderAll();
     }
   }
-  getUserCursor(){
-    this.canvas.on('mouse:move',function(e){
-      console.log(e.e.clientX+" "+ e.e.clientY);
 
-    })
-  }
 }
