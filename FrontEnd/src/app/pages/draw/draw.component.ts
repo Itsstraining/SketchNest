@@ -264,13 +264,6 @@ export class DrawComponent implements OnInit, OnDestroy {
   }
   //////////////////////////
   public mouseDown(mouseEvent) {
-    let color1;
-    this.chosenColor.addEventListener('change',function(event){
-     color1=event.target.value;
-    })
-    if(!color1){
-      color1='black';
-    }
     this.x0 = mouseEvent.pointer.x;
     this.y0 = mouseEvent.pointer.y;
     switch (this.tool) {
@@ -370,7 +363,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             originY: 'center',
             top: this.y0,
             left: this.x0,
-            fill: color1,
+            fill: this.color,
             radius: 0,
           });
         } else {
