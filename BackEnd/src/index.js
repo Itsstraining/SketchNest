@@ -13,18 +13,14 @@ const io = require("socket.io")(http, {
 
 io.on("connection", (socket) => {
   console.log("A user connected");
-
-  // socket.on("a", (msg) => {
-  //   socket.join("room 1");
-  //   console.log(`User: ${msg} is connected`);
-  //   console.log(socket.rooms);
-  // });
-  socket.on("update-canvas", (canvas) => {
-    io.emit("canvas", canvas);
-    console.log("senddata: " + canvas, socket.rooms);
+  socket.on("draw", (data) => {
+    if (data) {
+      fs.collection("canvas").doc("canvas").set({ json: data });
+      io.emit("draw", true);
+    }
   });
   socket.on("disconnect", function () {
-    console.log("A user disconnected");
+    console.log(socket.id + "disconnected!!");
   });
 });
 
