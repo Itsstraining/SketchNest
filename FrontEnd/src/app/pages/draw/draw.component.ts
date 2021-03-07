@@ -268,14 +268,9 @@ export class DrawComponent implements OnInit, OnDestroy {
   }
   //////////////////////////
   public mouseDown(mouseEvent) {
-    if (mouseEvent.target != undefined || mouseEvent.target != null) {
 
-    }
-    else {
-
-      if (!this.color) {
-        this.color = 'black';
-      }
+    if (!this.color) {
+      this.color = 'black';
       this.x0 = mouseEvent.pointer.x;
       this.y0 = mouseEvent.pointer.y;
       switch (this.tool) {
@@ -292,6 +287,7 @@ export class DrawComponent implements OnInit, OnDestroy {
           break;
         }
         case 'Rectangle': {
+          this.canvas.selection=false;
           this.canvas.isDrawingMode = false;
           if (this.toogle) {
             this.rectangle = new fabric.Rect({
@@ -382,6 +378,7 @@ export class DrawComponent implements OnInit, OnDestroy {
           break;
         }
         case 'Circle': {
+
           this.canvas.isDrawingMode = false;
           if (this.toogle) {
             this.circle = new fabric.Circle({
@@ -409,6 +406,7 @@ export class DrawComponent implements OnInit, OnDestroy {
           break;
         }
         case 'Pointer': {
+          this.canvas.selection=true;
           this.canvas.isDrawingMode = false;
           break;
         }
@@ -417,7 +415,6 @@ export class DrawComponent implements OnInit, OnDestroy {
     // console.log(mouseEvent);
   }
   public mouseMove(mouseEvent) {
-
     this.x2 = mouseEvent.pointer.x;
     this.y2 = mouseEvent.pointer.y;
     let changeInX = this.x2 - this.x0;
@@ -516,7 +513,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
   }
   public mouseUp(mouseEvent) {
-    fabric.Object.prototype.selectable = true;
+    this.canvas.selection=true;
     if (this.tool == 'freePen' || this.tool == 'freeBrush') {
 
     }
