@@ -26,7 +26,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   public toogle = true;
   public tool = 'Rectangle';
   public action = 'none';
-  public color = 'black';
+  public color= 'black';
   public x0;
   public x2;
   public y2;
@@ -101,8 +101,6 @@ export class DrawComponent implements OnInit, OnDestroy {
   json;
   triangle: any;
   url: any;
-  shapeColor: any;
-  shapeChosen: any;
   download = document.getElementById('download');
   link = document.createElement('a');
   isRedoing: Boolean;
@@ -128,6 +126,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   }
   public freeLine() {
     this.canvas.isDrawingMode = true;
+    this.canvas.freeDrawingBrush.color=this.color;
     this.tool = 'Freeline';
   }
 
@@ -177,18 +176,6 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas.clear();
   }
 
-  pointer() {
-    this.canvas.isDrawingMode = false;
-    this.socket.canvas = this.canvas.toJSON().objects;
-    console.log(this.socket.canvas);
-  }
-  public chooseColor() {
-    this.colorchoose = document.getElementById('color');
-    this.colorchoose.addEventListener('change', function (event) {
-      this.color = event.target.value;
-    });
-    // this.canvas.freeDrawingBrush.color = this.color.value;
-  }
   convertImg() {
     this.link.download = 'download.png';
     this.link.href = this.canvas.toDataURL();
@@ -207,28 +194,22 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.socket.sendCanvas(this.canvas.toJSON().objects);
   }
   //bug
-  highlightPen() {
-    let a = [];
-    this.canvas.isDrawingMode = true;
-    this.canvas.freeDrawingBrush.color = 'red';
-    this.canvas.freeDrawingBrush.width = 14;
-    this.canvas.on('path:created', function (opt) {
-      opt.path.globalCompositeOperation = 'source-over';
-      opt.path.stroke = 'red';
-      // opt.path.animate('opacity', '0', {
-      //   duration: 3000,
+  // highlightPen() {
+  //   let a = [];
+  //   this.canvas.isDrawingMode = true;
+  //   this.canvas.freeDrawingBrush.color = 'red';
+  //   this.canvas.freeDrawingBrush.width = 14;
+  //   this.canvas.on('path:created', function (opt) {
+  //     opt.path.globalCompositeOperation = 'source-over';
+  //     opt.path.stroke = 'red';
+  //     // opt.path.animate('opacity', '0', {
+  //     //   duration: 3000,
 
-      // })
-      setTimeout(this.canvas.remove(opt.path));
-    });
-  }
+  //     // })
+  //     setTimeout(this.canvas.remove(opt.path));
+  //   });
+  // }
 
-  public eraser() {
-    this.canvas.isDrawingMode = true;
-    this.canvas.freeDrawingBrush.color = 'white';
-    this.canvas.freeDrawingBrush.width = 14;
-    fabric.Path.prototype.selectable = false;
-  }
 
   public picture(event) {
     this.canvas.isDrawingMode = false;
@@ -266,48 +247,9 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas.remove(this.canvas.getActiveObject());
     this.socket.sendCanvas(this.canvas.toJSON().objects);
   }
-  public drawCircle() {
-    this.canvas.isDrawingMode = false;
-    this.circle = new fabric.Circle({
-      radius: 20,
-      fill: 'blue',
-    });
-    this.canvas.add(this.circle);
-    this.canvas.renderAll();
-  }
-  // this.socket.sendCanvas(this.canvas.toJSON().objects);
-  // this.canvas.renderAll();
-  // this.json = this.socket.canvas;
-  public drawRectangle() {
-    this.canvas.isDrawingMode = false;
-    this.rect = new fabric.Rect({
-      width: 100,
-      height: 100,
-      fill: 'blue',
-    });
-    this.canvas.add(this.rect);
-    this.canvas.renderAll();
 
-    this.socket.sendCanvas(this.canvas.toJSON().objects);
-  }
-  public drawTriangle() {
-    this.canvas.isDrawingMode = false;
-    this.triangle = new fabric.Triangle({
-      width: 100,
-      height: 100,
-      fill: 'blue',
-      top: 10,
-      left: 10,
-    });
-    this.canvas.add(this.triangle);
-    this.canvas.renderAll();
-    this.socket.sendCanvas(this.canvas.toJSON().objects);
-  }
   //ShapeOption
-  public shapeOption() {
-    this.shapeColor = document.getElementById('shapecolor');
-    return this.canvas.getActiveObject().set('fill', this.shapeColor.value);
-  }
+
   downloadCanvas() {
     this.canvas.toDataUrl();
     console.log(this.canvas.toDataUrl());
@@ -330,8 +272,10 @@ export class DrawComponent implements OnInit, OnDestroy {
       this.canvas.renderAll();
     }
   }
+
   //////////////////////////
   public mouseDown(mouseEvent) {
+
     this.x0 = mouseEvent.pointer.x;
     this.y0 = mouseEvent.pointer.y;
     switch (this.tool) {
@@ -453,10 +397,15 @@ export class DrawComponent implements OnInit, OnDestroy {
         this.selected = this.circle;
         break;
       }
+      case 'Pointer':{
+        this.canvas.isDrawingMode=false;
+        break;
+      }
     }
     // console.log(mouseEvent);
   }
   public mouseMove(mouseEvent) {
+ 
     this.x2 = mouseEvent.pointer.x;
     this.y2 = mouseEvent.pointer.y;
     let changeInX = this.x2 - this.x0;
@@ -548,6 +497,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   public mouseUp(mouseEvent) {
     if (this.mode == 'add') {
       this.selected = null;
+      this.tool='Pointer'
     }
     this.x0 = 0;
     this.y0 = 0;

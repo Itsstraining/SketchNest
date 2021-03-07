@@ -4,7 +4,7 @@
 
 <body>
   <div class="left-sidebar">
-    <button title="pointer" id="btnFunction" (click)="pointer()" title="Pointer" style="border-radius: 20px 20px 0px 0px">
+    <button title="pointer" id="btnFunction" (click)="this.tool='Pointer'" title="Pointer" style="border-radius: 20px 20px 0px 0px">
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
         focusable="false" width="35px" height="35px" style="
           -ms-transform: rotate(360deg);
@@ -61,7 +61,7 @@
                 fill="black" />
             </svg></button>
             <button id="btnFunction" >
-              <input style="width: 35px; height: 35px" title="Pen color" type="color" id="color" (blur)="chooseColor()" />
+              <input style="width: 35px; height: 35px" title="Pen color" type="color" id="color" />
             </button>
         </div>
       </div>
@@ -69,7 +69,7 @@
     <br />
     
 
-    <button id="btnFunction" (click)="eraser()" title="Eraser">
+    <button id="btnFunction"  title="Eraser">
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
         focusable="false" width="35px" height="35px" style="
           -ms-transform: rotate(360deg);
@@ -155,8 +155,7 @@
 
     <br />
     <button id="btnFunction">
-      <input style="width: 35px; height: 35px" title="Shape Color" type="color" id="shapecolor"
-        (blur)="shapeOption()" />
+      <input style="width: 35px; height: 35px" title="Shape Color" type="color" id="shapecolor"/>
     </button>
     <br>
     <button title="Text" id="btnFunction" (click)="textField()">
