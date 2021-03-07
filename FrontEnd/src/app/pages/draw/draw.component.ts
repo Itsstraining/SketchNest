@@ -24,13 +24,15 @@ import {
 export class DrawComponent implements OnInit, OnDestroy {
   public toogle = true;
   public tool;
-  public color='black';
+  public color;
   public action = 'none';
   public chosenColor;
+  public drawColor;
   public x0;
   public x2;
   public y2;
   public y0;
+  public inputText;
   public rectangle;
   public circle;
   public line;
@@ -115,7 +117,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     public socket: ConnectService,
     public auth: AuthService
-  ) {}
+  ) { }
   openDialog() {
     this.dialog.open(DialogExampleComponent);
   }
@@ -162,7 +164,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
   }
 
- 
+
   //default
   clearCanvas() {
     this.canvas.clear();
@@ -173,6 +175,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.link.href = this.canvas.toDataURL();
     this.link.click();
   }
+
   //bug
   // highlightPen() {
   //   let a = [];
@@ -208,17 +211,6 @@ export class DrawComponent implements OnInit, OnDestroy {
       };
     }
   }
-  public textField() {
-    this.canvas.add(
-      new fabric.IText('lorem ipsum', {
-        fontFamily: 'arial black',
-        left: 100,
-        top: 100,
-      })
-    );
-  }
-  ///Keyboard events
-
   // /Shape
   public deleteShape() {
     this.canvas.isDrawingMode = false;
@@ -252,139 +244,174 @@ export class DrawComponent implements OnInit, OnDestroy {
       this.canvas.renderAll();
     }
   }
-  public freePen(){
-    this.canvas.isDrawingMode=true;
-    this.canvas.freeDrawingBrush.width=1;
-    this.tool='freePen'
+  public freePen() {
+    this.chosenColor = document.getElementById('color');
+    this.chosenColor.addEventListener('change', function (event) {
+      if (!event.target.value) {
+        event.target.value = 'black';
+      }
+      else {
+
+      }
+      this.drawColor = event.target.value;
+      console.log('duoc chay roi')
+    })
+    this.canvas.isDrawingMode = true;
+    this.canvas.freeDrawingBrush.width = 1;
+
+    this.tool = 'freePen'
   }
-  public freeBrush(){
-    this.canvas.isDrawingMode=true;
-    this.canvas.freeDrawingBrush.width=14;
-    this.tool='freeBrush'
+  public freeBrush() {
+    this.canvas.isDrawingMode = true;
+    this.canvas.freeDrawingBrush.width = 14;
+    this.tool = 'freeBrush'
   }
   //////////////////////////
   public mouseDown(mouseEvent) {
-    this.x0 = mouseEvent.pointer.x;
-    this.y0 = mouseEvent.pointer.y;
-    switch (this.tool) {
-      case 'Straightline': {
-        this.canvas.isDrawingMode = false;
-        var coordinates = [this.x0, this.y0, this.x0, this.y0];
-        this.line = new fabric.Line(coordinates, {
-          strokeWidth: 3,
-          stroke: this.color,
-        });
-        this.canvas.add(this.line);
-        this.updateModifications(true);
-        this.selected = this.line;
-        break;
-      }
-      case 'Rectangle': {
-        this.canvas.isDrawingMode = false;
-        if (this.toogle) {
-          this.rectangle = new fabric.Rect({
-            top: this.y0,
-            left: this.x0,
-            fill: this.color,
-          });
-          this.canvas.add(this.rectangle);
-          this.updateModifications(true);
-          this.selected = this.rectangle;
-          break;
-        } else {
-          this.rectangle = new fabric.Rect({
-            top: this.y0,
-            left: this.x0,
-            stroke: this.color,
-            fill: null,
-          });
-          this.canvas.add(this.rectangle);
-          this.updateModifications(true);
-          this.selected = this.rectangle;
-          break;
-        }
-      }
-      case 'Square': {
-        this.canvas.isDrawingMode = false;
-        if (this.toogle) {
-          this.square = new fabric.Rect({
-            top: this.y0,
-            left: this.x0,
-            fill: this.color,
-          });
-        } else {
-          this.square = new fabric.Rect({
-            top: this.y0,
-            left: this.x0,
-            fill: null,
-            stroke: this.color,
-          });
-        }
-        this.canvas.add(this.square);
-        this.updateModifications(true);
-        this.selected = this.square;
-        break;
-      }
-      case 'Ellipse': {
-        this.canvas.isDrawingMode = false;
-        if (this.toogle) {
-          this.ellipse = new fabric.Ellipse({
-            originX: 'center',
-            originY: 'center',
-            top: this.y0,
-            left: this.x0,
-            fill: this.color,
-            rx: 0,
-            ry: 0,
-          });
-        } else {
-          this.ellipse = new fabric.Ellipse({
-            originX: 'center',
-            originY: 'center',
-            top: this.y0,
-            left: this.x0,
-            fill: null,
-            stroke: this.color,
-            rx: 0,
-            ry: 0,
-          });
-        }
+    if (mouseEvent.target != undefined || mouseEvent.target != null) {
 
-        this.canvas.add(this.ellipse);
-        this.updateModifications(true);
-        this.selected = this.ellipse;
-        break;
+    }
+    else {
+
+      if (!this.color) {
+        this.color = 'black';
       }
-      case 'Circle': {
-        this.canvas.isDrawingMode = false;
-        if (this.toogle) {
-          this.circle = new fabric.Circle({
-            originX: 'center',
-            originY: 'center',
-            top: this.y0,
-            left: this.x0,
-            fill: this.color,
-            radius: 0,
-          });
-        } else {
-          this.circle = new fabric.Circle({
-            originX: 'center',
-            originY: 'center',
-            top: this.y0,
-            left: this.x0,
-            fill: null,
+      this.x0 = mouseEvent.pointer.x;
+      this.y0 = mouseEvent.pointer.y;
+      switch (this.tool) {
+        case 'Straightline': {
+          this.canvas.isDrawingMode = false;
+          var coordinates = [this.x0, this.y0, this.x0, this.y0];
+          this.line = new fabric.Line(coordinates, {
+            strokeWidth: 3,
             stroke: this.color,
-            radius: 0,
           });
+          this.canvas.add(this.line);
+          this.updateModifications(true);
+          this.selected = this.line;
+          break;
         }
-        this.canvas.add(this.circle);
-        this.updateModifications(true);
-        this.selected = this.circle;
-        break;
-      }
-      case 'Pointer':{
-        this.canvas.isDrawingMode=false;
-        break;
+        case 'Rectangle': {
+          this.canvas.isDrawingMode = false;
+          if (this.toogle) {
+            this.rectangle = new fabric.Rect({
+              top: this.y0,
+              left: this.x0,
+              fill: this.color,
+            });
+
+            this.canvas.add(this.rectangle);
+            this.updateModifications(true);
+            this.selected = this.rectangle;
+            break;
+          } else {
+            this.rectangle = new fabric.Rect({
+              top: this.y0,
+              left: this.x0,
+              stroke: this.color,
+              fill: null,
+            });
+            this.canvas.add(this.rectangle);
+            this.updateModifications(true);
+            this.selected = this.rectangle;
+            break;
+          }
+        }
+        case 'Text': {
+          this.canvas.isDrawingMode = false;
+
+          this.inputText = new fabric.IText('example Text', {
+            fontFamily: 'arial black',
+            top: this.y0,
+            left: this.x0,
+          });
+          this.canvas.add(this.inputText);
+          this.updateModifications(true);
+          this.selected = this.inputText;
+          break;
+        }
+        case 'Square': {
+          this.canvas.isDrawingMode = false;
+          if (this.toogle) {
+            this.square = new fabric.Rect({
+              top: this.y0,
+              left: this.x0,
+              fill: this.color,
+            });
+          } else {
+            this.square = new fabric.Rect({
+              top: this.y0,
+              left: this.x0,
+              fill: null,
+              stroke: this.color,
+            });
+          }
+          this.canvas.add(this.square);
+          this.updateModifications(true);
+          this.selected = this.square;
+          break;
+        }
+        case 'Ellipse': {
+          this.canvas.isDrawingMode = false;
+          if (this.toogle) {
+            this.ellipse = new fabric.Ellipse({
+              originX: 'center',
+              originY: 'center',
+              top: this.y0,
+              left: this.x0,
+              fill: this.color,
+              rx: 0,
+              ry: 0,
+            });
+          } else {
+            this.ellipse = new fabric.Ellipse({
+              originX: 'center',
+              originY: 'center',
+              top: this.y0,
+              left: this.x0,
+              fill: null,
+              stroke: this.color,
+              rx: 0,
+              ry: 0,
+            });
+          }
+
+          this.canvas.add(this.ellipse);
+          this.updateModifications(true);
+          this.selected = this.ellipse;
+          break;
+        }
+        case 'Circle': {
+          this.canvas.isDrawingMode = false;
+          if (this.toogle) {
+            this.circle = new fabric.Circle({
+              originX: 'center',
+              originY: 'center',
+              top: this.y0,
+              left: this.x0,
+              fill: this.color,
+              radius: 0,
+            });
+          } else {
+            this.circle = new fabric.Circle({
+              originX: 'center',
+              originY: 'center',
+              top: this.y0,
+              left: this.x0,
+              fill: null,
+              stroke: this.color,
+              radius: 0,
+            });
+          }
+          this.canvas.add(this.circle);
+          this.updateModifications(true);
+          this.selected = this.circle;
+          break;
+        }
+        case 'Pointer': {
+          this.canvas.isDrawingMode = false;
+          break;
+        }
       }
     }
     // console.log(mouseEvent);
@@ -396,10 +423,10 @@ export class DrawComponent implements OnInit, OnDestroy {
     let changeInX = this.x2 - this.x0;
     let changeInY = this.y2 - this.y0;
     switch (this.tool) {
-      case 'freePen':{
+      case 'freePen': {
         break;
       }
-      case 'freeBrush':{
+      case 'freeBrush': {
 
         break;
       }
@@ -408,7 +435,7 @@ export class DrawComponent implements OnInit, OnDestroy {
           this.selected.set({
           });
         }
-        this.canvas.isDrawingMode=false;
+        this.canvas.isDrawingMode = false;
         this.canvas.renderAll();
         break;
       }
@@ -419,7 +446,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             height: changeInY,
           });
         }
-        this.canvas.isDrawingMode=false;
+        this.canvas.isDrawingMode = false;
         this.canvas.renderAll();
         break;
       }
@@ -462,7 +489,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             ry: Math.abs(changeInY),
           });
         }
-        this.canvas.isDrawingMode=false;
+        this.canvas.isDrawingMode = false;
         this.canvas.renderAll();
         break;
       }
@@ -476,7 +503,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             radius: Math.abs(changeInX),
           });
         }
-        this.canvas.isDrawingMode=false;
+        this.canvas.isDrawingMode = false;
         this.canvas.renderAll();
         break;
       }
@@ -489,18 +516,19 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
   }
   public mouseUp(mouseEvent) {
-    if(this.tool=='freePen'||this.tool=='freeBrush'){
-   
+    fabric.Object.prototype.selectable = true;
+    if (this.tool == 'freePen' || this.tool == 'freeBrush') {
+
     }
-    else{
+    else {
       if (this.mode == 'add') {
-      
-        this.canvas.isDrawingMode=false;
+
+        this.canvas.isDrawingMode = false;
         this.selected = null;
-        this.tool='Pointer'
+        this.tool = 'Pointer'
       }
     }
-   
+
     this.x0 = 0;
     this.y0 = 0;
   }
@@ -508,8 +536,8 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas.isDrawingMode = false;
     console.log(this.canvas.isDrawingMode);
     var activeObject = this.componentRef.directiveRef
-        .fabric()
-        .getActiveObject(),
+      .fabric()
+      .getActiveObject(),
       activeGroup = this.canvas.getActiveGroup();
     if (activeObject) {
       this.canvas.remove(activeObject);
