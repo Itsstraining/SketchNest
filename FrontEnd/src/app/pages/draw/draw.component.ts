@@ -22,11 +22,11 @@ import {
   styleUrls: ['./draw.component.scss'],
 })
 export class DrawComponent implements OnInit, OnDestroy {
-  public colorchoose;
   public toogle = true;
   public tool;
+  public color='black';
   public action = 'none';
-  public color= 'black';
+  public chosenColor;
   public x0;
   public x2;
   public y2;
@@ -92,14 +92,9 @@ export class DrawComponent implements OnInit, OnDestroy {
   @ViewChild(FabricComponent, { static: false }) componentRef?: FabricComponent;
   @ViewChild(FabricDirective, { static: false }) directiveRef?: FabricDirective;
   ////////////////////////
-
   canvas;
   image: any;
-  normal: any;
-  rect: any;
-  currentMode: any;
   json;
-  triangle: any;
   url: any;
   download = document.getElementById('download');
   link = document.createElement('a');
@@ -269,7 +264,13 @@ export class DrawComponent implements OnInit, OnDestroy {
   }
   //////////////////////////
   public mouseDown(mouseEvent) {
-
+    let color1;
+    this.chosenColor.addEventListener('change',function(event){
+     color1=event.target.value;
+    })
+    if(!color1){
+      color1='black';
+    }
     this.x0 = mouseEvent.pointer.x;
     this.y0 = mouseEvent.pointer.y;
     switch (this.tool) {
@@ -369,7 +370,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             originY: 'center',
             top: this.y0,
             left: this.x0,
-            fill: this.color,
+            fill: color1,
             radius: 0,
           });
         } else {
@@ -396,7 +397,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     // console.log(mouseEvent);
   }
   public mouseMove(mouseEvent) {
- 
+
     this.x2 = mouseEvent.pointer.x;
     this.y2 = mouseEvent.pointer.y;
     let changeInX = this.x2 - this.x0;
@@ -526,5 +527,33 @@ export class DrawComponent implements OnInit, OnDestroy {
         this.componentRef.directiveRef.remove(object);
       });
     }
+  }
+  public groupObjects() {
+    this.canvas.isDrawingMode = false;
+
+    this.group = new fabric.Group([], { left: 250, top: 200 });
+    if (this.canvas.getActiveGroup()) {
+      this.componentRef.directiveRef
+        .fabric()
+        .getActiveGroup()
+        .getObjects()
+        .forEach(function (o) {
+          this.group.addWithUpdate(o);
+          this.componentRef.directiveRef.remove(o);
+        });
+    }
+    this.canvas.add(this.group);
+  }
+
+  public ungroupObjects() {
+    this.canvas.isDrawingMode = false;
+
+    var items = this.group._objects;
+    this.group._restoreObjectsState();
+    this.canvas.remove(this.group);
+    for (var i = 0; i < items.length; i++) {
+      this.canvas.add(items[i]);
+    }
+    this.canvas.renderAll();
   }
 }
