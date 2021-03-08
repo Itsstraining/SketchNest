@@ -52,6 +52,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   public savedCanvas;
   public show: boolean = true;
   public myjson;
+  public _clipboard
 
   public type: string = 'component';
   public drawMode = false;
@@ -133,10 +134,10 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
     if (event.ctrlKey) {
       switch (event.keyCode) {
+
         case this.keyCodes['Z']:
           this.undo();
           this.updateModifications(true);
-
           break;
         case this.keyCodes['Y']:
           this.redo();
@@ -193,6 +194,13 @@ export class DrawComponent implements OnInit, OnDestroy {
     else {
       this.color = event.target.value;
     }
+    let a = this.canvas.getActiveObject();
+    console.log(a);
+    a.set({
+      fill: this.color,
+    })
+    this.updateModifications(true);
+
   }
   public picture(event) {
     this.canvas.isDrawingMode = false;
@@ -243,13 +251,17 @@ export class DrawComponent implements OnInit, OnDestroy {
   //////////////////////////
   public mouseDown(mouseEvent) {
     if (mouseEvent.target != undefined || mouseEvent.target != null) {
+      mouseEvent.target.stroke = this.color;
     } else {
-
+      fabric.Object.prototype.selectable = false;
       this.x0 = mouseEvent.pointer.x;
       this.y0 = mouseEvent.pointer.y;
       switch (this.tool) {
         case 'Straightline': {
           this.canvas.isDrawingMode = false;
+          if (!this.color) {
+            this.color = 'black';
+          }
           var coordinates = [this.x0, this.y0, this.x0, this.y0];
           this.line = new fabric.Line(coordinates, {
             strokeWidth: 3,
@@ -394,8 +406,8 @@ export class DrawComponent implements OnInit, OnDestroy {
     let changeInX = this.x2 - this.x0;
     let changeInY = this.y2 - this.y0;
     switch (this.tool) {
-      case 'Pointer':{
-        this.canvas.isDrawingMode=false;
+      case 'Pointer': {
+        this.canvas.isDrawingMode = false;
       }
       case 'freePen': {
         break;
@@ -574,4 +586,6 @@ export class DrawComponent implements OnInit, OnDestroy {
       //console.log("mods " + mods);
     }
   }
+
 }
+
