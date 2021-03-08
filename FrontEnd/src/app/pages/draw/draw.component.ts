@@ -201,13 +201,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   //   });
   // }
 
-  public chooseColor() {
-    this.chosenColor = document.getElementById('shapecolor');
-    this.chosenColor.addEventListener('change', function (event) {
-      this.color = event.target.value;
-      console.log(this.color);
-    })
-  }
+
   public picture(event) {
     this.canvas.isDrawingMode = false;
     if (event.target.files && event.target.files[0]) {
@@ -219,7 +213,6 @@ export class DrawComponent implements OnInit, OnDestroy {
         // console.log(this.url)
         fabric.Image.fromURL(this.url, (test) => {
           this.canvas.add(test);
-          this.canvas.sendToBack(test);
           this.canvas.renderAll();
           this.socket.sendCanvas(this.canvas.toJSON().objects);
         });
@@ -282,9 +275,8 @@ export class DrawComponent implements OnInit, OnDestroy {
   }
   //////////////////////////
   public mouseDown(mouseEvent) {
-    this.chooseColor();
     if (mouseEvent.target != undefined || mouseEvent.target != null) {
-
+      
     }
     else {
       if (!this.color) {
@@ -303,11 +295,11 @@ export class DrawComponent implements OnInit, OnDestroy {
           this.canvas.add(this.line);
           this.updateModifications(true);
           this.selected = this.line;
-          fabric.Object.prototype.selectable = false;
+          fabric.Object.prototype.selectable=false;
           break;
         }
         case 'Rectangle': {
-
+          
           this.canvas.isDrawingMode = false;
           if (this.toogle) {
             this.rectangle = new fabric.Rect({
@@ -319,7 +311,6 @@ export class DrawComponent implements OnInit, OnDestroy {
             this.canvas.add(this.rectangle);
             this.updateModifications(true);
             this.selected = this.rectangle;
-            fabric.Object.prototype.selectable = false;
             break;
           } else {
             this.rectangle = new fabric.Rect({
@@ -331,7 +322,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             this.canvas.add(this.rectangle);
             this.updateModifications(true);
             this.selected = this.rectangle;
-            fabric.Object.prototype.selectable = false;
+            fabric.Object.prototype.selectable=false;
             break;
           }
         }
@@ -367,7 +358,7 @@ export class DrawComponent implements OnInit, OnDestroy {
           this.canvas.add(this.square);
           this.updateModifications(true);
           this.selected = this.square;
-          fabric.Object.prototype.selectable = false;
+          fabric.Object.prototype.selectable=false;
           break;
         }
         case 'Ellipse': {
@@ -398,7 +389,7 @@ export class DrawComponent implements OnInit, OnDestroy {
           this.canvas.add(this.ellipse);
           this.updateModifications(true);
           this.selected = this.ellipse;
-          fabric.Object.prototype.selectable = false;
+          fabric.Object.prototype.selectable=false;
           break;
         }
         case 'Circle': {
@@ -426,19 +417,20 @@ export class DrawComponent implements OnInit, OnDestroy {
           this.canvas.add(this.circle);
           this.updateModifications(true);
           this.selected = this.circle;
-          fabric.Object.prototype.selectable = false;
+          fabric.Object.prototype.selectable=false;
           break;
         }
         case 'Pointer': {
-          fabric.Object.prototype.selectable = true;
+          fabric.Object.prototype.selectable=true;
           this.canvas.isDrawingMode = false;
           break;
         }
       }
       // console.log(mouseEvent);
     }
-  }
+}
   public mouseMove(mouseEvent) {
+
     this.x2 = mouseEvent.pointer.x;
     this.y2 = mouseEvent.pointer.y;
     let changeInX = this.x2 - this.x0;
@@ -458,80 +450,84 @@ export class DrawComponent implements OnInit, OnDestroy {
         this.canvas.renderAll();
         break;
       }
-      case 'Rectangle': {
-        if (this.selected !== null) {
-          this.selected.set({
-            width: changeInX,
-            height: changeInY,
-          });
-        }
-        this.canvas.isDrawingMode = false;
-        this.canvas.renderAll();
-        break;
+      this.canvas.isDrawingMode = false;
+      this.canvas.renderAll();
+      break;
+    }
+    case 'Rectangle': {
+      if (this.selected !== null) {
+        this.selected.set({
+          width: changeInX,
+          height: changeInY,
+        });
       }
-      case 'Square': {
-        if (Math.abs(changeInX) >= Math.abs(changeInY)) {
-          if (changeInX > 0) {
-            if (changeInY < 0) changeInY = -changeInX;
-            //TOP RIGHT: Y gets value of -X
-            else changeInY = changeInX; //BOTTOM RIGHT: Y gets value of X
-          } else if (changeInX < 0) {
-            if (changeInY < 0) changeInY = changeInX;
-            //TOP LEFT: Y gets value of X
-            else changeInY = -changeInX; //BOTTOM LEFT: Y gets value of -X
-          }
-        } else if (Math.abs(changeInX) < Math.abs(changeInY)) {
-          if (changeInY > 0) {
-            if (changeInX < 0) changeInX = -changeInY;
-            //BOTTOM LEFT: X gets value of -Y
-            else changeInX = changeInY; //BOTTOM RIGHT: X gets value of Y
-          } else if (changeInY < 0) {
-            if (changeInX < 0) changeInX = changeInY;
-            //TOP LEFT: X gets value of Y
-            else changeInX = -changeInY; //TOP RIGHT: X gets value of -Y
-          }
+      this.canvas.isDrawingMode = false;
+      this.canvas.renderAll();
+      break;
+    }
+    case 'Square': {
+      if (Math.abs(changeInX) >= Math.abs(changeInY)) {
+        if (changeInX > 0) {
+          if (changeInY < 0) changeInY = -changeInX;
+          //TOP RIGHT: Y gets value of -X
+          else changeInY = changeInX; //BOTTOM RIGHT: Y gets value of X
+        } else if (changeInX < 0) {
+          if (changeInY < 0) changeInY = changeInX;
+          //TOP LEFT: Y gets value of X
+          else changeInY = -changeInX; //BOTTOM LEFT: Y gets value of -X
         }
+      } else if (Math.abs(changeInX) < Math.abs(changeInY)) {
+        if (changeInY > 0) {
+          if (changeInX < 0) changeInX = -changeInY;
+          //BOTTOM LEFT: X gets value of -Y
+          else changeInX = changeInY; //BOTTOM RIGHT: X gets value of Y
+        } else if (changeInY < 0) {
+          if (changeInX < 0) changeInX = changeInY;
+          //TOP LEFT: X gets value of Y
+          else changeInX = -changeInY; //TOP RIGHT: X gets value of -Y
+        }
+      }
 
-        if (this.selected !== null) {
-          this.selected.set({
-            width: changeInX,
-            height: changeInY,
-          });
-        }
-        this.canvas.renderAll();
-        break;
+      if (this.selected !== null) {
+        this.selected.set({
+          width: changeInX,
+          height: changeInY,
+        });
       }
-      case 'Ellipse': {
-        if (this.selected !== null) {
-          this.selected.set({
-            rx: Math.abs(changeInX),
-            ry: Math.abs(changeInY),
-          });
-        }
-        this.canvas.isDrawingMode = false;
-        this.canvas.renderAll();
-        break;
+      this.canvas.renderAll();
+      break;
+    }
+    case 'Ellipse': {
+      if (this.selected !== null) {
+        this.selected.set({
+          rx: Math.abs(changeInX),
+          ry: Math.abs(changeInY),
+        });
       }
-      case 'Circle': {
-        if (Math.abs(changeInX) >= Math.abs(changeInY)) changeInY = changeInX;
-        else if (Math.abs(changeInX) < Math.abs(changeInY))
-          changeInX = changeInY;
+      this.canvas.isDrawingMode = false;
+      this.canvas.renderAll();
+      break;
+    }
+    case 'Circle': {
+      if (Math.abs(changeInX) >= Math.abs(changeInY)) changeInY = changeInX;
+      else if (Math.abs(changeInX) < Math.abs(changeInY))
+        changeInX = changeInY;
 
-        if (this.selected !== null) {
-          this.selected.set({
-            radius: Math.abs(changeInX),
-          });
-        }
-        this.canvas.isDrawingMode = false;
-        this.canvas.renderAll();
-        break;
+      if (this.selected !== null) {
+        this.selected.set({
+          radius: Math.abs(changeInX),
+        });
       }
-      case 'Pointer': {
-        this.canvas.isDrawingMode = false;
-        break;
-      }
+      this.canvas.isDrawingMode = false;
+      this.canvas.renderAll();
+      break;
+    }
+    case 'Pointer': {
+      this.canvas.isDrawingMode = false;
+      break;
     }
   }
+
   public async updateModifications(saveModification) {
     if (saveModification === true) {
       this.myjson = JSON.stringify(this.canvas);
@@ -543,7 +539,9 @@ export class DrawComponent implements OnInit, OnDestroy {
         .update({ room: [{ id: 1, canvas: this.myjson }] });
     }
   }
+}
   public mouseUp(mouseEvent) {
+
     if (this.tool == 'freePen' || this.tool == 'freeBrush') {
     } else {
       if (this.mode == 'add') {
@@ -556,27 +554,44 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.x0 = 0;
     this.y0 = 0;
   }
-  public groupObjects() {
+  else {
+    if (this.mode == 'add') {
 
-    if (!this.canvas.getActiveObject()) {
-      return;
+      this.canvas.isDrawingMode = false;
+      this.selected = null;
+      this.tool = 'Pointer'
     }
-    if (this.canvas.getActiveObject().type !== 'activeSelection') {
-      return;
-    }
-    this.canvas.getActiveObject().toGroup();
-    this.canvas.requestRenderAll();
-  }
-  public ungroupObjects() {
-    if (!this.canvas.getActiveObject()) {
-      return;
-    }
-    if (this.canvas.getActiveObject().type !== 'group') {
-      return;
-    }
-    this.canvas.getActiveObject().toActiveSelection();
-    this.canvas.requestRenderAll();
   }
 
+  this.x0 = 0;
+  this.y0 = 0;
+}
+public groupObjects() {
+  this.canvas.isDrawingMode = false;
+  this.group = new fabric.Group([], { left: 250, top: 200 });
+  if (this.canvas.getActiveGroup()) {
+    this.componentRef.directiveRef
+      .fabric()
+      .getActiveGroup()
+      .getObjects()
+      .forEach(function (o) {
+        this.group.addWithUpdate(o);
+        this.componentRef.directiveRef.remove(o);
+      });
+  }
+  this.canvas.add(this.group);
 }
 
+public ungroupObjects() {
+  this.canvas.isDrawingMode = false;
+
+  var items = this.group._objects;
+  this.group._restoreObjectsState();
+  this.canvas.remove(this.group);
+  for (var i = 0; i < items.length; i++) {
+    this.canvas.add(items[i]);
+  }
+  this.canvas.renderAll();
+}
+  
+}
