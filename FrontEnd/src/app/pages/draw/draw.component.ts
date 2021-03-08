@@ -26,6 +26,7 @@ import { identifierModuleUrl } from '@angular/compiler';
 export class DrawComponent implements OnInit, OnDestroy {
   public toogle = true;
   public tool;
+  public brushc;
   public color;
   public action = 'none';
   public chosenColor;
@@ -51,36 +52,36 @@ export class DrawComponent implements OnInit, OnDestroy {
   public savedCanvas;
   public show: boolean = true;
   public myjson;
-  public data: any = {
-    objects: [
-      {
-        type: 'group',
-        top: 22,
-        left: 72,
-        width: 200,
-        height: 60,
-        objects: [
-          {
-            type: 'rect',
-            top: -30,
-            left: -100,
-            width: 200,
-            height: 60,
-            fill: '#cfcfcf',
-          },
-          {
-            type: 'text',
-            width: 200,
-            height: 60,
-            fontSize: 24,
-            text: 'Example object',
-            originX: 'center',
-            originY: 'center',
-          },
-        ],
-      },
-    ],
-  };
+  // public data: any = {
+  //   objects: [
+  //     {
+  //       type: 'group',
+  //       top: 22,
+  //       left: 72,
+  //       width: 200,
+  //       height: 60,
+  //       objects: [
+  //         {
+  //           type: 'rect',
+  //           top: -30,
+  //           left: -100,
+  //           width: 200,
+  //           height: 60,
+  //           fill: '#cfcfcf',
+  //         },
+  //         {
+  //           type: 'text',
+  //           width: 200,
+  //           height: 60,
+  //           fontSize: 24,
+  //           text: 'Example object',
+  //           originX: 'center',
+  //           originY: 'center',
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // };
 
   public type: string = 'component';
   public drawMode = false;
@@ -95,8 +96,10 @@ export class DrawComponent implements OnInit, OnDestroy {
 
   @ViewChild(FabricComponent, { static: false }) componentRef?: FabricComponent;
   @ViewChild(FabricDirective, { static: false }) directiveRef?: FabricDirective;
+  @ViewChild('shapecolor', { static: false }) shapeColor: HTMLElement
+  @ViewChild('brushcolor', { static: false }) brushColor: HTMLElement
   ////////////////////////
-  public canvas;
+  canvas;
   image: any;
   json;
   url: any;
@@ -144,6 +147,13 @@ export class DrawComponent implements OnInit, OnDestroy {
   ngAfterViewInit(): void {
     this.canvas = this.componentRef.directiveRef.fabric();
     console.log(this.canvas.toDataURL('png'));
+    this.canvas.on('object:added',function(){
+      if(!this.isRedoing){
+        this.stack=[]
+      }
+      this.isRedoing = false;
+    });
+
   }
   ngOnDestroy() {
     this.socket.socket.emit(
@@ -173,9 +183,10 @@ export class DrawComponent implements OnInit, OnDestroy {
   }
 
   //default
+
   clearCanvas() {
     this.canvas.clear();
-    this.updateModifications(true)
+    this.updateModifications(true);
   }
 
   convertImg() {
@@ -200,8 +211,13 @@ export class DrawComponent implements OnInit, OnDestroy {
   //     setTimeout(this.canvas.remove(opt.path));
   //   });
   // }
+  public brushcolor(event) {
+    this.brushc = event.target.value
 
-
+  }
+  public chooseColor(event) {
+    this.color = event.target.value
+  }
   public picture(event) {
     this.canvas.isDrawingMode = false;
     if (event.target.files && event.target.files[0]) {
@@ -254,31 +270,24 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
   }
   public freePen() {
-    this.chosenColor = document.getElementById('color');
-    this.chosenColor.addEventListener('change', function (event) {
-      if (!event.target.value) {
-        event.target.value = 'black';
-      } else {
-      }
-      this.drawColor = event.target.value;
-      console.log('duoc chay roi');
-    });
+
+
     this.canvas.isDrawingMode = true;
+    this.canvas.freeDrawingBrush.color = this.brushc;
     this.canvas.freeDrawingBrush.width = 1;
 
-    this.tool = 'freePen';
+    this.tool = 'freePen'
   }
   public freeBrush() {
     this.canvas.isDrawingMode = true;
+    this.canvas.freeDrawingBrush.color = this.brushc;
     this.canvas.freeDrawingBrush.width = 14;
-    this.tool = 'freeBrush';
+    this.tool = 'freeBrush'
   }
   //////////////////////////
   public mouseDown(mouseEvent) {
     if (mouseEvent.target != undefined || mouseEvent.target != null) {
-      
-    }
-    else {
+    } else {
       if (!this.color) {
         this.color = 'black';
       }
@@ -293,13 +302,11 @@ export class DrawComponent implements OnInit, OnDestroy {
             stroke: this.color,
           });
           this.canvas.add(this.line);
-          this.updateModifications(true);
+          // this.updateModifications(true);
           this.selected = this.line;
-          fabric.Object.prototype.selectable=false;
           break;
         }
         case 'Rectangle': {
-          
           this.canvas.isDrawingMode = false;
           if (this.toogle) {
             this.rectangle = new fabric.Rect({
@@ -309,7 +316,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             });
 
             this.canvas.add(this.rectangle);
-            this.updateModifications(true);
+            // this.updateModifications(true);
             this.selected = this.rectangle;
             break;
           } else {
@@ -320,9 +327,8 @@ export class DrawComponent implements OnInit, OnDestroy {
               fill: null,
             });
             this.canvas.add(this.rectangle);
-            this.updateModifications(true);
+            // this.updateModifications(true);
             this.selected = this.rectangle;
-            fabric.Object.prototype.selectable=false;
             break;
           }
         }
@@ -335,7 +341,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             left: this.x0,
           });
           this.canvas.add(this.inputText);
-          this.updateModifications(true);
+          // this.updateModifications(true);
           this.selected = this.inputText;
           break;
         }
@@ -356,9 +362,8 @@ export class DrawComponent implements OnInit, OnDestroy {
             });
           }
           this.canvas.add(this.square);
-          this.updateModifications(true);
+          // this.updateModifications(true);
           this.selected = this.square;
-          fabric.Object.prototype.selectable=false;
           break;
         }
         case 'Ellipse': {
@@ -387,9 +392,8 @@ export class DrawComponent implements OnInit, OnDestroy {
           }
 
           this.canvas.add(this.ellipse);
-          this.updateModifications(true);
+          // this.updateModifications(true);
           this.selected = this.ellipse;
-          fabric.Object.prototype.selectable=false;
           break;
         }
         case 'Circle': {
@@ -415,165 +419,173 @@ export class DrawComponent implements OnInit, OnDestroy {
             });
           }
           this.canvas.add(this.circle);
-          this.updateModifications(true);
+          // this.updateModifications(true);
           this.selected = this.circle;
-          fabric.Object.prototype.selectable=false;
           break;
         }
         case 'Pointer': {
-          fabric.Object.prototype.selectable=true;
+          // fabric.Object.prototype.selectable=true;
           this.canvas.isDrawingMode = false;
           break;
         }
       }
-      // console.log(mouseEvent);
     }
-}
+    // console.log(mouseEvent);
+  }
   public mouseMove(mouseEvent) {
-
-  this.x2 = mouseEvent.pointer.x;
-  this.y2 = mouseEvent.pointer.y;
-  let changeInX = this.x2 - this.x0;
-  let changeInY = this.y2 - this.y0;
-  switch (this.tool) {
-    case 'freePen': {
-      break;
-    }
-    case 'freeBrush': {
-
-      break;
-    }
-    case 'Straightline': {
-      if (this.selected !== null) {
-        this.selected.set({
-        });
+    this.x2 = mouseEvent.pointer.x;
+    this.y2 = mouseEvent.pointer.y;
+    let changeInX = this.x2 - this.x0;
+    let changeInY = this.y2 - this.y0;
+    switch (this.tool) {
+      case 'freePen': {
+        break;
       }
-      this.canvas.isDrawingMode = false;
-      this.canvas.renderAll();
-      break;
-    }
-    case 'Rectangle': {
-      if (this.selected !== null) {
-        this.selected.set({
-          width: changeInX,
-          height: changeInY,
-        });
+      case 'freeBrush': {
+        break;
       }
-      this.canvas.isDrawingMode = false;
-      this.canvas.renderAll();
-      break;
-    }
-    case 'Square': {
-      if (Math.abs(changeInX) >= Math.abs(changeInY)) {
-        if (changeInX > 0) {
-          if (changeInY < 0) changeInY = -changeInX;
-          //TOP RIGHT: Y gets value of -X
-          else changeInY = changeInX; //BOTTOM RIGHT: Y gets value of X
-        } else if (changeInX < 0) {
-          if (changeInY < 0) changeInY = changeInX;
-          //TOP LEFT: Y gets value of X
-          else changeInY = -changeInX; //BOTTOM LEFT: Y gets value of -X
+      case 'Straightline': {
+        if (this.selected !== null) {
+          this.selected.set({});
         }
-      } else if (Math.abs(changeInX) < Math.abs(changeInY)) {
-        if (changeInY > 0) {
-          if (changeInX < 0) changeInX = -changeInY;
-          //BOTTOM LEFT: X gets value of -Y
-          else changeInX = changeInY; //BOTTOM RIGHT: X gets value of Y
-        } else if (changeInY < 0) {
-          if (changeInX < 0) changeInX = changeInY;
-          //TOP LEFT: X gets value of Y
-          else changeInX = -changeInY; //TOP RIGHT: X gets value of -Y
+        this.canvas.isDrawingMode = false;
+        this.canvas.renderAll();
+        break;
+      }
+      case 'Rectangle': {
+        if (this.selected !== null) {
+          this.selected.set({
+            width: changeInX,
+            height: changeInY,
+          });
         }
+        this.canvas.isDrawingMode = false;
+        this.canvas.renderAll();
+        break;
       }
+      case 'Square': {
+        if (Math.abs(changeInX) >= Math.abs(changeInY)) {
+          if (changeInX > 0) {
+            if (changeInY < 0) changeInY = -changeInX;
+            //TOP RIGHT: Y gets value of -X
+            else changeInY = changeInX; //BOTTOM RIGHT: Y gets value of X
+          } else if (changeInX < 0) {
+            if (changeInY < 0) changeInY = changeInX;
+            //TOP LEFT: Y gets value of X
+            else changeInY = -changeInX; //BOTTOM LEFT: Y gets value of -X
+          }
+        } else if (Math.abs(changeInX) < Math.abs(changeInY)) {
+          if (changeInY > 0) {
+            if (changeInX < 0) changeInX = -changeInY;
+            //BOTTOM LEFT: X gets value of -Y
+            else changeInX = changeInY; //BOTTOM RIGHT: X gets value of Y
+          } else if (changeInY < 0) {
+            if (changeInX < 0) changeInX = changeInY;
+            //TOP LEFT: X gets value of Y
+            else changeInX = -changeInY; //TOP RIGHT: X gets value of -Y
+          }
+        }
 
-      if (this.selected !== null) {
-        this.selected.set({
-          width: changeInX,
-          height: changeInY,
-        });
+        if (this.selected !== null) {
+          this.selected.set({
+            width: changeInX,
+            height: changeInY,
+          });
+        }
+        this.canvas.renderAll();
+        break;
       }
-      this.canvas.renderAll();
-      break;
-    }
-    case 'Ellipse': {
-      if (this.selected !== null) {
-        this.selected.set({
-          rx: Math.abs(changeInX),
-          ry: Math.abs(changeInY),
-        });
+      case 'Ellipse': {
+        if (this.selected !== null) {
+          this.selected.set({
+            rx: Math.abs(changeInX),
+            ry: Math.abs(changeInY),
+          });
+        }
+        this.canvas.isDrawingMode = false;
+        this.canvas.renderAll();
+        break;
       }
-      this.canvas.isDrawingMode = false;
-      this.canvas.renderAll();
-      break;
-    }
-    case 'Circle': {
-      if (Math.abs(changeInX) >= Math.abs(changeInY)) changeInY = changeInX;
-      else if (Math.abs(changeInX) < Math.abs(changeInY))
-        changeInX = changeInY;
+      case 'Circle': {
+        if (Math.abs(changeInX) >= Math.abs(changeInY)) changeInY = changeInX;
+        else if (Math.abs(changeInX) < Math.abs(changeInY))
+          changeInX = changeInY;
 
-      if (this.selected !== null) {
-        this.selected.set({
-          radius: Math.abs(changeInX),
-        });
+        if (this.selected !== null) {
+          this.selected.set({
+            radius: Math.abs(changeInX),
+          });
+        }
+        this.canvas.isDrawingMode = false;
+        this.canvas.renderAll();
+        break;
       }
-      this.canvas.isDrawingMode = false;
-      this.canvas.renderAll();
-      break;
-    }
-    case 'Pointer': {
-      this.canvas.isDrawingMode = false;
-      break;
     }
   }
-}
-  public updateModifications(saveModification) {
-  if (saveModification === true) {
-    this.myjson = JSON.stringify(this.canvas);
-    this.state.push(this.myjson);
+  public async updateModifications(saveModification) {
+    if (saveModification === true) {
+      this.myjson = JSON.stringify(this.canvas);
+      console.log(this.myjson);
+      this.state.push(this.myjson);
+      await this.db
+        .collection('user')
+        .doc('vanhuugiakien@gmail.com')
+        .update({ room: [{ id: 1, canvas: this.myjson }] });
+    }
   }
-}
   public mouseUp(mouseEvent) {
-  if (this.tool == 'freePen' || this.tool == 'freeBrush') {
-
+    if (this.tool == 'freePen' || this.tool == 'freeBrush') {
+      this.updateModifications(true);
+    } else if (this.tool == 'Pointer') {
+      fabric.Object.prototype.selectable = true;
+    } else {
+      if (this.mode == 'add') {
+        this.canvas.isDrawingMode = false;
+        this.selected = null;
+        this.tool = 'Pointer';
+        this.updateModifications(true);
+      }
+    }
+    this.x0 = 0;
+    this.y0 = 0;
   }
-  else {
-    if (this.mode == 'add') {
-
-      this.canvas.isDrawingMode = false;
-      this.selected = null;
-      this.tool = 'Pointer'
+  public deleteObjects() {
+    this.canvas.isDrawingMode = false;
+    console.log(this.canvas.isDrawingMode);
+    var activeObject = this.componentRef.directiveRef
+        .fabric()
+        .getActiveObject(),
+      activeGroup = this.canvas.getActiveGroup();
+    if (activeObject) {
+      this.canvas.remove(activeObject);
+    } else if (activeGroup) {
+      var objectsInGroup = activeGroup.getObjects();
+      this.canvas.discardActiveGroup();
+      objectsInGroup.forEach(function (object) {
+        this.componentRef.directiveRef.remove(object);
+      });
     }
   }
-
-  this.x0 = 0;
-  this.y0 = 0;
-}
-public groupObjects() {
-  this.canvas.isDrawingMode = false;
-  this.group = new fabric.Group([], { left: 250, top: 200 });
-  if (this.canvas.getActiveGroup()) {
-    this.componentRef.directiveRef
-      .fabric()
-      .getActiveGroup()
-      .getObjects()
-      .forEach(function (o) {
-        this.group.addWithUpdate(o);
-        this.componentRef.directiveRef.remove(o);
-      });
+  public groupObjects() {
+    if (!this.canvas.getActiveObject()) {
+      return;
+    }
+    if (this.canvas.getActiveObject().type !== 'activeSelection') {
+      return;
+    }
+    this.canvas.getActiveObject().toGroup();
+    this.canvas.requestRenderAll();
   }
-  this.canvas.add(this.group);
-}
 
-public ungroupObjects() {
-  this.canvas.isDrawingMode = false;
 
-  var items = this.group._objects;
-  this.group._restoreObjectsState();
-  this.canvas.remove(this.group);
-  for (var i = 0; i < items.length; i++) {
-    this.canvas.add(items[i]);
+  public ungroupObjects() {
+    if (!this.canvas.getActiveObject()) {
+      return;
+    }
+    if (this.canvas.getActiveObject().type !== 'group') {
+      return;
+    }
+    this.canvas.getActiveObject().toActiveSelection();
+    this.canvas.requestRenderAll();
   }
-  this.canvas.renderAll();
-}
-  
 }
