@@ -118,6 +118,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   ngAfterViewInit(): void {
     this.canvas = this.componentRef.directiveRef.fabric();
     console.log(this.canvas.toDataURL('png'));
+    
   }
   ngOnDestroy() {
     this.socket.socket.emit(
@@ -362,6 +363,7 @@ export class DrawComponent implements OnInit, OnDestroy {
           break;
         }
         case 'Circle': {
+          fabric.Object.prototype.selectable=false;
           this.canvas.isDrawingMode = false;
           if (this.toogle) {
             this.circle = new fabric.Circle({
@@ -383,7 +385,6 @@ export class DrawComponent implements OnInit, OnDestroy {
               radius: 0,
             });
           }
-          fabric.Object.prototype.selectable = false;
           this.canvas.add(this.circle);
           this.selected = this.circle;
 
@@ -393,7 +394,6 @@ export class DrawComponent implements OnInit, OnDestroy {
         case 'Pointer': {
           this.canvas.isDrawingMode = false;
           fabric.Object.prototype.selectable = true;
-
           break;
         }
       }
@@ -487,6 +487,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             radius: Math.abs(changeInX),
           });
         }
+        
         this.canvas.isDrawingMode = false;
         this.canvas.renderAll();
         break;
@@ -568,10 +569,7 @@ export class DrawComponent implements OnInit, OnDestroy {
       this.canvas.clear().renderAll();
       this.canvas.loadFromJSON(this.state[this.state.length - 1 - this.mods - 1], this.canvas.renderAll.bind(this.canvas));
       this.canvas.renderAll();
-      //console.log("geladen " + (state.length-1-mods-1));
-      //console.log("state " + state.length);
       this.mods += 1;
-      //console.log("mods " + mods);
     }
   }
   redo() {
@@ -579,11 +577,8 @@ export class DrawComponent implements OnInit, OnDestroy {
       this.canvas.clear().renderAll();
       this.canvas.loadFromJSON(this.state[this.state.length - 1 - this.mods + 1], this.canvas.renderAll.bind(this.canvas));
       this.canvas.renderAll();
-      //console.log("geladen " + (state.length-1-mods+1));
-
       this.mods -= 1;
-      //console.log("state " + state.length);
-      //console.log("mods " + mods);
+
     }
   }
 
