@@ -26,6 +26,7 @@ import { identifierModuleUrl } from '@angular/compiler';
 export class DrawComponent implements OnInit, OnDestroy {
   public toogle = true;
   public tool;
+  public brushc;
   public color;
   public action = 'none';
   public chosenColor;
@@ -95,6 +96,8 @@ export class DrawComponent implements OnInit, OnDestroy {
 
   @ViewChild(FabricComponent, { static: false }) componentRef?: FabricComponent;
   @ViewChild(FabricDirective, { static: false }) directiveRef?: FabricDirective;
+  @ViewChild('shapecolor', { static: false }) shapeColor: HTMLElement
+  @ViewChild('brushcolor', { static: false }) brushColor: HTMLElement
   ////////////////////////
   canvas;
   image: any;
@@ -144,6 +147,13 @@ export class DrawComponent implements OnInit, OnDestroy {
   ngAfterViewInit(): void {
     this.canvas = this.componentRef.directiveRef.fabric();
     console.log(this.canvas.toDataURL('png'));
+    this.canvas.on('object:added',function(){
+      if(!this.isRedoing){
+        this.stack=[]
+      }
+      this.isRedoing = false;
+    });
+
   }
   ngOnDestroy() {
     this.socket.socket.emit(
@@ -174,14 +184,6 @@ export class DrawComponent implements OnInit, OnDestroy {
 
   //default
 
-  public chooseColor(){
-    this.chosenColor=document.getElementById('shapecolor');
-    this.chosenColor.addEventListener('change',function(event){
-      this.color=event.target.value;
-      console.log(this.color);
-    })
-    console.log(this.color);
-  }
   clearCanvas() {
     this.canvas.clear();
     this.updateModifications(true);
@@ -209,7 +211,13 @@ export class DrawComponent implements OnInit, OnDestroy {
   //     setTimeout(this.canvas.remove(opt.path));
   //   });
   // }
+  public brushcolor(event) {
+    this.brushc = event.target.value
 
+  }
+  public chooseColor(event) {
+    this.color = event.target.value
+  }
   public picture(event) {
     this.canvas.isDrawingMode = false;
     if (event.target.files && event.target.files[0]) {
@@ -262,24 +270,19 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
   }
   public freePen() {
-    this.chosenColor = document.getElementById('color');
-    this.chosenColor.addEventListener('change', function (event) {
-      if (!event.target.value) {
-        event.target.value = 'black';
-      } else {
-      }
-      this.drawColor = event.target.value;
-      console.log('duoc chay roi');
-    });
+
+
     this.canvas.isDrawingMode = true;
+    this.canvas.freeDrawingBrush.color = this.brushc;
     this.canvas.freeDrawingBrush.width = 1;
 
-    this.tool = 'freePen';
+    this.tool = 'freePen'
   }
   public freeBrush() {
     this.canvas.isDrawingMode = true;
+    this.canvas.freeDrawingBrush.color = this.brushc;
     this.canvas.freeDrawingBrush.width = 14;
-    this.tool = 'freeBrush';
+    this.tool = 'freeBrush'
   }
   //////////////////////////
   public mouseDown(mouseEvent) {
@@ -563,31 +566,25 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
   }
   public groupObjects() {
-    this.canvas.isDrawingMode = false;
-
-    this.group = new fabric.Group([], { left: 250, top: 200 });
-    if (this.canvas.getActiveGroup()) {
-      this.componentRef.directiveRef
-        .fabric()
-        .getActiveGroup()
-        .getObjects()
-        .forEach(function (o) {
-          this.group.addWithUpdate(o);
-          this.componentRef.directiveRef.remove(o);
-        });
+    if (!this.canvas.getActiveObject()) {
+      return;
     }
-    this.canvas.add(this.group);
+    if (this.canvas.getActiveObject().type !== 'activeSelection') {
+      return;
+    }
+    this.canvas.getActiveObject().toGroup();
+    this.canvas.requestRenderAll();
   }
 
-  public ungroupObjects() {
-    this.canvas.isDrawingMode = false;
 
-    var items = this.group._objects;
-    this.group._restoreObjectsState();
-    this.canvas.remove(this.group);
-    for (var i = 0; i < items.length; i++) {
-      this.canvas.add(items[i]);
+  public ungroupObjects() {
+    if (!this.canvas.getActiveObject()) {
+      return;
     }
-    this.canvas.renderAll();
+    if (this.canvas.getActiveObject().type !== 'group') {
+      return;
+    }
+    this.canvas.getActiveObject().toActiveSelection();
+    this.canvas.requestRenderAll();
   }
 }

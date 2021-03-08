@@ -66,7 +66,7 @@
 
             </svg></button> -->
           <button id="btnFunction">
-            <input style="width: 35px; height: 35px" title="Pen color" type="color" id="color" />
+            <input style="width: 35px; height: 35px" title="Pen color" type="color" id="color"  (change)="brushcolor($event)"/>
           </button>
 
         </div>
@@ -139,7 +139,7 @@
             </svg>
           </button>
           <button id="btnFunction">
-            <input style="width: 35px; height: 35px" title="Shape Color" type="color" id="shapecolor"  />
+            <input style="width: 35px; height: 35px" title="Shape Color" type="color" id="shapecolor"  (change)="chooseColor($event)"/>
           </button>
         </div>
 
