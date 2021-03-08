@@ -6,11 +6,15 @@ body{
 input{
     height: 50px;
     width: 300px;
+    border-radius: 5px;
     
 }
 button{
-    height: 50px;
+    height: 54px;
     width: 100px;
-    background: blue;
-    color: white;
+    background: rgb(46, 203, 255);
+    color: rgb(0, 0, 0);
+    margin-left: 3px;
+    font-size: larger;
+    border-radius: 5px;
 }

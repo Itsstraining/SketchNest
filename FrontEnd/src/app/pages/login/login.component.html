@@ -1,8 +1,14 @@
+<div class="bgImg"></div>
 <div class="body">
   <div class="login-form">
     <div class="login-form__top">SIGN IN</div>
     <div class="form-group">
-      <input class="input" type="email" [(ngModel)]="this.email" required />
+      <input class="input"
+      type="email"
+      formControlName="email"
+      placeholder="Email"
+      #userEmail
+      required [(ngModel)]="this.email" required />
       <label class="label" for="email"> Email </label>
       <span class="input__border"> </span>
     </div>
