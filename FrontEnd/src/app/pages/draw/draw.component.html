@@ -102,8 +102,8 @@
           </g>
         </svg></button>
       <div class="dropdown-content">
-        <div style="width: 210px;">
-          <button id="shapeMenu" (blur)="this.tool = 'Circle'">
+        <div style="width: 260px;">
+          <button id="btnFunction" (blur)="this.tool = 'Circle'" style="border: none;">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
               focusable="false" width="35px" height="35px" style="
           -ms-transform: rotate(360deg);
@@ -115,7 +115,7 @@
               </g>
             </svg>
           </button>
-          <button id="shapeMenu" title="Rectangle" (click)="this.tool = 'Rectangle'">
+          <button id="btnFunction" title="Rectangle" (click)="this.tool = 'Rectangle'" style="border: none;">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
               focusable="false" width="35px" height="35px" style="
           -ms-transform: rotate(360deg);
@@ -126,15 +126,13 @@
                 d="M36 416h440a20.023 20.023 0 0 0 20-20V116a20.023 20.023 0 0 0-20-20H36a20.023 20.023 0 0 0-20 20v280a20.023 20.023 0 0 0 20 20zm12-288h416v256H48z" />
             </svg>
           </button>
-          <button id="shapeMenu" title="Triangle" (click)="this.tool = 'Ellipse'">
+          <button id="btnFunction" title="line" (click)="this.tool = 'Ellipse'" style="border: none;">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
-              focusable="false" width="35px" height="35px" style="
-          -ms-transform: rotate(360deg);
-          -webkit-transform: rotate(360deg);
-          transform: rotate(360deg);
-        " preserveAspectRatio="xMidYMid meet" viewBox="0 0 512 512">
-              <path fill="black"
-                d="M273.342 66.038a20 20 0 0 0-34.684 0L29.569 430.007a20 20 0 0 0 17.342 29.963h418.178a20 20 0 0 0 17.342-29.962zM67.644 427.97L256 100.091L444.356 427.97z" />
+              focusable="false" width="35px" height="35px"
+              style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
+              preserveAspectRatio="xMidYMid meet" viewBox="0 0 1024 1024">
+              <path d="M904 476H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8z"
+                fill="black" />
             </svg>
           </button>
           <button id="btnFunction">
