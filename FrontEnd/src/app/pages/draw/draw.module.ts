@@ -17,7 +17,7 @@ const DEFAULT_FABRIC_CONFIG: FabricConfigInterface = {};
     DrawRoutingModule,
     MatMenuModule,
     MatIconModule,
-    FabricModule,
+    FabricModule
   ],
   providers: [
     {
