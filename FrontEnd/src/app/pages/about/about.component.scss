@@ -14,7 +14,7 @@ html {
 
 .column {
   float: left;
-  width: 24%;
+  width: 25%;
   margin-bottom: 16px;
   padding: 0 8px;
 }
@@ -70,7 +70,7 @@ html {
   }
 }
 .vb{
-  font-size: larger;
+  font-size:18px ;
 }
 
 
@@ -96,16 +96,11 @@ body {
 /* Create two unequal columns that floats next to each other */
 /* Left column */
 .leftcolumn {   
-  float: left;
-  width: 75%;
+ text-align: center;
+  width: 100%;
 }
 
-/* Right column */
-.rightcolumn {
-  float: left;
-  width: 25%;
-  padding-left: 20px;
-}
+
 
 /* Fake image */
 .fakeimg {
@@ -120,6 +115,7 @@ body {
    padding: 20px;
    margin-top: 20px;
    box-shadow: 0px 4px 8px 0px rgb(184, 184, 184);
+   font-size: 18px;
 }
 
 /* Clear floats after the columns */
