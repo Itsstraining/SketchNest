@@ -6,13 +6,14 @@ export const environment = {
   production: false,
   SOCKET_ENDPOINT: 'http://localhost:3000',
   firebase: {
-    apiKey: 'AIzaSyA4CWFIoh19-WqZ-6UJzCFssFP4jKsGNxs',
-    authDomain: 'sketchnest-3d589.firebaseapp.com',
-    projectId: 'sketchnest-3d589',
-    storageBucket: 'sketchnest-3d589.appspot.com',
-    messagingSenderId: '184049527766',
-    appId: '1:184049527766:web:af3831c119387417f8d277',
-    measurementId: 'G-WB1SWTLQJC',
+    apiKey: "AIzaSyApFUw785jJLtxhfHny81Y2zyRq0ZviecM",
+    authDomain: "logindemo-9d736.firebaseapp.com",
+    databaseURL: "https://logindemo-9d736.firebaseio.com",
+    projectId: "logindemo-9d736",
+    storageBucket: "logindemo-9d736.appspot.com",
+    messagingSenderId: "1044895162795",
+    appId: "1:1044895162795:web:57d1a616e055fc2c23b2ee",
+    measurementId: "G-ZF3KJHPQ2Y"
   },
 };
 
