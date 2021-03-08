@@ -23,28 +23,30 @@ export class RoomService {
       memberList: [],
     };
     this.roomList.push(room);
+    // try {
+    //   let a = await this.http
+    //     .get('http://192.168.31.136:3000/user/get')
+    //     .toPromise()
+    //     .then((e) => {
+    //       console.log(e);
+    //     });
+    // } catch (err) {
+    //   console.log(err);
+    // }
     try {
-      let a = await this.http
-        .get('http://192.168.31.136:3000/user/get')
+      await this.http
+        .post('http://192.168.31.136:3000/room/create', {
+          room: [
+            {
+              name: name,
+              password: password,
+            },
+          ],
+          owner: this.user.user.email,
+        })
         .toPromise()
         .then((e) => {
-          try {
-            this.http
-              .put('http://192.168.31.136:3000/user/update', {
-                room: [
-                  {
-                    name: name,
-                    password: password,
-                  },
-                ],
-              })
-              .toPromise()
-              .then((e) => {
-                console.log(e);
-              });
-          } catch (err) {
-            console.log(err);
-          }
+          console.log(e);
         });
     } catch (err) {
       console.log(err);
