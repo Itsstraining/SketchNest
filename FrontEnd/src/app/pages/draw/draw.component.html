@@ -155,7 +155,7 @@
 
     <br />
     <button id="btnFunction">
-      <input style="width: 35px; height: 35px" title="Shape Color" type="color" id="shapecolor"/>
+      <input style="width: 35px; height: 35px" title="Shape Color" type="color" id="shapecolor" (click)='this.chooseColor()'/>
     </button>
     <br>
     <button title="Text" id="btnFunction" (click)="this.tool='Text'">
@@ -206,7 +206,7 @@
   <main>
     <fabric style="background-color: white; width: 1400px; height: 700px" *ngIf="type == 'component' && show"
       fxFlex="auto" (mouseDown)="mouseDown($event)" (mouseMove)="mouseMove($event)" (mouseUp)="mouseUp($event)"
-       (objectSelected)="(true)"
+       (objectSelected)="(true)" (objectModified)="this.updateModifications(true)"
       [data]="data" [config]="config" [disabled]="disabled">
     </fabric>
   </main>

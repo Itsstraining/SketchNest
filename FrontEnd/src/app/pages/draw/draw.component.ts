@@ -173,9 +173,18 @@ export class DrawComponent implements OnInit, OnDestroy {
   }
 
   //default
+
+  public chooseColor(){
+    this.chosenColor=document.getElementById('shapecolor');
+    this.chosenColor.addEventListener('change',function(event){
+      this.color=event.target.value;
+      console.log(this.color);
+    })
+    console.log(this.color);
+  }
   clearCanvas() {
     this.canvas.clear();
-    this.updateModifications(true)
+    this.updateModifications(true);
   }
 
   convertImg() {
@@ -290,7 +299,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             stroke: this.color,
           });
           this.canvas.add(this.line);
-          this.updateModifications(true);
+          // this.updateModifications(true);
           this.selected = this.line;
           break;
         }
@@ -304,7 +313,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             });
 
             this.canvas.add(this.rectangle);
-            this.updateModifications(true);
+            // this.updateModifications(true);
             this.selected = this.rectangle;
             break;
           } else {
@@ -315,7 +324,7 @@ export class DrawComponent implements OnInit, OnDestroy {
               fill: null,
             });
             this.canvas.add(this.rectangle);
-            this.updateModifications(true);
+            // this.updateModifications(true);
             this.selected = this.rectangle;
             break;
           }
@@ -329,7 +338,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             left: this.x0,
           });
           this.canvas.add(this.inputText);
-          this.updateModifications(true);
+          // this.updateModifications(true);
           this.selected = this.inputText;
           break;
         }
@@ -350,7 +359,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             });
           }
           this.canvas.add(this.square);
-          this.updateModifications(true);
+          // this.updateModifications(true);
           this.selected = this.square;
           break;
         }
@@ -380,7 +389,7 @@ export class DrawComponent implements OnInit, OnDestroy {
           }
 
           this.canvas.add(this.ellipse);
-          this.updateModifications(true);
+          // this.updateModifications(true);
           this.selected = this.ellipse;
           break;
         }
@@ -407,11 +416,12 @@ export class DrawComponent implements OnInit, OnDestroy {
             });
           }
           this.canvas.add(this.circle);
-          this.updateModifications(true);
+          // this.updateModifications(true);
           this.selected = this.circle;
           break;
         }
         case 'Pointer': {
+          // fabric.Object.prototype.selectable=true;
           this.canvas.isDrawingMode = false;
           break;
         }
@@ -521,16 +531,17 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
   }
   public mouseUp(mouseEvent) {
-    fabric.Object.prototype.selectable = true;
     if (this.tool == 'freePen' || this.tool == 'freeBrush') {
+    } else if (this.tool == 'Pointer') {
+      fabric.Object.prototype.selectable = true;
     } else {
       if (this.mode == 'add') {
         this.canvas.isDrawingMode = false;
         this.selected = null;
         this.tool = 'Pointer';
+        this.updateModifications(true);
       }
     }
-    this.updateModifications(true);
     this.x0 = 0;
     this.y0 = 0;
   }
