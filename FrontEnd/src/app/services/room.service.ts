@@ -24,15 +24,11 @@ export class RoomService {
     };
     this.roomList.push(room);
     try {
-      await this.http
-        .post('http://192.168.31.136:3000/room/create', {
-          name: name,
-          password: password,
-          owner: this.user.user.email,
-        })
+      let a = await this.http
+        .get('http://192.168.31.136:3000/user/get')
         .toPromise()
-        .then((e) => {
-          console.log(e);
+        .then((a) => {
+          console.log(a);
         });
     } catch (err) {
       console.log(err);

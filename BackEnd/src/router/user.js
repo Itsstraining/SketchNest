@@ -32,9 +32,9 @@ router.get("/get", async (req, res) => {
     .doc(email)
     .get()
     .then((doc) => doc.data());
-  console.log(a.room);
+  console.log(a);
 });
-router.post("/update", async (req, res) => {
+router.put("/update", async (req, res) => {
   let { room, email } = req.body;
   let result = await db.collection("user").doc(email).set({
     room: room,
