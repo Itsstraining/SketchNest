@@ -126,7 +126,7 @@
                 d="M36 416h440a20.023 20.023 0 0 0 20-20V116a20.023 20.023 0 0 0-20-20H36a20.023 20.023 0 0 0-20 20v280a20.023 20.023 0 0 0 20 20zm12-288h416v256H48z" />
             </svg>
           </button>
-          <button id="shapeMenu" title="Triangle" (click)="this.tool = 'Ellipse'">
+          <button id="shapeMenu" title="Triangle" (click)="this.tool = 'Straightline'">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
               focusable="false" width="35px" height="35px" style="
           -ms-transform: rotate(360deg);
@@ -138,7 +138,7 @@
             </svg>
           </button>
           <button id="btnFunction">
-            <input style="width: 35px; height: 35px" title="Shape Color" type="color" id="shapecolor" />
+            <input style="width: 35px; height: 35px" title="Shape Color" type="color" id="shapecolor" (click)='chooseColor()' />
           </button>
         </div>
 
