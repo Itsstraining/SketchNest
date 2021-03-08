@@ -1,5 +1,8 @@
 <header>
   <button id="clearTb" (click)="clearCanvas()">Clear table</button>
+  <button id="btnShare" mat-raised-button (click)="openDialog()">
+    Share
+  </button>
 </header>
 
 <body>
@@ -219,10 +222,8 @@
   </main>
   <div class="right-sidebar">
     <div class="list-wrapper" ng-app="app" ng-controller="MainCtrl as ctrl">
-      <button id="btnShare" mat-raised-button (click)="openDialog()">
-        Share
-      </button>
-      <ul class="list">
+      
+      <!-- <ul class="list">
         <li ng-repeat="user in ctrl.users" class="list-item">
           <div>
             <img src="{{ this.auth.user.photoURL }}" class="list-item-image" />
@@ -268,7 +269,7 @@
             <p>{{ this.auth.user.email }}</p>
           </div>
         </li>
-      </ul>
+      </ul> -->
     </div>
   </div>
 </body>

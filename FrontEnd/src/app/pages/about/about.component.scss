@@ -1,7 +1,7 @@
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Brush Script MT, Brush Script Std, cursive";
   margin: 0;
-  background-color: rgba(85, 202, 238, 0.267);
+
 }
 
 html {
@@ -20,7 +20,7 @@ html {
 }
 
 .card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  
   margin: 8px;
   background-color: white;
 
@@ -44,7 +44,7 @@ html {
 }
 
 .title {
-  color: grey;
+  color: gray;
 
 }
 .button {
@@ -81,9 +81,8 @@ html {
 
 /* Add a gray background color with some padding */
 body {
-  font-family: Arial;
+  font-family: "Brush Script MT, Brush Script Std, cursive";
   padding: 20px;
-  background: #f1f1f1;
 }
 
 /* Header/Blog Title */
@@ -110,7 +109,7 @@ body {
 
 /* Fake image */
 .fakeimg {
-  background-color: #aaa;
+  background-color:white;
   width: 100%;
   padding: 20px;
 }
@@ -120,6 +119,7 @@ body {
    background-color: white;
    padding: 20px;
    margin-top: 20px;
+   box-shadow: 0px 4px 8px 0px rgb(184, 184, 184);
 }
 
 /* Clear floats after the columns */

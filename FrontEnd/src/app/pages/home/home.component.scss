@@ -27,7 +27,7 @@ body {
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  font-family: "Luckiest Guy", cursive;
+  font-family: "Brush Script MT, Brush Script Std, cursive";
   color: #333333;
   // background-color: cadetblue;
   background-image: url("https://images.wallpaperscraft.com/image/paint_light_line_shape_83475_1920x1080.jpg"); /* Photo by Roberto Nickson from Pexels */
@@ -51,7 +51,7 @@ body {
   transform: scale(1, 1) skew(-5deg, -5deg);
   transition: all 400ms ease 0s;
   box-shadow: 0px 0px 5px 0px white;
-  font-family: "Luckiest Guy", cursive;
+  font-family: "Brush Script MT, Brush Script Std, cursive";
 }
 
 .popup-btn:hover {
@@ -196,7 +196,7 @@ button.close {
 .modal-body {
   position: relative;
   padding: 15px;
-  font-family: "Rubik", sans-serif;
+  font-family: "Brush Script MT, Brush Script Std, cursive";
 }
 #driver-terms-modal .modal-body {
   height: 600px;

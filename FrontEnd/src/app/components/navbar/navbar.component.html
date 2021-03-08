@@ -20,7 +20,7 @@
       <a href="#"  *ngIf="this.auth.user" (click)="logOut()">Sign Out</a>
     </li> -->
     <li
-      *ngIf="this.auth.user" style="font-size: larger; color: rgb(77, 210, 255)">{{ this.auth.user.displayName }}
+      *ngIf="this.auth.user" style="font-size: larger; color: rgb(77, 210, 255);font-family: Brush Script MT, Brush Script Std, cursive">{{ this.auth.user.displayName }}
     </li>
     <li>
       <button *ngIf="this.auth.user"  mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" style="background-color: black;color:white; border: none ;">
