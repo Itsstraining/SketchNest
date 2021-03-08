@@ -94,7 +94,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   @ViewChild(FabricComponent, { static: false }) componentRef?: FabricComponent;
   @ViewChild(FabricDirective, { static: false }) directiveRef?: FabricDirective;
   ////////////////////////
-  canvas;
+  public canvas;
   image: any;
   json;
   url: any;
@@ -540,6 +540,33 @@ export class DrawComponent implements OnInit, OnDestroy {
 
   this.x0 = 0;
   this.y0 = 0;
+}
+public groupObjects() {
+  this.canvas.isDrawingMode = false;
+  this.group = new fabric.Group([], { left: 250, top: 200 });
+  if (this.canvas.getActiveGroup()) {
+    this.componentRef.directiveRef
+      .fabric()
+      .getActiveGroup()
+      .getObjects()
+      .forEach(function (o) {
+        this.group.addWithUpdate(o);
+        this.componentRef.directiveRef.remove(o);
+      });
+  }
+  this.canvas.add(this.group);
+}
+
+public ungroupObjects() {
+  this.canvas.isDrawingMode = false;
+
+  var items = this.group._objects;
+  this.group._restoreObjectsState();
+  this.canvas.remove(this.group);
+  for (var i = 0; i < items.length; i++) {
+    this.canvas.add(items[i]);
+  }
+  this.canvas.renderAll();
 }
   
 }
