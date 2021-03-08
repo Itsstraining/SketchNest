@@ -431,24 +431,22 @@ export class DrawComponent implements OnInit, OnDestroy {
 }
   public mouseMove(mouseEvent) {
 
-    this.x2 = mouseEvent.pointer.x;
-    this.y2 = mouseEvent.pointer.y;
-    let changeInX = this.x2 - this.x0;
-    let changeInY = this.y2 - this.y0;
-    switch (this.tool) {
-      case 'freePen': {
-        break;
-      }
-      case 'freeBrush': {
-        break;
-      }
-      case 'Straightline': {
-        if (this.selected !== null) {
-          this.selected.set({});
-        }
-        this.canvas.isDrawingMode = false;
-        this.canvas.renderAll();
-        break;
+  this.x2 = mouseEvent.pointer.x;
+  this.y2 = mouseEvent.pointer.y;
+  let changeInX = this.x2 - this.x0;
+  let changeInY = this.y2 - this.y0;
+  switch (this.tool) {
+    case 'freePen': {
+      break;
+    }
+    case 'freeBrush': {
+
+      break;
+    }
+    case 'Straightline': {
+      if (this.selected !== null) {
+        this.selected.set({
+        });
       }
       this.canvas.isDrawingMode = false;
       this.canvas.renderAll();
@@ -527,32 +525,16 @@ export class DrawComponent implements OnInit, OnDestroy {
       break;
     }
   }
-
-  public async updateModifications(saveModification) {
-    if (saveModification === true) {
-      this.myjson = JSON.stringify(this.canvas);
-      console.log(this.myjson);
-      this.state.push(this.myjson);
-      await this.db
-        .collection('user')
-        .doc('vanhuugiakien@gmail.com')
-        .update({ room: [{ id: 1, canvas: this.myjson }] });
-    }
+}
+  public updateModifications(saveModification) {
+  if (saveModification === true) {
+    this.myjson = JSON.stringify(this.canvas);
+    this.state.push(this.myjson);
   }
 }
   public mouseUp(mouseEvent) {
+  if (this.tool == 'freePen' || this.tool == 'freeBrush') {
 
-    if (this.tool == 'freePen' || this.tool == 'freeBrush') {
-    } else {
-      if (this.mode == 'add') {
-        this.canvas.isDrawingMode = false;
-        this.selected = null;
-        this.tool = 'Pointer';
-      }
-    }
-    this.updateModifications(true);
-    this.x0 = 0;
-    this.y0 = 0;
   }
   else {
     if (this.mode == 'add') {
