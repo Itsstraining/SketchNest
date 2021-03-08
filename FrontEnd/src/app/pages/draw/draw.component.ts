@@ -117,13 +117,6 @@ export class DrawComponent implements OnInit, OnDestroy {
   ngAfterViewInit(): void {
     this.canvas = this.componentRef.directiveRef.fabric();
     console.log(this.canvas.toDataURL('png'));
-    this.canvas.on('object:added', function () {
-      if (!this.isRedoing) {
-        this.stack = []
-      }
-      this.isRedoing = false;
-    });
-
   }
   ngOnDestroy() {
     this.socket.socket.emit(
@@ -142,11 +135,13 @@ export class DrawComponent implements OnInit, OnDestroy {
       switch (event.keyCode) {
         case this.keyCodes['Z']:
           this.undo();
+          this.updateModifications(true);
 
           break;
         case this.keyCodes['Y']:
           this.redo();
           this.canvas.renderAll();
+          this.updateModifications(true);
           break;
       }
     }
@@ -183,10 +178,10 @@ export class DrawComponent implements OnInit, OnDestroy {
   // }
   public brushcolor(event) {
     this.brushc = event.target.value;
-    if(!this.brushc){
-      this.brushc='black';
+    if (!this.brushc) {
+      this.brushc = 'black';
     }
- 
+
     this.canvas.freeDrawingBrush.color = this.brushc;
 
 
@@ -232,24 +227,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas.toDataUrl();
     console.log(this.canvas.toDataUrl());
   }
-  undo() {
-    if (this.canvas._objects.length > 0) {
-      this.stack.push(this.canvas._objects.pop());
-      console.log(this.stack);
-      this.canvas.renderAll();
-    }
-    this.canvas.renderAll();
-    return this.stack;
-  }
 
-  redo() {
-    console.log(this.stack);
-    if (this.stack.length > 0) {
-      this.isRedoing = true;
-      this.canvas.add(this.stack.pop());
-      this.canvas.renderAll();
-    }
-  }
   public freePen() {
 
 
@@ -401,8 +379,9 @@ export class DrawComponent implements OnInit, OnDestroy {
           break;
         }
         case 'Pointer': {
-          fabric.Object.prototype.selectable = true;
           this.canvas.isDrawingMode = false;
+          fabric.Object.prototype.selectable = true;
+
           break;
         }
       }
@@ -415,6 +394,9 @@ export class DrawComponent implements OnInit, OnDestroy {
     let changeInX = this.x2 - this.x0;
     let changeInY = this.y2 - this.y0;
     switch (this.tool) {
+      case 'Pointer':{
+        this.canvas.isDrawingMode=false;
+      }
       case 'freePen': {
         break;
       }
@@ -514,6 +496,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     if (this.tool == 'freePen' || this.tool == 'freeBrush') {
       this.updateModifications(true);
     } else if (this.tool == 'Pointer') {
+      this.canvas.isDrawingMode = false;
       fabric.Object.prototype.selectable = true;
     } else {
       if (this.mode == 'add') {
@@ -567,5 +550,28 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas.getActiveObject().toActiveSelection();
     this.canvas.requestRenderAll();
     this.updateModifications(true);
+  }
+  undo() {
+    if (this.mods < this.state.length) {
+      this.canvas.clear().renderAll();
+      this.canvas.loadFromJSON(this.state[this.state.length - 1 - this.mods - 1], this.canvas.renderAll.bind(this.canvas));
+      this.canvas.renderAll();
+      //console.log("geladen " + (state.length-1-mods-1));
+      //console.log("state " + state.length);
+      this.mods += 1;
+      //console.log("mods " + mods);
+    }
+  }
+  redo() {
+    if (this.mods > 0) {
+      this.canvas.clear().renderAll();
+      this.canvas.loadFromJSON(this.state[this.state.length - 1 - this.mods + 1], this.canvas.renderAll.bind(this.canvas));
+      this.canvas.renderAll();
+      //console.log("geladen " + (state.length-1-mods+1));
+
+      this.mods -= 1;
+      //console.log("state " + state.length);
+      //console.log("mods " + mods);
+    }
   }
 }
