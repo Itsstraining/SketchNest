@@ -123,6 +123,7 @@ user agent stylesheet button {
   height: 32px;
   margin: 10px;
   width: 32px;
+  
 }
 .jam-flatbutton-content {
   margin-right: 2%;
@@ -219,5 +220,8 @@ h3 {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  cursor: none;
+  outline: none;
+  padding: none;
+
+  
 }
