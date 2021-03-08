@@ -218,7 +218,7 @@
     <fabric style="background-color: white; width: 1400px; height: 700px" *ngIf="type == 'component' && show"
       fxFlex="auto" (mouseDown)="mouseDown($event)" (mouseMove)="mouseMove($event)" (mouseUp)="mouseUp($event)"
        (objectSelected)="(true)" (objectModified)="this.updateModifications(true)"
-      [data]="data" [config]="config" [disabled]="disabled">
+       [config]="config" [disabled]="disabled">
     </fabric>
   </main>
   <div class="right-sidebar">

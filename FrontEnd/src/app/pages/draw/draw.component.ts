@@ -52,36 +52,36 @@ export class DrawComponent implements OnInit, OnDestroy {
   public savedCanvas;
   public show: boolean = true;
   public myjson;
-  public data: any = {
-    objects: [
-      {
-        type: 'group',
-        top: 22,
-        left: 72,
-        width: 200,
-        height: 60,
-        objects: [
-          {
-            type: 'rect',
-            top: -30,
-            left: -100,
-            width: 200,
-            height: 60,
-            fill: '#cfcfcf',
-          },
-          {
-            type: 'text',
-            width: 200,
-            height: 60,
-            fontSize: 24,
-            text: 'Example object',
-            originX: 'center',
-            originY: 'center',
-          },
-        ],
-      },
-    ],
-  };
+  // public data: any = {
+  //   objects: [
+  //     {
+  //       type: 'group',
+  //       top: 22,
+  //       left: 72,
+  //       width: 200,
+  //       height: 60,
+  //       objects: [
+  //         {
+  //           type: 'rect',
+  //           top: -30,
+  //           left: -100,
+  //           width: 200,
+  //           height: 60,
+  //           fill: '#cfcfcf',
+  //         },
+  //         {
+  //           type: 'text',
+  //           width: 200,
+  //           height: 60,
+  //           fontSize: 24,
+  //           text: 'Example object',
+  //           originX: 'center',
+  //           originY: 'center',
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // };
 
   public type: string = 'component';
   public drawMode = false;
@@ -535,6 +535,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   }
   public mouseUp(mouseEvent) {
     if (this.tool == 'freePen' || this.tool == 'freeBrush') {
+      this.updateModifications(true);
     } else if (this.tool == 'Pointer') {
       fabric.Object.prototype.selectable = true;
     } else {
