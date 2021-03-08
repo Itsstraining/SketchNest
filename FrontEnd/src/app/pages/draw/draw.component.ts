@@ -96,7 +96,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   @ViewChild(FabricComponent, { static: false }) componentRef?: FabricComponent;
   @ViewChild(FabricDirective, { static: false }) directiveRef?: FabricDirective;
   ////////////////////////
-  canvas;
+  public canvas;
   image: any;
   json;
   url: any;
@@ -201,6 +201,13 @@ export class DrawComponent implements OnInit, OnDestroy {
   //   });
   // }
 
+  public chooseColor() {
+    this.chosenColor = document.getElementById('shapecolor');
+    this.chosenColor.addEventListener('change', function (event) {
+      this.color = event.target.value;
+      console.log(this.color);
+    })
+  }
   public picture(event) {
     this.canvas.isDrawingMode = false;
     if (event.target.files && event.target.files[0]) {
@@ -212,6 +219,7 @@ export class DrawComponent implements OnInit, OnDestroy {
         // console.log(this.url)
         fabric.Image.fromURL(this.url, (test) => {
           this.canvas.add(test);
+          this.canvas.sendToBack(test);
           this.canvas.renderAll();
           this.socket.sendCanvas(this.canvas.toJSON().objects);
         });
@@ -274,8 +282,11 @@ export class DrawComponent implements OnInit, OnDestroy {
   }
   //////////////////////////
   public mouseDown(mouseEvent) {
+    this.chooseColor();
     if (mouseEvent.target != undefined || mouseEvent.target != null) {
-    } else {
+
+    }
+    else {
       if (!this.color) {
         this.color = 'black';
       }
@@ -292,9 +303,11 @@ export class DrawComponent implements OnInit, OnDestroy {
           this.canvas.add(this.line);
           this.updateModifications(true);
           this.selected = this.line;
+          fabric.Object.prototype.selectable = false;
           break;
         }
         case 'Rectangle': {
+
           this.canvas.isDrawingMode = false;
           if (this.toogle) {
             this.rectangle = new fabric.Rect({
@@ -306,6 +319,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             this.canvas.add(this.rectangle);
             this.updateModifications(true);
             this.selected = this.rectangle;
+            fabric.Object.prototype.selectable = false;
             break;
           } else {
             this.rectangle = new fabric.Rect({
@@ -317,6 +331,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             this.canvas.add(this.rectangle);
             this.updateModifications(true);
             this.selected = this.rectangle;
+            fabric.Object.prototype.selectable = false;
             break;
           }
         }
@@ -352,6 +367,7 @@ export class DrawComponent implements OnInit, OnDestroy {
           this.canvas.add(this.square);
           this.updateModifications(true);
           this.selected = this.square;
+          fabric.Object.prototype.selectable = false;
           break;
         }
         case 'Ellipse': {
@@ -382,6 +398,7 @@ export class DrawComponent implements OnInit, OnDestroy {
           this.canvas.add(this.ellipse);
           this.updateModifications(true);
           this.selected = this.ellipse;
+          fabric.Object.prototype.selectable = false;
           break;
         }
         case 'Circle': {
@@ -409,15 +426,17 @@ export class DrawComponent implements OnInit, OnDestroy {
           this.canvas.add(this.circle);
           this.updateModifications(true);
           this.selected = this.circle;
+          fabric.Object.prototype.selectable = false;
           break;
         }
         case 'Pointer': {
+          fabric.Object.prototype.selectable = true;
           this.canvas.isDrawingMode = false;
           break;
         }
       }
+      // console.log(mouseEvent);
     }
-    // console.log(mouseEvent);
   }
   public mouseMove(mouseEvent) {
     this.x2 = mouseEvent.pointer.x;
@@ -507,6 +526,10 @@ export class DrawComponent implements OnInit, OnDestroy {
         this.canvas.renderAll();
         break;
       }
+      case 'Pointer': {
+        this.canvas.isDrawingMode = false;
+        break;
+      }
     }
   }
   public async updateModifications(saveModification) {
@@ -521,7 +544,6 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
   }
   public mouseUp(mouseEvent) {
-    fabric.Object.prototype.selectable = true;
     if (this.tool == 'freePen' || this.tool == 'freeBrush') {
     } else {
       if (this.mode == 'add') {
@@ -534,49 +556,27 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.x0 = 0;
     this.y0 = 0;
   }
-  public deleteObjects() {
-    this.canvas.isDrawingMode = false;
-    console.log(this.canvas.isDrawingMode);
-    var activeObject = this.componentRef.directiveRef
-        .fabric()
-        .getActiveObject(),
-      activeGroup = this.canvas.getActiveGroup();
-    if (activeObject) {
-      this.canvas.remove(activeObject);
-    } else if (activeGroup) {
-      var objectsInGroup = activeGroup.getObjects();
-      this.canvas.discardActiveGroup();
-      objectsInGroup.forEach(function (object) {
-        this.componentRef.directiveRef.remove(object);
-      });
-    }
-  }
   public groupObjects() {
-    this.canvas.isDrawingMode = false;
 
-    this.group = new fabric.Group([], { left: 250, top: 200 });
-    if (this.canvas.getActiveGroup()) {
-      this.componentRef.directiveRef
-        .fabric()
-        .getActiveGroup()
-        .getObjects()
-        .forEach(function (o) {
-          this.group.addWithUpdate(o);
-          this.componentRef.directiveRef.remove(o);
-        });
+    if (!this.canvas.getActiveObject()) {
+      return;
     }
-    this.canvas.add(this.group);
+    if (this.canvas.getActiveObject().type !== 'activeSelection') {
+      return;
+    }
+    this.canvas.getActiveObject().toGroup();
+    this.canvas.requestRenderAll();
   }
-
   public ungroupObjects() {
-    this.canvas.isDrawingMode = false;
-
-    var items = this.group._objects;
-    this.group._restoreObjectsState();
-    this.canvas.remove(this.group);
-    for (var i = 0; i < items.length; i++) {
-      this.canvas.add(items[i]);
+    if (!this.canvas.getActiveObject()) {
+      return;
     }
-    this.canvas.renderAll();
+    if (this.canvas.getActiveObject().type !== 'group') {
+      return;
+    }
+    this.canvas.getActiveObject().toActiveSelection();
+    this.canvas.requestRenderAll();
   }
+
 }
+
