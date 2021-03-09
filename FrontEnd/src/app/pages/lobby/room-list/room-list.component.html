@@ -1,7 +1,7 @@
 <div class="parent white">
   <app-room
-    *ngFor="let room of room.roomList"
-    (click)="mouseDown()"
+    *ngFor="let room of this.roomList"
+    
     [room]="room"
   ></app-room>
 </div>

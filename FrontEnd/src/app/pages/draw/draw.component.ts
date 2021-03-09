@@ -97,7 +97,8 @@ export class DrawComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     public socket: ConnectService,
     public auth: AuthService,
-    public db: AngularFirestore
+    public db: AngularFirestore,
+    public connect: ConnectService
   ) {}
   openDialog() {
     this.dialog.open(DialogExampleComponent);
@@ -106,17 +107,14 @@ export class DrawComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     let temp;
     this.db
-      .collection('user')
-      .doc('vanhuugiakien@gmail.com')
+      .collection('room')
+      .doc(this.connect.canvasRoom)
       .snapshotChanges()
       .subscribe((doc) => {
         temp = doc.payload.data();
-        for (let i of temp.room) {
-          if (i.id == 1) {
-            console.log(temp.room);
-            this.canvas.loadFromJSON(i.canvas);
-          }
-        }
+
+        console.log(temp.canvas);
+        this.canvas.loadFromJSON(temp.canvas);
       });
   }
   ngAfterViewInit(): void {
@@ -234,7 +232,7 @@ export class DrawComponent implements OnInit, OnDestroy {
         fabric.Image.fromURL(this.url, (test) => {
           this.canvas.add(test);
           this.canvas.renderAll();
-          this.socket.sendCanvas(this.canvas.toJSON().objects);
+          // this.socket.sendCanvas(this.canvas.toJSON().objects);
         });
       };
     }
@@ -245,7 +243,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     console.log(this.canvas.getActiveObject());
 
     this.canvas.remove(this.canvas.getActiveObject());
-    this.socket.sendCanvas(this.canvas.toJSON().objects);
+    // this.socket.sendCanvas(this.canvas.toJSON().objects);
     this.updateModifications(true);
   }
 
@@ -515,9 +513,9 @@ export class DrawComponent implements OnInit, OnDestroy {
       console.log(this.myjson);
       this.state.push(this.myjson);
       await this.db
-        .collection('user')
-        .doc('vanhuugiakien@gmail.com')
-        .update({ room: [{ id: 1, canvas: this.myjson }] });
+        .collection('room')
+        .doc(this.connect.canvasRoom)
+        .update({ canvas: this.myjson });
     }
   }
   public mouseUp(mouseEvent) {

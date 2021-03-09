@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import { ConnectService } from '../services/connect.service';
 import { RoomService } from '../services/room.service';
 
 @Component({
@@ -12,16 +14,15 @@ export class DialogCreateRoomComponent implements OnInit {
   constructor(
     public room: RoomService,
     public dialogRef: MatDialogRef<DialogCreateRoomComponent>,
-    public router: Router
+    public router: Router,
+    public connect:ConnectService,
+    public auth:AuthService
   ) {}
   async createRoom(name, password) {
-    if (name == null || password == null) {
-      alert('fail');
-    } else {
-      await this.room.onCreateRoom(name, password);
-      await this.router.navigate(['/draw']);
-    }
-
+    console.log(this.auth.user.uid)
+    // await this.room.onCreateRoom(name, password);
+    this.connect.CreateRoom(name,password,this.auth.user.uid)
+    // await this.router.navigate(['/draw']);
     // await this.room.getRoom();
   }
 

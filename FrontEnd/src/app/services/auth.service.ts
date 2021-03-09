@@ -19,9 +19,9 @@ export class AuthService {
       if (user) {
         this.user = user;
         localStorage.setItem('user', JSON.stringify(this.user));
-        console.log('login success! ' + user.displayName);
+        // console.log('login success! ' + user.displayName);
         // alert('Login successfully, '+user.displayName)
-        console.log(this.user);
+        // console.log(this.user);
         this.User.createUser(
           this.user.displayName,
           this.user.uid,
