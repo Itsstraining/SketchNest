@@ -21,12 +21,12 @@
 }
 
 body {
-  height: 72%;
+  height: 76%;
   margin: 0px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  // padding: 2rem;
   font-family: "Brush Script MT, Brush Script Std, cursive";
   color: #333333;
   // background-color: cadetblue;
@@ -38,6 +38,7 @@ body {
 }
 
 .popup-btn {
+  margin-left: 60px;
   width: auto;
   display: inline-block;
   padding: 0.5rem 2rem;
@@ -45,7 +46,7 @@ body {
   text-decoration: none;
   color: #333333;
   background: wheat;
-  font-size: 6vw;
+  font-size: 4vw;
   cursor: pointer;
   border-radius: 0.5rem;
   transform: scale(1, 1) skew(-5deg, -5deg);
@@ -356,6 +357,7 @@ a:hover {color: #ffffff; text-decoration: underline;}
   text-align: center;
   background-color: black;
   color: white;
+  height: 14%;
 }
 @media screen and (max-width: 480px) {
 
