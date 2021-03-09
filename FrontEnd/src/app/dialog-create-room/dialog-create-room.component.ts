@@ -25,9 +25,6 @@ export class DialogCreateRoomComponent implements OnInit {
     // await this.router.navigate(['/draw']);
     // await this.room.getRoom();
   }
-  async getRoomName(name) {
-    await this.room.OngetRoomName(name);
-  }
 
   ngOnInit(): void {}
 }

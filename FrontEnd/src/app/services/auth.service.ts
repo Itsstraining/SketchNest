@@ -26,7 +26,7 @@ export class AuthService {
           this.user.displayName,
           this.user.uid,
           this.user.photoURL,
-          this.user.email
+          this.user.email.toString()
         );
       } else {
         localStorage.setItem('user', null);
@@ -37,7 +37,6 @@ export class AuthService {
     (await this.provider) == new firebase.default.auth.GoogleAuthProvider();
     await this.afAuth.signInWithPopup(
       new firebase.default.auth.GoogleAuthProvider()
-      
     );
   }
 

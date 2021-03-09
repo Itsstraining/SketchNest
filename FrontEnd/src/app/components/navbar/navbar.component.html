@@ -21,7 +21,7 @@
 
 
     <li
-      *ngIf="this.auth.user" style="font-size: larger; color: rgb(77, 210, 255);font-family: Brush Script MT, Brush Script Std, cursive">{{ this.auth.user.displayName }}
+      *ngIf="this.auth.user" style="font-size: larger; color: rgb(77, 210, 255)">{{ this.auth.user.displayName }}
 
     </li>
 
@@ -35,7 +35,7 @@
       <button *ngIf="this.auth.user" (click)="logOut()" mat-menu-item>
 
         <mat-icon>logout</mat-icon>
-        <span style="font-family: Brush Script MT, Brush Script Std, cursive">Sign out</span>
+        <span >Sign out</span>
       </button>
     </mat-menu>
 </li>
