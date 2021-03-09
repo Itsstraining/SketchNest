@@ -66,8 +66,8 @@ export class DrawComponent implements OnInit, OnDestroy {
 
   @ViewChild(FabricComponent, { static: false }) componentRef?: FabricComponent;
   @ViewChild(FabricDirective, { static: false }) directiveRef?: FabricDirective;
-  @ViewChild('shapecolor', { static: false }) shapeColor: HTMLElement
-  @ViewChild('color', { static: false }) brushColor: HTMLElement
+  @ViewChild('shapecolor', { static: false }) shapeColor: HTMLElement;
+  @ViewChild('color', { static: false }) brushColor: HTMLElement;
   ////////////////////////
   canvas;
   image: any;
@@ -92,8 +92,9 @@ export class DrawComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     public socket: ConnectService,
     public auth: AuthService,
-    public db: AngularFirestore
-  ) { }
+    public db: AngularFirestore,
+    public connect: ConnectService
+  ) {}
   openDialog() {
     this.dialog.open(DialogExampleComponent);
   }
@@ -101,17 +102,14 @@ export class DrawComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     let temp;
     this.db
-      .collection('user')
-      .doc('vanhuugiakien@gmail.com')
+      .collection('room')
+      .doc(this.connect.canvasRoom)
       .snapshotChanges()
       .subscribe((doc) => {
         temp = doc.payload.data();
-        for (let i of temp.room) {
-          if (i.id == 1) {
-            console.log(temp.room);
-            this.canvas.loadFromJSON(i.canvas);
-          }
-        }
+
+        console.log(temp.canvas);
+        this.canvas.loadFromJSON(temp.canvas);
       });
   }
   ngAfterViewInit(): void {
@@ -119,11 +117,10 @@ export class DrawComponent implements OnInit, OnDestroy {
     console.log(this.canvas.toDataURL('png'));
     this.canvas.on('object:added', function () {
       if (!this.isRedoing) {
-        this.stack = []
+        this.stack = [];
       }
       this.isRedoing = false;
     });
-
   }
   ngOnDestroy() {
     this.socket.socket.emit(
@@ -183,19 +180,16 @@ export class DrawComponent implements OnInit, OnDestroy {
   // }
   public brushcolor(event) {
     this.brushc = event.target.value;
-    if(!this.brushc){
-      this.brushc='black';
+    if (!this.brushc) {
+      this.brushc = 'black';
     }
- 
+
     this.canvas.freeDrawingBrush.color = this.brushc;
-
-
   }
   public chooseColor(event) {
     if (!event.target.value) {
       this.color = 'black';
-    }
-    else {
+    } else {
       this.color = event.target.value;
     }
   }
@@ -211,7 +205,7 @@ export class DrawComponent implements OnInit, OnDestroy {
         fabric.Image.fromURL(this.url, (test) => {
           this.canvas.add(test);
           this.canvas.renderAll();
-          this.socket.sendCanvas(this.canvas.toJSON().objects);
+          // this.socket.sendCanvas(this.canvas.toJSON().objects);
         });
       };
     }
@@ -222,7 +216,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     console.log(this.canvas.getActiveObject());
 
     this.canvas.remove(this.canvas.getActiveObject());
-    this.socket.sendCanvas(this.canvas.toJSON().objects);
+    // this.socket.sendCanvas(this.canvas.toJSON().objects);
     this.updateModifications(true);
   }
 
@@ -251,22 +245,19 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
   }
   public freePen() {
-
-
     this.canvas.isDrawingMode = true;
     this.canvas.freeDrawingBrush.width = 1;
-    this.tool = 'freePen'
+    this.tool = 'freePen';
   }
   public freeBrush() {
     this.canvas.isDrawingMode = true;
     this.canvas.freeDrawingBrush.width = 14;
-    this.tool = 'freeBrush'
+    this.tool = 'freeBrush';
   }
   //////////////////////////
   public mouseDown(mouseEvent) {
     if (mouseEvent.target != undefined || mouseEvent.target != null) {
     } else {
-
       this.x0 = mouseEvent.pointer.x;
       this.y0 = mouseEvent.pointer.y;
       switch (this.tool) {
@@ -397,7 +388,6 @@ export class DrawComponent implements OnInit, OnDestroy {
           this.canvas.add(this.circle);
           this.selected = this.circle;
 
-
           break;
         }
         case 'Pointer': {
@@ -505,9 +495,9 @@ export class DrawComponent implements OnInit, OnDestroy {
       console.log(this.myjson);
       this.state.push(this.myjson);
       await this.db
-        .collection('user')
-        .doc('vanhuugiakien@gmail.com')
-        .update({ room: [{ id: 1, canvas: this.myjson }] });
+        .collection('room')
+        .doc(this.connect.canvasRoom)
+        .update({ canvas: this.myjson });
     }
   }
   public mouseUp(mouseEvent) {
@@ -517,7 +507,6 @@ export class DrawComponent implements OnInit, OnDestroy {
       fabric.Object.prototype.selectable = true;
     } else {
       if (this.mode == 'add') {
-
         this.canvas.isDrawingMode = false;
         this.selected = null;
         this.tool = 'Pointer';
@@ -531,8 +520,8 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas.isDrawingMode = false;
     console.log(this.canvas.isDrawingMode);
     var activeObject = this.componentRef.directiveRef
-      .fabric()
-      .getActiveObject(),
+        .fabric()
+        .getActiveObject(),
       activeGroup = this.canvas.getActiveGroup();
     if (activeObject) {
       this.canvas.remove(activeObject);
@@ -555,7 +544,6 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas.requestRenderAll();
     this.updateModifications(true);
   }
-
 
   public ungroupObjects() {
     if (!this.canvas.getActiveObject()) {

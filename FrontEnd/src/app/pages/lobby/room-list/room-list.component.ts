@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
+import { ConnectService } from 'src/app/services/connect.service';
 import { RoomService } from 'src/app/services/room.service';
 import { Room } from '../room/models/room.model';
 
@@ -9,10 +11,25 @@ import { Room } from '../room/models/room.model';
   styleUrls: ['./room-list.component.scss'],
 })
 export class RoomListComponent implements OnInit {
-  constructor(public room: RoomService, public router: Router) {}
+  constructor(
+    public connect: ConnectService,
+    public room: RoomService,
+    public router: Router,
+    public auth: AuthService
+  ) {
+    
+  }
+  roomList;
+  ngOnInit(): void {
+    console.log(this.auth.user.uid);
+    this.getData();
+  }
 
-  ngOnInit(): void {}
-
+  async getData(){
+    this.roomList= await this.connect.getListRoom(this.auth.user.uid)
+    // this.roomList=this.roomList.room
+    console.log(this.roomList)
+  }
   mouseDown() {
     this.router.navigate(['draw']);
   }

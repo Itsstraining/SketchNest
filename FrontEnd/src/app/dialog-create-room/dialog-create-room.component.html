@@ -5,12 +5,11 @@
   </div>
   <br />
   <div>
-    <input type="password" #password placeholder="Enter password..." required />
+    <input type="password" #pass placeholder="Enter password..." required />
   </div>
   <br />
   <button
-    (click)="this.createRoom(name.value, password.value)"
-    (click)="this.getRoomName(name.value)"
+    (click)="this.createRoom(name.value, pass.value)"
     [mat-dialog-close]
   >
     Create
