@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  URL: 'https://server-sketchnest.itssgroup.xyz',
   firebase: {
     apiKey: "AIzaSyA4CWFIoh19-WqZ-6UJzCFssFP4jKsGNxs",
     authDomain: "sketchnest-3d589.firebaseapp.com",

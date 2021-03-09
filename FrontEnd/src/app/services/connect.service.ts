@@ -14,7 +14,7 @@ export class ConnectService {
   socket;
   room;
   listRoom;
-  private url = 'http://localhost:3000';
+  private url = environment.URL;
   constructor(private http: HttpClient, public fs: AngularFirestore) {}
 
   public async getListRoom(email) {

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  SOCKET_ENDPOINT: 'http://localhost:3000',
+  URL: 'https://server-sketchnest.itssgroup.xyz',
   firebase: {
     apiKey: 'AIzaSyApFUw785jJLtxhfHny81Y2zyRq0ZviecM',
     authDomain: 'logindemo-9d736.firebaseapp.com',
