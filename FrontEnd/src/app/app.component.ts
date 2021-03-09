@@ -12,6 +12,5 @@ export class AppComponent implements OnInit {
   title = 'SketchNest';
   constructor(public socket: ConnectService) {}
   ngOnInit() {
-    this.socket.setupSocketConnection();
   }
 }

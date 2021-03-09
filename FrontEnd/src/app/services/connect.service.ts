@@ -15,20 +15,18 @@ export class ConnectService {
   room;
   listRoom;
   private url = 'http://localhost:3000';
-  constructor(private http: HttpClient,public fs:AngularFirestore) {
+  constructor(private http: HttpClient, public fs: AngularFirestore) {}
+
+  public async getListRoom(email) {
+    let result = (
+      await this.fs.collection('user').doc(email).get()
+    ).toPromise();
+    this.listRoom = (await result).data();
+    let temp = this.listRoom;
+    return temp.room;
   }
-  public setupSocketConnection() {
-    this.socket = io(environment.SOCKET_ENDPOINT);
-  }
-  public async getListRoom(uid) {
-    let result = (await this.fs.collection("user").doc(uid).get()).toPromise();
-    let temp
-    this.listRoom=(await result).data();
-    temp=this.listRoom
-    return temp.room
-  }
- 
-  public async CreateRoom(name, pass, uid) {
+
+  public async CreateRoom(name, pass, email) {
     let result = await this.http
       .post(this.url + '/room/create', {
         roomName: name,
@@ -39,7 +37,7 @@ export class ConnectService {
         console.log(this.room);
         this.http
           .post(this.url + '/user/room-update', {
-            uid: uid,
+            email: email,
             roomID: this.room.id,
           })
           .subscribe((userUp) => {

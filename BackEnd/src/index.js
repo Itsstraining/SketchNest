@@ -23,5 +23,4 @@ io.on("connection", (socket) => {
 http.listen(config.PORT, config.HOST, function () {
   console.log(`Server is running on  http://${config.HOST}:${config.PORT}`);
 });
-http.setTimeout(5000)
 module.exports = app;

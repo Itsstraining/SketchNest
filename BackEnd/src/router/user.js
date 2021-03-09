@@ -6,11 +6,11 @@ const db = require("../database");
 router.post("/create", async (req, res) => {
   let { displayName, photoURL, email, uid, room } = req.body;
   let a = await db.collection("user").doc(email).get();
-  let result = await db.collection("user").doc(email).set({
-    room: [],
-  });
-  console.log(result);
+  // console.log(result);
   if (!a.exists) {
+    let result = await db.collection("user").doc(email).set({
+      room: [],
+    });
     res.send({ message: `created user with email ${email}` });
   }
   res.send({ message: `user already existed` });
@@ -47,9 +47,9 @@ router.delete("/delete", async (req, res) => {
  * update user add room
  */
 router.post("/room-update", async (req, res) => {
-  const { uid, roomID } = req.body;
-  let result = []
-  let temp = await db.collection("user").doc(uid).get();
+  const { email, roomID } = req.body;
+  let result = [];
+  let temp = await db.collection("user").doc(email).get();
   if (temp.data()) {
     temp = temp.data().room;
     for (let i of temp) {
@@ -62,13 +62,13 @@ router.post("/room-update", async (req, res) => {
     }
     temp.push(roomID);
     console.log(temp);
-    await db.collection("user").doc(uid).update({
+    await db.collection("user").doc(email).set({
       room: temp,
     });
     res.send({ message: "Add room success" });
   } else {
     result.push(roomID);
-    await db.collection("user").doc(uid).create({
+    await db.collection("user").doc(email).create({
       room: result,
     });
   }

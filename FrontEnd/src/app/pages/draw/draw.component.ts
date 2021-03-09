@@ -18,13 +18,12 @@ import {
 } from 'ngx-fabric-wrapper';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { identifierModuleUrl } from '@angular/compiler';
-import { RoomService } from 'src/app/services/room.service';
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
   styleUrls: ['./draw.component.scss'],
 })
-export class DrawComponent implements OnInit, OnDestroy {
+export class DrawComponent implements OnInit {
   public toogle = true;
   public tool;
   public brushc;
@@ -121,12 +120,12 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas = this.componentRef.directiveRef.fabric();
     console.log(this.canvas.toDataURL('png'));
   }
-  ngOnDestroy() {
-    this.socket.socket.emit(
-      'getJSON',
-      (this.json = JSON.stringify(this.canvas.toJSON()))
-    );
-  }
+  // ngOnDestroy() {
+  //   this.socket.socket.emit(
+  //     'getJSON',
+  //     (this.json = JSON.stringify(this.canvas.toJSON()))
+  //   );
+  // }
 
   @HostListener('document:keyup', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
