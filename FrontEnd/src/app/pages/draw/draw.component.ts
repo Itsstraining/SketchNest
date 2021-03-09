@@ -349,8 +349,9 @@ clearshape(event){
       break;
     }
         case 'Circle': {
-        fabric.Object.prototype.selectable=false;
+        
       this.canvas.isDrawingMode = false;
+      fabric.Object.prototype.selectable=false;
         this.circle = new fabric.Circle({
           originX: 'center',
           originY: 'center',
