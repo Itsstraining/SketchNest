@@ -23,19 +23,19 @@ const routes: Routes = [
     path: 'lobby',
     loadChildren: () =>
       import('./pages/lobby/lobby.module').then((m) => m.LobbyModule),
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'history',
     loadChildren: () =>
       import('./pages/history/history.module').then((m) => m.HistoryModule),
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'draw',
     loadChildren: () =>
       import('./pages/draw/draw.module').then((m) => m.DrawModule),
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'pricing',

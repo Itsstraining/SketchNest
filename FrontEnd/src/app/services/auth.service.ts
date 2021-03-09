@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
-import { UserService } from './user.service';
 // import { userInfo } from 'os';
 @Injectable({
   providedIn: 'root',
@@ -13,7 +12,7 @@ export class AuthService {
   constructor(
     private afAuth: AngularFireAuth,
     private router: Router,
-    public User: UserService
+    // public User: UserService
   ) {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
@@ -22,12 +21,12 @@ export class AuthService {
         // console.log('login success! ' + user.displayName);
         // alert('Login successfully, '+user.displayName)
         // console.log(this.user);
-        this.User.createUser(
-          this.user.displayName,
-          this.user.uid,
-          this.user.photoURL,
-          this.user.email.toString()
-        );
+        // this.User.createUser(
+        //   this.user.displayName,
+        //   this.user.uid,
+        //   this.user.photoURL,
+        //   this.user.email.toString()
+        // );
       } else {
         localStorage.setItem('user', null);
       }

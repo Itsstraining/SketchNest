@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { ViewChild, TemplateRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
-import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +21,6 @@ export class LoginComponent implements OnInit {
     public router: Router,
     private dialog: MatDialog,
     private http: HttpClient,
-    private User: UserService
   ) {}
   public email: string;
   public password: string;

@@ -3,7 +3,6 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { ConnectService } from '../services/connect.service';
-import { RoomService } from '../services/room.service';
 
 @Component({
   selector: 'app-dialog-create-room',
@@ -12,16 +11,15 @@ import { RoomService } from '../services/room.service';
 })
 export class DialogCreateRoomComponent implements OnInit {
   constructor(
-    public room: RoomService,
     public dialogRef: MatDialogRef<DialogCreateRoomComponent>,
     public router: Router,
-    public connect:ConnectService,
-    public auth:AuthService
+    public connect: ConnectService,
+    public auth: AuthService
   ) {}
   async createRoom(name, password) {
-    console.log(this.auth.user.uid)
+    console.log(this.auth.user.uid);
     // await this.room.onCreateRoom(name, password);
-    this.connect.CreateRoom(name,password,this.auth.user.email)
+    await this.connect.CreateRoom(name, password, this.auth.user.email);
     // await this.router.navigate(['/draw']);
     // await this.room.getRoom();
   }
