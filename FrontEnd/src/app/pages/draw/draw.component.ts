@@ -275,6 +275,11 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas.freeDrawingBrush.width = 14;
     this.tool = 'freeBrush'
   }
+  public blockChoosing(){
+    if(this.tool!='Pointer'||this.tool!='Pointer'||this.tool!='Pointer'){
+    fabric.Object.prototype.selectable=false;
+    }
+  }
   //////////////////////////
   public mouseDown(mouseEvent) {
     if (mouseEvent.target != undefined || mouseEvent.target != null) {
@@ -412,6 +417,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             });
           }
           this.canvas.add(this.circle);
+         
           this.selected = this.circle;
 
 
@@ -427,7 +433,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     // console.log(mouseEvent);
   }
   public mouseMove(mouseEvent) {
-
+    this.blockChoosing()
     this.x2 = mouseEvent.pointer.x;
     this.y2 = mouseEvent.pointer.y;
     let changeInX = this.x2 - this.x0;
