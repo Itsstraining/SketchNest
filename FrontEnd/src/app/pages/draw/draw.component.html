@@ -152,10 +152,12 @@
             </svg>
           </button>
           <button id="btnFunction">
-            <input style="width: 35px; height: 35px" title="Shape Color" type="color" id="shapecolor"
+            <input style="width: 35px; height: 35px" title="Fill Color" type="color" id="shapecolor"
               (change)="chooseColor($event)" />
           </button>
-          <button id="btnFunction" (click)="clearcolor($event)">
+          <input style="width: 35px; height: 35px" title="Stroke Color" type="color" id="strokecolor"
+              (change)="strokecolor($event)" />
+          <button id="btnFunction" (click)='clearshape($event)' title="Clear fill color" >
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
               focusable="false" width="35px" height="35px"
               style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
@@ -183,7 +185,6 @@
           fill="black" />
       </svg>
     </button>
-
     <br />
     <button id="btnFunction" title="Group" (click)="groupObjects()">
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"

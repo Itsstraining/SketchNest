@@ -17,6 +17,6 @@ export class AboutComponent implements OnInit {
   constructor(public connect:ConnectService) {}
 
   ngOnInit(): void {
-    this.connect.CreateRoom('Hello','World','vanhuugiakien@gmail.com')
+    // this.connect.CreateRoom('Hello','World','vanhuugiakien@gmail.com')
   }
 }

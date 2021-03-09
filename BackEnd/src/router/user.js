@@ -6,11 +6,11 @@ const db = require("../database");
 router.post("/create", async (req, res) => {
   let { displayName, photoURL, email, uid, room } = req.body;
   let a = await db.collection("user").doc(email).get();
-  let result = await db.collection("user").doc(email).set({
-    room: [],
-  });
-  console.log(result);
+  // console.log(result);
   if (!a.exists) {
+    let result = await db.collection("user").doc(email).set({
+      room: [],
+    });
     res.send({ message: `created user with email ${email}` });
   }
   res.send({ message: `user already existed` });
@@ -48,7 +48,7 @@ router.delete("/delete", async (req, res) => {
  */
 router.post("/room-update", async (req, res) => {
   const { email, roomID } = req.body;
-  let result = []
+  let result = [];
   let temp = await db.collection("user").doc(email).get();
   if (temp.data()) {
     temp = temp.data().room;
@@ -62,7 +62,7 @@ router.post("/room-update", async (req, res) => {
     }
     temp.push(roomID);
     console.log(temp);
-    await db.collection("user").doc(email).update({
+    await db.collection("user").doc(email).set({
       room: temp,
     });
     res.send({ message: "Add room success" });
