@@ -15,8 +15,6 @@ export class RoomComponent implements OnInit {
   pageID: PageID;
 
   mouseDown() {
-    this.room.name = this.pageID.name;
-    console.log(this.pageID.name);
     this.router.navigate(['draw']);
   }
   ngOnInit(): void {}

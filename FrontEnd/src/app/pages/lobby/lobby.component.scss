@@ -43,7 +43,8 @@ h1 {
 }
 h2 {
   font-family: 500 16px/24px "Google Sans", Arial, sans-serif;
-  margin-left: 6%;
+  color: rgb(37, 27, 27);
+  margin-left: 50%;
 }
 .icon-holder {
   margin-right: 5%;
@@ -57,6 +58,7 @@ form {
   background-color: #fa7b17;
 }
 .jam-list-create-jam-button {
+  outline: none;
   position: fixed;
   bottom: 28px;
   right: 24px;
@@ -123,7 +125,6 @@ user agent stylesheet button {
   height: 32px;
   margin: 10px;
   width: 32px;
-  
 }
 .jam-flatbutton-content {
   margin-right: 2%;
@@ -180,7 +181,6 @@ body {
 .card {
   border: solid 2px;
   width: 140px;
-
 }
 
 .content {
@@ -215,13 +215,10 @@ body {
 h3 {
   margin: 0;
 }
-.jam-list-create-jam-button:hover
-{
+.jam-list-create-jam-button:hover {
   width: 56px;
   height: 56px;
   border-radius: 50%;
   outline: none;
   padding: none;
-
-  
 }

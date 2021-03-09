@@ -18,6 +18,7 @@ import {
 } from 'ngx-fabric-wrapper';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { identifierModuleUrl } from '@angular/compiler';
+import { RoomService } from 'src/app/services/room.service';
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
@@ -31,6 +32,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   public action = 'none';
   public chosenColor;
   public drawColor;
+  public textc;
   public x0;
   public x2;
   public y2;
@@ -52,36 +54,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   public savedCanvas;
   public show: boolean = true;
   public myjson;
-  // public data: any = {
-  //   objects: [
-  //     {
-  //       type: 'group',
-  //       top: 22,
-  //       left: 72,
-  //       width: 200,
-  //       height: 60,
-  //       objects: [
-  //         {
-  //           type: 'rect',
-  //           top: -30,
-  //           left: -100,
-  //           width: 200,
-  //           height: 60,
-  //           fill: '#cfcfcf',
-  //         },
-  //         {
-  //           type: 'text',
-  //           width: 200,
-  //           height: 60,
-  //           fontSize: 24,
-  //           text: 'Example object',
-  //           originX: 'center',
-  //           originY: 'center',
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // };
+  public _clipboard;
 
   public type: string = 'component';
   public drawMode = false;
@@ -96,8 +69,10 @@ export class DrawComponent implements OnInit, OnDestroy {
 
   @ViewChild(FabricComponent, { static: false }) componentRef?: FabricComponent;
   @ViewChild(FabricDirective, { static: false }) directiveRef?: FabricDirective;
-  @ViewChild('shapecolor', { static: false }) shapeColor: HTMLElement
-  @ViewChild('brushcolor', { static: false }) brushColor: HTMLElement
+  @ViewChild('shapecolor', { static: false }) shapeColor: HTMLElement;
+  @ViewChild('color', { static: false }) brushColor: HTMLElement;
+  @ViewChild('clearcolor', { static: false }) clearColor: HTMLElement;
+  @ViewChild('textcolor', { static: false }) textColor: HTMLElement;
   ////////////////////////
   canvas;
   image: any;
@@ -106,7 +81,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   download = document.getElementById('download');
   link = document.createElement('a');
   isRedoing: Boolean;
-  stack: Array<[]>;
+  stack: Array<JSON>;
   activeObject: any;
   memorizeObject: fabric.Object;
 
@@ -147,13 +122,6 @@ export class DrawComponent implements OnInit, OnDestroy {
   ngAfterViewInit(): void {
     this.canvas = this.componentRef.directiveRef.fabric();
     console.log(this.canvas.toDataURL('png'));
-    this.canvas.on('object:added',function(){
-      if(!this.isRedoing){
-        this.stack=[]
-      }
-      this.isRedoing = false;
-    });
-
   }
   ngOnDestroy() {
     this.socket.socket.emit(
@@ -172,11 +140,12 @@ export class DrawComponent implements OnInit, OnDestroy {
       switch (event.keyCode) {
         case this.keyCodes['Z']:
           this.undo();
-
+          this.updateModifications(true);
           break;
         case this.keyCodes['Y']:
           this.redo();
           this.canvas.renderAll();
+          this.updateModifications(true);
           break;
       }
     }
@@ -212,11 +181,46 @@ export class DrawComponent implements OnInit, OnDestroy {
   //   });
   // }
   public brushcolor(event) {
-    this.brushc = event.target.value
+    this.brushc = event.target.value;
+    if (!this.brushc) {
+      this.brushc = 'black';
+    }
 
+    this.canvas.freeDrawingBrush.color = this.brushc;
   }
   public chooseColor(event) {
-    this.color = event.target.value
+    if (!event.target.value) {
+      this.color = 'black';
+    } else {
+      this.color = event.target.value;
+    }
+    let a = this.canvas.getActiveObject();
+    console.log(a);
+    a.set({
+      fill: this.color,
+    });
+    this.updateModifications(true);
+  }
+  public clearcolor(event) {
+    this.color = null;
+
+    let a = this.canvas.getActiveObject();
+    a.set({
+      fill: this.color,
+    });
+    this.updateModifications(true);
+  }
+  public textcolor(event) {
+    if (!event.target.value) {
+      this.textc = 'black';
+    } else {
+      this.textc = event.target.value;
+    }
+    let a = this.canvas.getActiveObject();
+    a.set({
+      fill: this.textc,
+    });
+    this.updateModifications(true);
   }
   public picture(event) {
     this.canvas.isDrawingMode = false;
@@ -242,7 +246,7 @@ export class DrawComponent implements OnInit, OnDestroy {
 
     this.canvas.remove(this.canvas.getActiveObject());
     this.socket.sendCanvas(this.canvas.toJSON().objects);
-    console.log(this.json);
+    this.updateModifications(true);
   }
 
   //ShapeOption
@@ -251,58 +255,36 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas.toDataUrl();
     console.log(this.canvas.toDataUrl());
   }
-  undo() {
-    if (this.canvas._objects.length > 0) {
-      console.log(this.canvas._objects.pop());
-      this.stack.push(this.canvas._objects.pop());
-      this.canvas.renderAll();
-    }
-    this.canvas.renderAll();
-    return this.stack;
-  }
 
-  redo() {
-    console.log(this.stack);
-    if (this.stack.length > 0) {
-      this.isRedoing = true;
-      this.canvas.add(this.stack.pop());
-      this.canvas.renderAll();
-    }
-  }
   public freePen() {
-
-
     this.canvas.isDrawingMode = true;
-    this.canvas.freeDrawingBrush.color = this.brushc;
     this.canvas.freeDrawingBrush.width = 1;
-
-    this.tool = 'freePen'
+    this.tool = 'freePen';
   }
   public freeBrush() {
     this.canvas.isDrawingMode = true;
-    this.canvas.freeDrawingBrush.color = this.brushc;
     this.canvas.freeDrawingBrush.width = 14;
-    this.tool = 'freeBrush'
+    this.tool = 'freeBrush';
   }
   //////////////////////////
   public mouseDown(mouseEvent) {
     if (mouseEvent.target != undefined || mouseEvent.target != null) {
+      mouseEvent.target.stroke = this.color;
     } else {
-      if (!this.color) {
-        this.color = 'black';
-      }
       this.x0 = mouseEvent.pointer.x;
       this.y0 = mouseEvent.pointer.y;
       switch (this.tool) {
         case 'Straightline': {
           this.canvas.isDrawingMode = false;
+          if (!this.color) {
+            this.color = 'black';
+          }
           var coordinates = [this.x0, this.y0, this.x0, this.y0];
           this.line = new fabric.Line(coordinates, {
             strokeWidth: 3,
             stroke: this.color,
           });
           this.canvas.add(this.line);
-          // this.updateModifications(true);
           this.selected = this.line;
           break;
         }
@@ -339,6 +321,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             fontFamily: 'arial black',
             top: this.y0,
             left: this.x0,
+            fill: this.textc,
           });
           this.canvas.add(this.inputText);
           // this.updateModifications(true);
@@ -419,13 +402,13 @@ export class DrawComponent implements OnInit, OnDestroy {
             });
           }
           this.canvas.add(this.circle);
-          // this.updateModifications(true);
           this.selected = this.circle;
+
           break;
         }
         case 'Pointer': {
-          // fabric.Object.prototype.selectable=true;
           this.canvas.isDrawingMode = false;
+          fabric.Object.prototype.selectable = true;
           break;
         }
       }
@@ -438,6 +421,9 @@ export class DrawComponent implements OnInit, OnDestroy {
     let changeInX = this.x2 - this.x0;
     let changeInY = this.y2 - this.y0;
     switch (this.tool) {
+      case 'Pointer': {
+        this.canvas.isDrawingMode = false;
+      }
       case 'freePen': {
         break;
       }
@@ -446,11 +432,11 @@ export class DrawComponent implements OnInit, OnDestroy {
       }
       case 'Straightline': {
         if (this.selected !== null) {
-          this.selected.set({});
+          this.selected.set({
+            x2: this.x2,
+            y2: this.y2,
+          });
         }
-        this.canvas.isDrawingMode = false;
-        this.canvas.renderAll();
-        break;
       }
       case 'Rectangle': {
         if (this.selected !== null) {
@@ -516,6 +502,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             radius: Math.abs(changeInX),
           });
         }
+
         this.canvas.isDrawingMode = false;
         this.canvas.renderAll();
         break;
@@ -537,6 +524,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     if (this.tool == 'freePen' || this.tool == 'freeBrush') {
       this.updateModifications(true);
     } else if (this.tool == 'Pointer') {
+      this.canvas.isDrawingMode = false;
       fabric.Object.prototype.selectable = true;
     } else {
       if (this.mode == 'add') {
@@ -575,8 +563,8 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
     this.canvas.getActiveObject().toGroup();
     this.canvas.requestRenderAll();
+    this.updateModifications(true);
   }
-
 
   public ungroupObjects() {
     if (!this.canvas.getActiveObject()) {
@@ -587,5 +575,28 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
     this.canvas.getActiveObject().toActiveSelection();
     this.canvas.requestRenderAll();
+    this.updateModifications(true);
+  }
+  undo() {
+    if (this.mods < this.state.length) {
+      this.canvas.clear().renderAll();
+      this.canvas.loadFromJSON(
+        this.state[this.state.length - 1 - this.mods - 1],
+        this.canvas.renderAll.bind(this.canvas)
+      );
+      this.canvas.renderAll();
+      this.mods += 1;
+    }
+  }
+  redo() {
+    if (this.mods > 0) {
+      this.canvas.clear().renderAll();
+      this.canvas.loadFromJSON(
+        this.state[this.state.length - 1 - this.mods + 1],
+        this.canvas.renderAll.bind(this.canvas)
+      );
+      this.canvas.renderAll();
+      this.mods -= 1;
+    }
   }
 }

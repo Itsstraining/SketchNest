@@ -3,6 +3,7 @@ const db = require("../database");
 const body = require("body-parser");
 const { name } = require("ejs");
 var cors = require("cors");
+const { doc } = require("../database");
 router.use(cors());
 router.use(body.json());
 router.get("/hi", (req, res) => {
@@ -24,6 +25,7 @@ router.post("/create", async (req, res) => {
   res.send({ message: `Room ${name} created` });
   console.log(result);
 });
+
 async function checkIdExist(name) {
   let varia = await db.collection("room").get();
   let arr = varia.docs.map((doc) => (doc.name == name ? 1 : 0));

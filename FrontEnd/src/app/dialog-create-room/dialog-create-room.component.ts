@@ -15,12 +15,14 @@ export class DialogCreateRoomComponent implements OnInit {
     public router: Router
   ) {}
   async createRoom(name, password) {
-    await this.room.onCreateRoom(name, password);
-    await this.router.navigate(['/draw']);
+    if (name == null || password == null) {
+      alert('fail');
+    } else {
+      await this.room.onCreateRoom(name, password);
+      await this.router.navigate(['/draw']);
+    }
+
     // await this.room.getRoom();
-  }
-  async getRoomName(name) {
-    await this.room.OngetRoomName(name);
   }
 
   ngOnInit(): void {}

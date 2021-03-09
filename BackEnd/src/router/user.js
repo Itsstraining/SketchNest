@@ -12,10 +12,6 @@ router.post("/create", async (req, res) => {
   let { displayName, photoURL, email, uid, room } = req.body;
   let a = await db.collection("user").doc(email).get();
   let result = await db.collection("user").doc(email).set({
-    displayName: displayName,
-    photoURL: photoURL,
-    email: email,
-    uid: uid,
     room: [],
   });
   console.log(result);
@@ -32,10 +28,10 @@ router.get("/get", async (req, res) => {
     .doc(email)
     .get()
     .then((doc) => doc.data());
-  console.log(a.room);
+  console.log(a);
 });
-router.post("/update", async (req, res) => {
-  let { room, email } = req.body;
+router.put("/update", async (req, res) => {
+  let { email, room } = req.body;
   let result = await db.collection("user").doc(email).set({
     room: room,
   });
