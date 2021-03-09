@@ -24,8 +24,8 @@
 
 <body>
   <div class="left-sidebar">
-    <button title="pointer" id="btnFunction" (click)="this.tool='Pointer'" title="Pointer"
-      style="border-radius: 20px 20px 0px 0px">
+    <button  title="pointer" id="btnFunction" (click)="this.tool='Pointer'" title="Pointer"
+      style="border-radius: 20px 20px 0px 0px;margin-top: 32px;">
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
         focusable="false" width="35px" height="35px" style="
           -ms-transform: rotate(360deg);
@@ -165,22 +165,33 @@
       </div>
     </div>
     <br>
-    <button title="Text" id="btnFunction" (click)="this.tool='Text'">
-      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
-        focusable="false" width="35px" height="35px" style="
-          -ms-transform: rotate(360deg);
-          -webkit-transform: rotate(360deg);
-          transform: rotate(360deg);
-        " preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
-        <path
-          d="M21 7V3h-4v1H7V3H3v4h1v10H3v4h4v-1h10v1h4v-4h-1V7h1m-3-3h2v2h-2V4M4 4h2v2H4V4m2 16H4v-2h2v2m14 0h-2v-2h2v2m-2-3h-1v1H7v-1H6V7h1V6h10v1h1v10m-2-9v2h-3v6h-2v-6H8V8h8z"
-          fill="black" />
-      </svg>
-    </button>
-    <br>
-    <button id="btnFunction">
-      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="35px" height="35px" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1024 1024"><path d="M920 416H616c-4.4 0-8 3.6-8 8v112c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8v-56h60v320h-46c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h164c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8h-46V480h60v56c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V424c0-4.4-3.6-8-8-8zM656 296V168c0-4.4-3.6-8-8-8H104c-4.4 0-8 3.6-8 8v128c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-64h168v560h-92c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h264c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8h-92V232h168v64c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8z" fill="black"/></svg>
-    </button>
+
+    <div class="dropdown">
+      <button title="Text" id="btnFunction" (click)="this.tool='Text'">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+          focusable="false" width="35px" height="35px" style="
+            -ms-transform: rotate(360deg);
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+          " preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+          <path
+            d="M21 7V3h-4v1H7V3H3v4h1v10H3v4h4v-1h10v1h4v-4h-1V7h1m-3-3h2v2h-2V4M4 4h2v2H4V4m2 16H4v-2h2v2m14 0h-2v-2h2v2m-2-3h-1v1H7v-1H6V7h1V6h10v1h1v10m-2-9v2h-3v6h-2v-6H8V8h8z"
+            fill="black" />
+        </svg>
+      </button>
+      <div class="dropdown-content">
+        <div style="margin-left: 40px;">
+                   <button id="btnFunction">
+            <input style="width: 35px; height: 35px" title="Shape Color" type="color" id="shapecolor"
+              (change)="chooseColor($event)" />
+          </button>
+        </div>
+
+
+
+      </div>
+    </div>
+
     <br />
     <button id="btnFunction" title="Group" (click)="groupObjects()">
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
@@ -237,7 +248,7 @@
     </button>
   </div>
   <main>
-    <fabric style="background-color: white; width: 1400px; height: 600px" *ngIf="type == 'component' && show"
+    <fabric style="background-color: white; width: 1400px ; height: 600px;position:absolute;" *ngIf="type == 'component' && show"
       fxFlex="auto" (mouseDown)="mouseDown($event)" (mouseMove)="mouseMove($event)" (mouseUp)="mouseUp($event)"
       (objectSelected)="(true)" (objectModified)="this.updateModifications(true)" [config]="config"
       [disabled]="disabled">
