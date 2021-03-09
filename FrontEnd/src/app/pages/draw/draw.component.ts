@@ -254,7 +254,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     if (mouseEvent.target != undefined || mouseEvent.target != null) {
       mouseEvent.target.stroke = this.color;
     } else {
-      fabric.Object.prototype.selectable = false;
+     
       this.x0 = mouseEvent.pointer.x;
       this.y0 = mouseEvent.pointer.y;
       switch (this.tool) {
@@ -363,7 +363,6 @@ export class DrawComponent implements OnInit, OnDestroy {
           break;
         }
         case 'Circle': {
-          fabric.Object.prototype.selectable=false;
           this.canvas.isDrawingMode = false;
           if (this.toogle) {
             this.circle = new fabric.Circle({
