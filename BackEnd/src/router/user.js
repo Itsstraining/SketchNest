@@ -12,10 +12,6 @@ router.post("/create", async (req, res) => {
   let { displayName, photoURL, email, uid, room } = req.body;
   let a = await db.collection("user").doc(email).get();
   let result = await db.collection("user").doc(email).set({
-    displayName: displayName,
-    photoURL: photoURL,
-    email: email,
-    uid: uid,
     room: [],
   });
   console.log(result);
@@ -35,7 +31,7 @@ router.get("/get", async (req, res) => {
   console.log(a);
 });
 router.put("/update", async (req, res) => {
-  let { room, email } = req.body;
+  let { email, room } = req.body;
   let result = await db.collection("user").doc(email).set({
     room: room,
   });

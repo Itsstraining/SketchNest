@@ -18,6 +18,7 @@ import {
 } from 'ngx-fabric-wrapper';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { identifierModuleUrl } from '@angular/compiler';
+import { RoomService } from 'src/app/services/room.service';
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
@@ -119,7 +120,8 @@ export class DrawComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     public socket: ConnectService,
     public auth: AuthService,
-    public db: AngularFirestore
+    public db: AngularFirestore,
+    public room: RoomService
   ) {}
   openDialog() {
     this.dialog.open(DialogExampleComponent);
@@ -175,7 +177,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   //default
   clearCanvas() {
     this.canvas.clear();
-    this.updateModifications(true)
+    this.updateModifications(true);
   }
 
   convertImg() {
@@ -206,7 +208,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.chosenColor.addEventListener('change', function (event) {
       this.color = event.target.value;
       console.log(this.color);
-    })
+    });
   }
   public picture(event) {
     this.canvas.isDrawingMode = false;
@@ -284,9 +286,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   public mouseDown(mouseEvent) {
     this.chooseColor();
     if (mouseEvent.target != undefined || mouseEvent.target != null) {
-
-    }
-    else {
+    } else {
       if (!this.color) {
         this.color = 'black';
       }
@@ -307,7 +307,6 @@ export class DrawComponent implements OnInit, OnDestroy {
           break;
         }
         case 'Rectangle': {
-
           this.canvas.isDrawingMode = false;
           if (this.toogle) {
             this.rectangle = new fabric.Rect({
@@ -557,7 +556,6 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.y0 = 0;
   }
   public groupObjects() {
-
     if (!this.canvas.getActiveObject()) {
       return;
     }
@@ -577,6 +575,4 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas.getActiveObject().toActiveSelection();
     this.canvas.requestRenderAll();
   }
-
 }
-

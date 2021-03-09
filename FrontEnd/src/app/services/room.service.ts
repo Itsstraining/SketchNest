@@ -3,6 +3,8 @@ import { PageID } from '../models/pageID.model';
 import { Room } from '../pages/lobby/room/models/room.model';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from './auth.service';
+import { EmailValidator } from '@angular/forms';
+import { AngularFirestore } from '@angular/fire/firestore';
 @Injectable({
   providedIn: 'root',
 })
@@ -10,7 +12,11 @@ export class RoomService {
   @Input()
   roomList: Array<Room> = [];
 
-  constructor(private http: HttpClient, private user: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private user: AuthService,
+    public db: AngularFirestore
+  ) {}
   async OngetRoomName(name) {
     let temp = name;
     return temp;
@@ -20,7 +26,6 @@ export class RoomService {
     let room = {
       name: name,
       password: password,
-      memberList: [],
     };
     this.roomList.push(room);
     // try {
@@ -34,19 +39,16 @@ export class RoomService {
     //   console.log(err);
     // }
     try {
-      await this.http
-        .post('http://192.168.31.136:3000/room/create', {
+      await this.db
+        .collection('user')
+        .doc(this.user.user.email)
+        .set({
           room: [
             {
               name: name,
               password: password,
             },
           ],
-          owner: this.user.user.email,
-        })
-        .toPromise()
-        .then((e) => {
-          console.log(e);
         });
     } catch (err) {
       console.log(err);
