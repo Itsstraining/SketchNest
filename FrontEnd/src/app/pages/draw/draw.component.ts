@@ -16,6 +16,8 @@ import {
   FabricDirective,
   FabricConfigInterface,
 } from 'ngx-fabric-wrapper';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { identifierModuleUrl } from '@angular/compiler';
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
@@ -116,22 +118,28 @@ export class DrawComponent implements OnInit, OnDestroy {
   constructor(
     public dialog: MatDialog,
     public socket: ConnectService,
-    public auth: AuthService
-  ) { }
+    public auth: AuthService,
+    public db: AngularFirestore
+  ) {}
   openDialog() {
     this.dialog.open(DialogExampleComponent);
   }
 
-
   ngOnInit(): void {
-    console.log(this.socket.socket.emit('a', 'hello a'));
-    this.json = this.socket.updateCanvas();
-    this.json.subscribe((data) => {
-      console.log(data);
-      console.log(this.json);
-      this.canvas.loadFromJSON(this.socket.canvas);
-      this.canvas.renderAll();
-    });
+    let temp;
+    this.db
+      .collection('user')
+      .doc('vanhuugiakien@gmail.com')
+      .snapshotChanges()
+      .subscribe((doc) => {
+        temp = doc.payload.data();
+        for (let i of temp.room) {
+          if (i.id == 1) {
+            console.log(temp.room);
+            this.canvas.loadFromJSON(i.canvas);
+          }
+        }
+      });
   }
   ngAfterViewInit(): void {
     this.canvas = this.componentRef.directiveRef.fabric();
@@ -164,10 +172,10 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
   }
 
-
   //default
   clearCanvas() {
     this.canvas.clear();
+    this.updateModifications(true)
   }
 
   convertImg() {
@@ -218,6 +226,7 @@ export class DrawComponent implements OnInit, OnDestroy {
 
     this.canvas.remove(this.canvas.getActiveObject());
     this.socket.sendCanvas(this.canvas.toJSON().objects);
+    console.log(this.json);
   }
 
   //ShapeOption
@@ -249,22 +258,20 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.chosenColor.addEventListener('change', function (event) {
       if (!event.target.value) {
         event.target.value = 'black';
-      }
-      else {
-
+      } else {
       }
       this.drawColor = event.target.value;
-      console.log('duoc chay roi')
-    })
+      console.log('duoc chay roi');
+    });
     this.canvas.isDrawingMode = true;
     this.canvas.freeDrawingBrush.width = 1;
 
-    this.tool = 'freePen'
+    this.tool = 'freePen';
   }
   public freeBrush() {
     this.canvas.isDrawingMode = true;
     this.canvas.freeDrawingBrush.width = 14;
-    this.tool = 'freeBrush'
+    this.tool = 'freeBrush';
   }
   //////////////////////////
   public mouseDown(mouseEvent) {
