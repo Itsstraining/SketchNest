@@ -27,10 +27,12 @@ import { RoomService } from 'src/app/services/room.service';
 export class DrawComponent implements OnInit, OnDestroy {
   public toogle = true;
   public tool;
+  public brushc;
   public color;
   public action = 'none';
   public chosenColor;
   public drawColor;
+  public textc;
   public x0;
   public x2;
   public y2;
@@ -52,36 +54,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   public savedCanvas;
   public show: boolean = true;
   public myjson;
-  public data: any = {
-    objects: [
-      {
-        type: 'group',
-        top: 22,
-        left: 72,
-        width: 200,
-        height: 60,
-        objects: [
-          {
-            type: 'rect',
-            top: -30,
-            left: -100,
-            width: 200,
-            height: 60,
-            fill: '#cfcfcf',
-          },
-          {
-            type: 'text',
-            width: 200,
-            height: 60,
-            fontSize: 24,
-            text: 'Example object',
-            originX: 'center',
-            originY: 'center',
-          },
-        ],
-      },
-    ],
-  };
+  public _clipboard;
 
   public type: string = 'component';
   public drawMode = false;
@@ -96,15 +69,19 @@ export class DrawComponent implements OnInit, OnDestroy {
 
   @ViewChild(FabricComponent, { static: false }) componentRef?: FabricComponent;
   @ViewChild(FabricDirective, { static: false }) directiveRef?: FabricDirective;
+  @ViewChild('shapecolor', { static: false }) shapeColor: HTMLElement;
+  @ViewChild('color', { static: false }) brushColor: HTMLElement;
+  @ViewChild('clearcolor', { static: false }) clearColor: HTMLElement;
+  @ViewChild('textcolor', { static: false }) textColor: HTMLElement;
   ////////////////////////
-  public canvas;
+  canvas;
   image: any;
   json;
   url: any;
   download = document.getElementById('download');
   link = document.createElement('a');
   isRedoing: Boolean;
-  stack: Array<[]>;
+  stack: Array<JSON>;
   activeObject: any;
   memorizeObject: fabric.Object;
 
@@ -120,8 +97,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     public socket: ConnectService,
     public auth: AuthService,
-    public db: AngularFirestore,
-    public room: RoomService
+    public db: AngularFirestore
   ) {}
   openDialog() {
     this.dialog.open(DialogExampleComponent);
@@ -164,17 +140,19 @@ export class DrawComponent implements OnInit, OnDestroy {
       switch (event.keyCode) {
         case this.keyCodes['Z']:
           this.undo();
-
+          this.updateModifications(true);
           break;
         case this.keyCodes['Y']:
           this.redo();
           this.canvas.renderAll();
+          this.updateModifications(true);
           break;
       }
     }
   }
 
   //default
+
   clearCanvas() {
     this.canvas.clear();
     this.updateModifications(true);
@@ -202,13 +180,47 @@ export class DrawComponent implements OnInit, OnDestroy {
   //     setTimeout(this.canvas.remove(opt.path));
   //   });
   // }
+  public brushcolor(event) {
+    this.brushc = event.target.value;
+    if (!this.brushc) {
+      this.brushc = 'black';
+    }
 
-  public chooseColor() {
-    this.chosenColor = document.getElementById('shapecolor');
-    this.chosenColor.addEventListener('change', function (event) {
+    this.canvas.freeDrawingBrush.color = this.brushc;
+  }
+  public chooseColor(event) {
+    if (!event.target.value) {
+      this.color = 'black';
+    } else {
       this.color = event.target.value;
-      console.log(this.color);
+    }
+    let a = this.canvas.getActiveObject();
+    console.log(a);
+    a.set({
+      fill: this.color,
     });
+    this.updateModifications(true);
+  }
+  public clearcolor(event) {
+    this.color = null;
+
+    let a = this.canvas.getActiveObject();
+    a.set({
+      fill: this.color,
+    });
+    this.updateModifications(true);
+  }
+  public textcolor(event) {
+    if (!event.target.value) {
+      this.textc = 'black';
+    } else {
+      this.textc = event.target.value;
+    }
+    let a = this.canvas.getActiveObject();
+    a.set({
+      fill: this.textc,
+    });
+    this.updateModifications(true);
   }
   public picture(event) {
     this.canvas.isDrawingMode = false;
@@ -221,7 +233,6 @@ export class DrawComponent implements OnInit, OnDestroy {
         // console.log(this.url)
         fabric.Image.fromURL(this.url, (test) => {
           this.canvas.add(test);
-          this.canvas.sendToBack(test);
           this.canvas.renderAll();
           this.socket.sendCanvas(this.canvas.toJSON().objects);
         });
@@ -235,7 +246,7 @@ export class DrawComponent implements OnInit, OnDestroy {
 
     this.canvas.remove(this.canvas.getActiveObject());
     this.socket.sendCanvas(this.canvas.toJSON().objects);
-    console.log(this.json);
+    this.updateModifications(true);
   }
 
   //ShapeOption
@@ -244,37 +255,10 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.canvas.toDataUrl();
     console.log(this.canvas.toDataUrl());
   }
-  undo() {
-    if (this.canvas._objects.length > 0) {
-      console.log(this.canvas._objects.pop());
-      this.stack.push(this.canvas._objects.pop());
-      this.canvas.renderAll();
-    }
-    this.canvas.renderAll();
-    return this.stack;
-  }
 
-  redo() {
-    console.log(this.stack);
-    if (this.stack.length > 0) {
-      this.isRedoing = true;
-      this.canvas.add(this.stack.pop());
-      this.canvas.renderAll();
-    }
-  }
   public freePen() {
-    this.chosenColor = document.getElementById('color');
-    this.chosenColor.addEventListener('change', function (event) {
-      if (!event.target.value) {
-        event.target.value = 'black';
-      } else {
-      }
-      this.drawColor = event.target.value;
-      console.log('duoc chay roi');
-    });
     this.canvas.isDrawingMode = true;
     this.canvas.freeDrawingBrush.width = 1;
-
     this.tool = 'freePen';
   }
   public freeBrush() {
@@ -284,26 +268,24 @@ export class DrawComponent implements OnInit, OnDestroy {
   }
   //////////////////////////
   public mouseDown(mouseEvent) {
-    this.chooseColor();
     if (mouseEvent.target != undefined || mouseEvent.target != null) {
+      mouseEvent.target.stroke = this.color;
     } else {
-      if (!this.color) {
-        this.color = 'black';
-      }
       this.x0 = mouseEvent.pointer.x;
       this.y0 = mouseEvent.pointer.y;
       switch (this.tool) {
         case 'Straightline': {
           this.canvas.isDrawingMode = false;
+          if (!this.color) {
+            this.color = 'black';
+          }
           var coordinates = [this.x0, this.y0, this.x0, this.y0];
           this.line = new fabric.Line(coordinates, {
             strokeWidth: 3,
             stroke: this.color,
           });
           this.canvas.add(this.line);
-          this.updateModifications(true);
           this.selected = this.line;
-          fabric.Object.prototype.selectable = false;
           break;
         }
         case 'Rectangle': {
@@ -316,9 +298,8 @@ export class DrawComponent implements OnInit, OnDestroy {
             });
 
             this.canvas.add(this.rectangle);
-            this.updateModifications(true);
+            // this.updateModifications(true);
             this.selected = this.rectangle;
-            fabric.Object.prototype.selectable = false;
             break;
           } else {
             this.rectangle = new fabric.Rect({
@@ -328,9 +309,8 @@ export class DrawComponent implements OnInit, OnDestroy {
               fill: null,
             });
             this.canvas.add(this.rectangle);
-            this.updateModifications(true);
+            // this.updateModifications(true);
             this.selected = this.rectangle;
-            fabric.Object.prototype.selectable = false;
             break;
           }
         }
@@ -341,9 +321,10 @@ export class DrawComponent implements OnInit, OnDestroy {
             fontFamily: 'arial black',
             top: this.y0,
             left: this.x0,
+            fill: this.textc,
           });
           this.canvas.add(this.inputText);
-          this.updateModifications(true);
+          // this.updateModifications(true);
           this.selected = this.inputText;
           break;
         }
@@ -364,9 +345,8 @@ export class DrawComponent implements OnInit, OnDestroy {
             });
           }
           this.canvas.add(this.square);
-          this.updateModifications(true);
+          // this.updateModifications(true);
           this.selected = this.square;
-          fabric.Object.prototype.selectable = false;
           break;
         }
         case 'Ellipse': {
@@ -395,9 +375,8 @@ export class DrawComponent implements OnInit, OnDestroy {
           }
 
           this.canvas.add(this.ellipse);
-          this.updateModifications(true);
+          // this.updateModifications(true);
           this.selected = this.ellipse;
-          fabric.Object.prototype.selectable = false;
           break;
         }
         case 'Circle': {
@@ -423,19 +402,18 @@ export class DrawComponent implements OnInit, OnDestroy {
             });
           }
           this.canvas.add(this.circle);
-          this.updateModifications(true);
           this.selected = this.circle;
-          fabric.Object.prototype.selectable = false;
+
           break;
         }
         case 'Pointer': {
-          fabric.Object.prototype.selectable = true;
           this.canvas.isDrawingMode = false;
+          fabric.Object.prototype.selectable = true;
           break;
         }
       }
-      // console.log(mouseEvent);
     }
+    // console.log(mouseEvent);
   }
   public mouseMove(mouseEvent) {
     this.x2 = mouseEvent.pointer.x;
@@ -443,6 +421,9 @@ export class DrawComponent implements OnInit, OnDestroy {
     let changeInX = this.x2 - this.x0;
     let changeInY = this.y2 - this.y0;
     switch (this.tool) {
+      case 'Pointer': {
+        this.canvas.isDrawingMode = false;
+      }
       case 'freePen': {
         break;
       }
@@ -451,11 +432,11 @@ export class DrawComponent implements OnInit, OnDestroy {
       }
       case 'Straightline': {
         if (this.selected !== null) {
-          this.selected.set({});
+          this.selected.set({
+            x2: this.x2,
+            y2: this.y2,
+          });
         }
-        this.canvas.isDrawingMode = false;
-        this.canvas.renderAll();
-        break;
       }
       case 'Rectangle': {
         if (this.selected !== null) {
@@ -521,12 +502,9 @@ export class DrawComponent implements OnInit, OnDestroy {
             radius: Math.abs(changeInX),
           });
         }
+
         this.canvas.isDrawingMode = false;
         this.canvas.renderAll();
-        break;
-      }
-      case 'Pointer': {
-        this.canvas.isDrawingMode = false;
         break;
       }
     }
@@ -544,16 +522,37 @@ export class DrawComponent implements OnInit, OnDestroy {
   }
   public mouseUp(mouseEvent) {
     if (this.tool == 'freePen' || this.tool == 'freeBrush') {
+      this.updateModifications(true);
+    } else if (this.tool == 'Pointer') {
+      this.canvas.isDrawingMode = false;
+      fabric.Object.prototype.selectable = true;
     } else {
       if (this.mode == 'add') {
         this.canvas.isDrawingMode = false;
         this.selected = null;
         this.tool = 'Pointer';
+        this.updateModifications(true);
       }
     }
-    this.updateModifications(true);
     this.x0 = 0;
     this.y0 = 0;
+  }
+  public deleteObjects() {
+    this.canvas.isDrawingMode = false;
+    console.log(this.canvas.isDrawingMode);
+    var activeObject = this.componentRef.directiveRef
+        .fabric()
+        .getActiveObject(),
+      activeGroup = this.canvas.getActiveGroup();
+    if (activeObject) {
+      this.canvas.remove(activeObject);
+    } else if (activeGroup) {
+      var objectsInGroup = activeGroup.getObjects();
+      this.canvas.discardActiveGroup();
+      objectsInGroup.forEach(function (object) {
+        this.componentRef.directiveRef.remove(object);
+      });
+    }
   }
   public groupObjects() {
     if (!this.canvas.getActiveObject()) {
@@ -564,7 +563,9 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
     this.canvas.getActiveObject().toGroup();
     this.canvas.requestRenderAll();
+    this.updateModifications(true);
   }
+
   public ungroupObjects() {
     if (!this.canvas.getActiveObject()) {
       return;
@@ -574,5 +575,28 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
     this.canvas.getActiveObject().toActiveSelection();
     this.canvas.requestRenderAll();
+    this.updateModifications(true);
+  }
+  undo() {
+    if (this.mods < this.state.length) {
+      this.canvas.clear().renderAll();
+      this.canvas.loadFromJSON(
+        this.state[this.state.length - 1 - this.mods - 1],
+        this.canvas.renderAll.bind(this.canvas)
+      );
+      this.canvas.renderAll();
+      this.mods += 1;
+    }
+  }
+  redo() {
+    if (this.mods > 0) {
+      this.canvas.clear().renderAll();
+      this.canvas.loadFromJSON(
+        this.state[this.state.length - 1 - this.mods + 1],
+        this.canvas.renderAll.bind(this.canvas)
+      );
+      this.canvas.renderAll();
+      this.mods -= 1;
+    }
   }
 }

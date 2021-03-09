@@ -22,9 +22,12 @@ h3 {
   justify-content: space-between;
 }
 
-.box.pink {
+.boxRoom {
+  margin-left: 10%;
+  margin-right: 10%;
   vertical-align: top;
-  border: 1px solid #dadce0;
+
+  border: 1px solid #000000;
   border-radius: 8px;
   width: 300px;
   box-sizing: border-box;

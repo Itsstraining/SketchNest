@@ -21,13 +21,13 @@
 }
 
 body {
-
+  height: 76%;
   margin: 0px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
-  font-family: "Luckiest Guy", cursive;
+  // padding: 2rem;
+  font-family: "Brush Script MT, Brush Script Std, cursive";
   color: #333333;
   // background-color: cadetblue;
   background-image: url("https://images.wallpaperscraft.com/image/paint_light_line_shape_83475_1920x1080.jpg"); /* Photo by Roberto Nickson from Pexels */
@@ -38,6 +38,7 @@ body {
 }
 
 .popup-btn {
+  margin-left: 60px;
   width: auto;
   display: inline-block;
   padding: 0.5rem 2rem;
@@ -45,13 +46,13 @@ body {
   text-decoration: none;
   color: #333333;
   background: wheat;
-  font-size: 6vw;
+  font-size: 4vw;
   cursor: pointer;
   border-radius: 0.5rem;
   transform: scale(1, 1) skew(-5deg, -5deg);
   transition: all 400ms ease 0s;
   box-shadow: 0px 0px 5px 0px white;
-  font-family: "Luckiest Guy", cursive;
+  font-family: "Brush Script MT, Brush Script Std, cursive";
 }
 
 .popup-btn:hover {
@@ -196,7 +197,7 @@ button.close {
 .modal-body {
   position: relative;
   padding: 15px;
-  font-family: "Rubik", sans-serif;
+  font-family: "Brush Script MT, Brush Script Std, cursive";
 }
 #driver-terms-modal .modal-body {
   height: 600px;
@@ -356,6 +357,7 @@ a:hover {color: #ffffff; text-decoration: underline;}
   text-align: center;
   background-color: black;
   color: white;
+  height: 14%;
 }
 @media screen and (max-width: 480px) {
 
