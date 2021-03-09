@@ -47,9 +47,9 @@ router.delete("/delete", async (req, res) => {
  * update user add room
  */
 router.post("/room-update", async (req, res) => {
-  const { uid, roomID } = req.body;
+  const { email, roomID } = req.body;
   let result = []
-  let temp = await db.collection("user").doc(uid).get();
+  let temp = await db.collection("user").doc(email).get();
   if (temp.data()) {
     temp = temp.data().room;
     for (let i of temp) {
@@ -62,13 +62,13 @@ router.post("/room-update", async (req, res) => {
     }
     temp.push(roomID);
     console.log(temp);
-    await db.collection("user").doc(uid).update({
+    await db.collection("user").doc(email).update({
       room: temp,
     });
     res.send({ message: "Add room success" });
   } else {
     result.push(roomID);
-    await db.collection("user").doc(uid).create({
+    await db.collection("user").doc(email).create({
       room: result,
     });
   }

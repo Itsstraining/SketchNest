@@ -21,7 +21,7 @@ export class DialogCreateRoomComponent implements OnInit {
   async createRoom(name, password) {
     console.log(this.auth.user.uid)
     // await this.room.onCreateRoom(name, password);
-    this.connect.CreateRoom(name,password,this.auth.user.uid)
+    this.connect.CreateRoom(name,password,this.auth.user.email)
     // await this.router.navigate(['/draw']);
     // await this.room.getRoom();
   }

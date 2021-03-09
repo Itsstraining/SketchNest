@@ -1,10 +1,10 @@
 <body>
     <p mat-dialog-title>Share with your friends and groups?</p>
-    <input type="email" placeholder="Email...." >
-    <button>OK</button>
+    <input type="email" #email placeholder="Email...." >
+    <button (click)="this.Invite(email.value)">OK</button>
     <mat-dialog-content>___________Or___________</mat-dialog-content>
     <p mat-dialog-title>Get the link</p>
-    <input type="text" placeholder="https://jamboard.google.com/d/1F-xEZIwXmf_v_wLyowXXHM16E2Bkb-PB_AUWouAL5zo/edit?usp=sharing" ><button> Copy link</button>
+    <input type="text" placeholder="https://sketchnest.itssgroup.xyz/..." ><button> Copy link</button>
     <p>Only added users will receive this link</p>
 </body>
 
