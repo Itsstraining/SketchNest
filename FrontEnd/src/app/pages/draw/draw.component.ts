@@ -18,6 +18,7 @@ import {
 } from 'ngx-fabric-wrapper';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { identifierModuleUrl } from '@angular/compiler';
+import { RoomService } from 'src/app/services/room.service';
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
@@ -28,6 +29,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   public tool;
   public brushc;
   public color;
+  public strokec;
   public action = 'none';
   public chosenColor;
   public drawColor;
@@ -53,7 +55,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   public savedCanvas;
   public show: boolean = true;
   public myjson;
-  public _clipboard
+  public _clipboard;
 
   public type: string = 'component';
   public drawMode = false;
@@ -68,10 +70,9 @@ export class DrawComponent implements OnInit, OnDestroy {
 
   @ViewChild(FabricComponent, { static: false }) componentRef?: FabricComponent;
   @ViewChild(FabricDirective, { static: false }) directiveRef?: FabricDirective;
-  @ViewChild('shapecolor', { static: false }) shapeColor: HTMLElement
-  @ViewChild('color', { static: false }) brushColor: HTMLElement
-  @ViewChild('clearcolor', { static: false }) clearColor: HTMLElement
-  @ViewChild('textcolor', { static: false }) textColor: HTMLElement
+  @ViewChild('shapecolor', { static: false }) shapeColor: HTMLElement;
+  @ViewChild('color', { static: false }) brushColor: HTMLElement;
+  @ViewChild('strokecolor', { static: false }) strokeColor: HTMLElement;
   ////////////////////////
   canvas;
   image: any;
@@ -96,7 +97,8 @@ export class DrawComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     public socket: ConnectService,
     public auth: AuthService,
-    public db: AngularFirestore
+    public db: AngularFirestore,
+    public connect: ConnectService
   ) { }
   openDialog() {
     this.dialog.open(DialogExampleComponent);
@@ -105,23 +107,19 @@ export class DrawComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     let temp;
     this.db
-      .collection('user')
-      .doc('vanhuugiakien@gmail.com')
+      .collection('room')
+      .doc(this.connect.canvasRoom)
       .snapshotChanges()
       .subscribe((doc) => {
         temp = doc.payload.data();
-        for (let i of temp.room) {
-          if (i.id == 1) {
-            console.log(temp.room);
-            this.canvas.loadFromJSON(i.canvas);
-          }
-        }
+
+        console.log(temp.canvas);
+        this.canvas.loadFromJSON(temp.canvas);
       });
   }
   ngAfterViewInit(): void {
     this.canvas = this.componentRef.directiveRef.fabric();
     console.log(this.canvas.toDataURL('png'));
-    
   }
   ngOnDestroy() {
     this.socket.socket.emit(
@@ -138,7 +136,6 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
     if (event.ctrlKey) {
       switch (event.keyCode) {
-
         case this.keyCodes['Z']:
           this.undo();
           this.updateModifications(true);
@@ -188,45 +185,44 @@ export class DrawComponent implements OnInit, OnDestroy {
     }
 
     this.canvas.freeDrawingBrush.color = this.brushc;
-
-
   }
-  public chooseColor(event) {
+  public strokecolor(event) {
     if (!event.target.value) {
-      this.color = 'black';
+      this.strokec = 'black';
+    } else {
+      this.strokec = event.target.value;
     }
-    else {
+    let a = this.canvas.getActiveObject();
+    console.log(a);
+    a.set({
+      stroke: this.strokec
+    });
+    this.updateModifications(true);
+  }
+  chooseColor(event) {
+    if (!event.target.value) {
+      this.color = null;
+    } else {
       this.color = event.target.value;
     }
     let a = this.canvas.getActiveObject();
     console.log(a);
     a.set({
       fill: this.color,
-    })
+    });
     this.updateModifications(true);
+  }
 
-  }
-  public clearcolor(event){
-    this.color=null;
-   
-    let a = this.canvas.getActiveObject();
-    a.set({
-      fill: this.color,
-      stroke:'black',
-    })
-    this.updateModifications(true);
-  }
-  public textcolor(event){
+  public textcolor(event) {
     if (!event.target.value) {
       this.textc = 'black';
-    }
-    else {
+    } else {
       this.textc = event.target.value;
     }
     let a = this.canvas.getActiveObject();
     a.set({
       fill: this.textc,
-    })
+    });
     this.updateModifications(true);
   }
   public picture(event) {
@@ -241,7 +237,7 @@ export class DrawComponent implements OnInit, OnDestroy {
         fabric.Image.fromURL(this.url, (test) => {
           this.canvas.add(test);
           this.canvas.renderAll();
-          this.socket.sendCanvas(this.canvas.toJSON().objects);
+          // this.socket.sendCanvas(this.canvas.toJSON().objects);
         });
       };
     }
@@ -252,7 +248,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     console.log(this.canvas.getActiveObject());
 
     this.canvas.remove(this.canvas.getActiveObject());
-    this.socket.sendCanvas(this.canvas.toJSON().objects);
+    // this.socket.sendCanvas(this.canvas.toJSON().objects);
     this.updateModifications(true);
   }
 
@@ -264,32 +260,33 @@ export class DrawComponent implements OnInit, OnDestroy {
   }
 
   public freePen() {
-
-
     this.canvas.isDrawingMode = true;
     this.canvas.freeDrawingBrush.width = 1;
-    this.tool = 'freePen'
+    this.tool = 'freePen';
   }
   public freeBrush() {
     this.canvas.isDrawingMode = true;
     this.canvas.freeDrawingBrush.width = 14;
-    this.tool = 'freeBrush'
+    this.tool = 'freeBrush';
   }
-  public blockChoosing(){
-    if(this.tool!='Pointer'||this.tool!='Pointer'||this.tool!='Pointer'){
-    fabric.Object.prototype.selectable=false;
+  public blockChoosing() {
+    if (this.tool != 'Pointer' || this.tool != 'Pointer' || this.tool != 'Pointer') {
+      fabric.Object.prototype.selectable = false;
     }
   }
   //////////////////////////
   public mouseDown(mouseEvent) {
+    if(!this.strokec){
+      this.strokec='black';
+    }
     if (mouseEvent.target != undefined || mouseEvent.target != null) {
       mouseEvent.target.stroke = this.color;
     } else {
-     
       this.x0 = mouseEvent.pointer.x;
       this.y0 = mouseEvent.pointer.y;
       switch (this.tool) {
         case 'Straightline': {
+          fabric.Object.prototype.selectable = false;
           this.canvas.isDrawingMode = false;
           if (!this.color) {
             this.color = 'black';
@@ -304,30 +301,19 @@ export class DrawComponent implements OnInit, OnDestroy {
           break;
         }
         case 'Rectangle': {
+          fabric.Object.prototype.selectable = false;
           this.canvas.isDrawingMode = false;
-          if (this.toogle) {
-            this.rectangle = new fabric.Rect({
-              top: this.y0,
-              left: this.x0,
-              fill: this.color,
-            });
+          this.rectangle = new fabric.Rect({
+            top: this.y0,
+            left: this.x0,
+            fill: this.color,
+            stroke: this.strokec,
+          });
+          this.canvas.add(this.rectangle);
+          // this.updateModifications(true);
+          this.selected = this.rectangle;
+          break;
 
-            this.canvas.add(this.rectangle);
-            // this.updateModifications(true);
-            this.selected = this.rectangle;
-            break;
-          } else {
-            this.rectangle = new fabric.Rect({
-              top: this.y0,
-              left: this.x0,
-              stroke: this.color,
-              fill: null,
-            });
-            this.canvas.add(this.rectangle);
-            // this.updateModifications(true);
-            this.selected = this.rectangle;
-            break;
-          }
         }
         case 'Text': {
           this.canvas.isDrawingMode = false;
@@ -336,7 +322,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             fontFamily: 'arial black',
             top: this.y0,
             left: this.x0,
-            fill:this.textc,
+            fill: this.textc,
           });
           this.canvas.add(this.inputText);
           // this.updateModifications(true);
@@ -344,276 +330,244 @@ export class DrawComponent implements OnInit, OnDestroy {
           break;
         }
         case 'Square': {
+          fabric.Object.prototype.selectable = false;
           this.canvas.isDrawingMode = false;
-          if (this.toogle) {
-            this.square = new fabric.Rect({
-              top: this.y0,
-              left: this.x0,
-              fill: this.color,
-            });
-          } else {
-            this.square = new fabric.Rect({
-              top: this.y0,
-              left: this.x0,
-              fill: null,
-              stroke: this.color,
-            });
-          }
-          this.canvas.add(this.square);
-          // this.updateModifications(true);
-          this.selected = this.square;
+
+          this.square = new fabric.Rect({
+            top: this.y0,
+            left: this.x0,
+            fill: this.color,
+            stroke: this.strokec,
+          });
           break;
         }
         case 'Ellipse': {
+          fabric.Object.prototype.selectable = false;
           this.canvas.isDrawingMode = false;
-          if (this.toogle) {
-            this.ellipse = new fabric.Ellipse({
-              originX: 'center',
-              originY: 'center',
-              top: this.y0,
-              left: this.x0,
-              fill: this.color,
-              rx: 0,
-              ry: 0,
-            });
-          } else {
-            this.ellipse = new fabric.Ellipse({
-              originX: 'center',
-              originY: 'center',
-              top: this.y0,
-              left: this.x0,
-              fill: null,
-              stroke: this.color,
-              rx: 0,
-              ry: 0,
-            });
-          }
 
-          this.canvas.add(this.ellipse);
-          // this.updateModifications(true);
-          this.selected = this.ellipse;
-          break;
-        }
-        case 'Circle': {
-          this.canvas.isDrawingMode = false;
-          if (this.toogle) {
-            this.circle = new fabric.Circle({
-              originX: 'center',
-              originY: 'center',
-              top: this.y0,
-              left: this.x0,
-              fill: this.color,
-              radius: 0,
-            });
-          } else {
-            this.circle = new fabric.Circle({
-              originX: 'center',
-              originY: 'center',
-              top: this.y0,
-              left: this.x0,
-              fill: null,
-              stroke: this.color,
-              radius: 0,
-            });
-          }
-          this.canvas.add(this.circle);
-         
-          this.selected = this.circle;
+          this.ellipse = new fabric.Ellipse({
+            originX: 'center',
+            originY: 'center',
+            top: this.y0,
+            left: this.x0,
+            fill: this.color,
+            stroke:this.strokec,
+            rx: 0,
+            ry: 0,
+          });
 
-
-          break;
-        }
-        case 'Pointer': {
-          this.canvas.isDrawingMode = false;
-          fabric.Object.prototype.selectable = true;
-          break;
-        }
-      }
+      this.canvas.add(this.ellipse);
+      // this.updateModifications(true);
+      this.selected = this.ellipse;
+      break;
     }
+        case 'Circle': {
+      fabric.Object.prototype.selectable = false;
+      this.canvas.isDrawingMode = false;
+        this.circle = new fabric.Circle({
+          originX: 'center',
+          originY: 'center',
+          top: this.y0,
+          left: this.x0,
+          fill: this.color,
+          stroke:this.strokec,
+          radius: 0,
+        });
+      this.canvas.add(this.circle);
+      this.selected = this.circle;
+      break;
+    }
+        case 'Pointer': {
+      this.canvas.isDrawingMode = false;
+      fabric.Object.prototype.selectable = true;
+      break;
+    }
+  }
+}
     // console.log(mouseEvent);
   }
   public mouseMove(mouseEvent) {
-    this.blockChoosing()
-    this.x2 = mouseEvent.pointer.x;
-    this.y2 = mouseEvent.pointer.y;
-    let changeInX = this.x2 - this.x0;
-    let changeInY = this.y2 - this.y0;
-    switch (this.tool) {
-      case 'Pointer': {
-        this.canvas.isDrawingMode = false;
-      }
-      case 'freePen': {
-        break;
-      }
-      case 'freeBrush': {
-        break;
-      }
-      case 'Straightline': {
-        if (this.selected !== null) {
-          this.selected.set({
-            x2: this.x2,
-            y2: this.y2,
-          });
-        }
-      }
-      case 'Rectangle': {
-        if (this.selected !== null) {
-          this.selected.set({
-            width: changeInX,
-            height: changeInY,
-          });
-        }
-        this.canvas.isDrawingMode = false;
-        this.canvas.renderAll();
-        break;
-      }
-      case 'Square': {
-        if (Math.abs(changeInX) >= Math.abs(changeInY)) {
-          if (changeInX > 0) {
-            if (changeInY < 0) changeInY = -changeInX;
-            //TOP RIGHT: Y gets value of -X
-            else changeInY = changeInX; //BOTTOM RIGHT: Y gets value of X
-          } else if (changeInX < 0) {
-            if (changeInY < 0) changeInY = changeInX;
-            //TOP LEFT: Y gets value of X
-            else changeInY = -changeInX; //BOTTOM LEFT: Y gets value of -X
-          }
-        } else if (Math.abs(changeInX) < Math.abs(changeInY)) {
-          if (changeInY > 0) {
-            if (changeInX < 0) changeInX = -changeInY;
-            //BOTTOM LEFT: X gets value of -Y
-            else changeInX = changeInY; //BOTTOM RIGHT: X gets value of Y
-          } else if (changeInY < 0) {
-            if (changeInX < 0) changeInX = changeInY;
-            //TOP LEFT: X gets value of Y
-            else changeInX = -changeInY; //TOP RIGHT: X gets value of -Y
-          }
-        }
-
-        if (this.selected !== null) {
-          this.selected.set({
-            width: changeInX,
-            height: changeInY,
-          });
-        }
-        this.canvas.renderAll();
-        break;
-      }
-      case 'Ellipse': {
-        if (this.selected !== null) {
-          this.selected.set({
-            rx: Math.abs(changeInX),
-            ry: Math.abs(changeInY),
-          });
-        }
-        this.canvas.isDrawingMode = false;
-        this.canvas.renderAll();
-        break;
-      }
-      case 'Circle': {
-        if (Math.abs(changeInX) >= Math.abs(changeInY)) changeInY = changeInX;
-        else if (Math.abs(changeInX) < Math.abs(changeInY))
-          changeInX = changeInY;
-
-        if (this.selected !== null) {
-          this.selected.set({
-            radius: Math.abs(changeInX),
-          });
-        }
-        
-        this.canvas.isDrawingMode = false;
-        this.canvas.renderAll();
-        break;
-      }
-    }
-  }
-  public async updateModifications(saveModification) {
-    if (saveModification === true) {
-      this.myjson = JSON.stringify(this.canvas);
-      console.log(this.myjson);
-      this.state.push(this.myjson);
-      await this.db
-        .collection('user')
-        .doc('vanhuugiakien@gmail.com')
-        .update({ room: [{ id: 1, canvas: this.myjson }] });
-    }
-  }
-  public mouseUp(mouseEvent) {
-    if (this.tool == 'freePen' || this.tool == 'freeBrush') {
-      this.updateModifications(true);
-    } else if (this.tool == 'Pointer') {
+  this.x2 = mouseEvent.pointer.x;
+  this.y2 = mouseEvent.pointer.y;
+  let changeInX = this.x2 - this.x0;
+  let changeInY = this.y2 - this.y0;
+  switch (this.tool) {
+    case 'Pointer': {
       this.canvas.isDrawingMode = false;
-      fabric.Object.prototype.selectable = true;
-    } else {
-      if (this.mode == 'add') {
-
-        this.canvas.isDrawingMode = false;
-        this.selected = null;
-        this.tool = 'Pointer';
-        this.updateModifications(true);
+    }
+    case 'freePen': {
+      break;
+    }
+    case 'freeBrush': {
+      break;
+    }
+    case 'Straightline': {
+      if (this.selected !== null) {
+        this.selected.set({
+          x2: this.x2,
+          y2: this.y2,
+        });
       }
     }
-    this.x0 = 0;
-    this.y0 = 0;
+    case 'Rectangle': {
+      if (this.selected !== null) {
+        this.selected.set({
+          width: changeInX,
+          height: changeInY,
+        });
+      }
+      this.canvas.isDrawingMode = false;
+      this.canvas.renderAll();
+      break;
+    }
+    case 'Square': {
+      if (Math.abs(changeInX) >= Math.abs(changeInY)) {
+        if (changeInX > 0) {
+          if (changeInY < 0) changeInY = -changeInX;
+          //TOP RIGHT: Y gets value of -X
+          else changeInY = changeInX; //BOTTOM RIGHT: Y gets value of X
+        } else if (changeInX < 0) {
+          if (changeInY < 0) changeInY = changeInX;
+          //TOP LEFT: Y gets value of X
+          else changeInY = -changeInX; //BOTTOM LEFT: Y gets value of -X
+        }
+      } else if (Math.abs(changeInX) < Math.abs(changeInY)) {
+        if (changeInY > 0) {
+          if (changeInX < 0) changeInX = -changeInY;
+          //BOTTOM LEFT: X gets value of -Y
+          else changeInX = changeInY; //BOTTOM RIGHT: X gets value of Y
+        } else if (changeInY < 0) {
+          if (changeInX < 0) changeInX = changeInY;
+          //TOP LEFT: X gets value of Y
+          else changeInX = -changeInY; //TOP RIGHT: X gets value of -Y
+        }
+      }
+
+      if (this.selected !== null) {
+        this.selected.set({
+          width: changeInX,
+          height: changeInY,
+        });
+      }
+      this.canvas.renderAll();
+      break;
+    }
+    case 'Ellipse': {
+      if (this.selected !== null) {
+        this.selected.set({
+          rx: Math.abs(changeInX),
+          ry: Math.abs(changeInY),
+        });
+      }
+      this.canvas.isDrawingMode = false;
+      this.canvas.renderAll();
+      break;
+    }
+    case 'Circle': {
+      if (Math.abs(changeInX) >= Math.abs(changeInY)) changeInY = changeInX;
+      else if (Math.abs(changeInX) < Math.abs(changeInY))
+        changeInX = changeInY;
+
+      if (this.selected !== null) {
+        this.selected.set({
+          radius: Math.abs(changeInX),
+        });
+      }
+
+      this.canvas.isDrawingMode = false;
+      this.canvas.renderAll();
+      break;
+    }
   }
-  public deleteObjects() {
+}
+  public async updateModifications(saveModification) {
+  if (saveModification === true) {
+    this.myjson = JSON.stringify(this.canvas);
+    console.log(this.myjson);
+    this.state.push(this.myjson);
+    await this.db
+      .collection('room')
+      .doc(this.connect.canvasRoom)
+      .update({ canvas: this.myjson });
+  }
+}
+  public mouseUp(mouseEvent) {
+  if (this.tool == 'freePen' || this.tool == 'freeBrush') {
+    this.updateModifications(true);
+  } else if (this.tool == 'Pointer') {
     this.canvas.isDrawingMode = false;
-    console.log(this.canvas.isDrawingMode);
-    var activeObject = this.componentRef.directiveRef
-      .fabric()
-      .getActiveObject(),
-      activeGroup = this.canvas.getActiveGroup();
-    if (activeObject) {
-      this.canvas.remove(activeObject);
-    } else if (activeGroup) {
-      var objectsInGroup = activeGroup.getObjects();
-      this.canvas.discardActiveGroup();
-      objectsInGroup.forEach(function (object) {
-        this.componentRef.directiveRef.remove(object);
-      });
+    fabric.Object.prototype.selectable = true;
+  } else {
+    if (this.mode == 'add') {
+      this.canvas.isDrawingMode = false;
+      this.selected = null;
+      this.tool = 'Pointer';
+      this.updateModifications(true);
     }
   }
+  this.x0 = 0;
+  this.y0 = 0;
+}
+  public deleteObjects() {
+  this.canvas.isDrawingMode = false;
+  console.log(this.canvas.isDrawingMode);
+  var activeObject = this.componentRef.directiveRef
+    .fabric()
+    .getActiveObject(),
+    activeGroup = this.canvas.getActiveGroup();
+  if (activeObject) {
+    this.canvas.remove(activeObject);
+  } else if (activeGroup) {
+    var objectsInGroup = activeGroup.getObjects();
+    this.canvas.discardActiveGroup();
+    objectsInGroup.forEach(function (object) {
+      this.componentRef.directiveRef.remove(object);
+    });
+  }
+}
   public groupObjects() {
-    if (!this.canvas.getActiveObject()) {
-      return;
-    }
-    if (this.canvas.getActiveObject().type !== 'activeSelection') {
-      return;
-    }
-    this.canvas.getActiveObject().toGroup();
-    this.canvas.requestRenderAll();
-    this.updateModifications(true);
+  if (!this.canvas.getActiveObject()) {
+    return;
   }
-
-
-  public ungroupObjects() {
-    if (!this.canvas.getActiveObject()) {
-      return;
-    }
-    if (this.canvas.getActiveObject().type !== 'group') {
-      return;
-    }
-    this.canvas.getActiveObject().toActiveSelection();
-    this.canvas.requestRenderAll();
-    this.updateModifications(true);
+  if (this.canvas.getActiveObject().type !== 'activeSelection') {
+    return;
   }
-  undo() {
-    if (this.mods < this.state.length) {
-      this.canvas.clear().renderAll();
-      this.canvas.loadFromJSON(this.state[this.state.length - 1 - this.mods - 1], this.canvas.renderAll.bind(this.canvas));
-      this.canvas.renderAll();
-      this.mods += 1;
-    }
-  }
-  redo() {
-    if (this.mods > 0) {
-      this.canvas.clear().renderAll();
-      this.canvas.loadFromJSON(this.state[this.state.length - 1 - this.mods + 1], this.canvas.renderAll.bind(this.canvas));
-      this.canvas.renderAll();
-      this.mods -= 1;
-
-    }
-  }
-
+  this.canvas.getActiveObject().toGroup();
+  this.canvas.requestRenderAll();
+  this.updateModifications(true);
 }
 
+  public ungroupObjects() {
+  if (!this.canvas.getActiveObject()) {
+    return;
+  }
+  if (this.canvas.getActiveObject().type !== 'group') {
+    return;
+  }
+  this.canvas.getActiveObject().toActiveSelection();
+  this.canvas.requestRenderAll();
+  this.updateModifications(true);
+}
+undo() {
+  if (this.mods < this.state.length) {
+    this.canvas.clear().renderAll();
+    this.canvas.loadFromJSON(
+      this.state[this.state.length - 1 - this.mods - 1],
+      this.canvas.renderAll.bind(this.canvas)
+    );
+    this.canvas.renderAll();
+    this.mods += 1;
+  }
+}
+redo() {
+  if (this.mods > 0) {
+    this.canvas.clear().renderAll();
+    this.canvas.loadFromJSON(
+      this.state[this.state.length - 1 - this.mods + 1],
+      this.canvas.renderAll.bind(this.canvas)
+    );
+    this.canvas.renderAll();
+    this.mods -= 1;
+  }
+}
+}

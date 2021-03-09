@@ -19,14 +19,14 @@ export class AuthService {
       if (user) {
         this.user = user;
         localStorage.setItem('user', JSON.stringify(this.user));
-        console.log('login success! ' + user.displayName);
+        // console.log('login success! ' + user.displayName);
         // alert('Login successfully, '+user.displayName)
-        console.log(this.user);
+        // console.log(this.user);
         this.User.createUser(
           this.user.displayName,
           this.user.uid,
           this.user.photoURL,
-          this.user.email
+          this.user.email.toString()
         );
       } else {
         localStorage.setItem('user', null);
@@ -37,7 +37,6 @@ export class AuthService {
     (await this.provider) == new firebase.default.auth.GoogleAuthProvider();
     await this.afAuth.signInWithPopup(
       new firebase.default.auth.GoogleAuthProvider()
-      
     );
   }
 

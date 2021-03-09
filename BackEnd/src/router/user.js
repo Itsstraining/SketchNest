@@ -1,10 +1,5 @@
 const router = require("express").Router();
 const db = require("../database");
-const body = require("body-parser");
-var cors = require("cors");
-const { doc } = require("../database");
-router.use(body.json());
-router.use(cors());
 
 //tao user
 
@@ -12,10 +7,6 @@ router.post("/create", async (req, res) => {
   let { displayName, photoURL, email, uid, room } = req.body;
   let a = await db.collection("user").doc(email).get();
   let result = await db.collection("user").doc(email).set({
-    displayName: displayName,
-    photoURL: photoURL,
-    email: email,
-    uid: uid,
     room: [],
   });
   console.log(result);
@@ -32,10 +23,10 @@ router.get("/get", async (req, res) => {
     .doc(email)
     .get()
     .then((doc) => doc.data());
-  console.log(a.room);
+  console.log(a);
 });
-router.post("/update", async (req, res) => {
-  let { room, email } = req.body;
+router.put("/update", async (req, res) => {
+  let { email, room } = req.body;
   let result = await db.collection("user").doc(email).set({
     room: room,
   });
@@ -52,5 +43,34 @@ router.delete("/delete", async (req, res) => {
   }
   res.send({ message: `user with email ${email} deleted` });
 });
-
+/**
+ * update user add room
+ */
+router.post("/room-update", async (req, res) => {
+  const { uid, roomID } = req.body;
+  let result = []
+  let temp = await db.collection("user").doc(uid).get();
+  if (temp.data()) {
+    temp = temp.data().room;
+    for (let i of temp) {
+      if (i == roomID) {
+        res.send({
+          message: "Room existed!!",
+        });
+        return;
+      }
+    }
+    temp.push(roomID);
+    console.log(temp);
+    await db.collection("user").doc(uid).update({
+      room: temp,
+    });
+    res.send({ message: "Add room success" });
+  } else {
+    result.push(roomID);
+    await db.collection("user").doc(uid).create({
+      room: result,
+    });
+  }
+});
 module.exports = router;
