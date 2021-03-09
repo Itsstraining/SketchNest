@@ -72,6 +72,7 @@ export class DrawComponent implements OnInit {
   @ViewChild('shapecolor', { static: false }) shapeColor: HTMLElement;
   @ViewChild('color', { static: false }) brushColor: HTMLElement;
   @ViewChild('strokecolor', { static: false }) strokeColor: HTMLElement;
+  @ViewChild('clearcolor', { static: false }) clearColor: HTMLElement;
   ////////////////////////
   canvas;
   image: any;
@@ -154,29 +155,20 @@ export class DrawComponent implements OnInit {
     this.canvas.clear();
     this.updateModifications(true);
   }
-
+clearshape(event){
+  this.color=null;
+  let a = this.canvas.getActiveObject();
+    a.set({
+      fill: this.color,
+    });
+    this.updateModifications(true);
+}
   convertImg() {
     this.link.download = 'download.png';
     this.link.href = this.canvas.toDataURL();
     this.link.click();
   }
 
-  //bug
-  // highlightPen() {
-  //   let a = [];
-  //   this.canvas.isDrawingMode = true;
-  //   this.canvas.freeDrawingBrush.color = 'red';
-  //   this.canvas.freeDrawingBrush.width = 14;
-  //   this.canvas.on('path:created', function (opt) {
-  //     opt.path.globalCompositeOperation = 'source-over';
-  //     opt.path.stroke = 'red';
-  //     // opt.path.animate('opacity', '0', {
-  //     //   duration: 3000,
-
-  //     // })
-  //     setTimeout(this.canvas.remove(opt.path));
-  //   });
-  // }
   public brushcolor(event) {
     this.brushc = event.target.value;
     if (!this.brushc) {
@@ -285,7 +277,6 @@ export class DrawComponent implements OnInit {
       this.y0 = mouseEvent.pointer.y;
       switch (this.tool) {
         case 'Straightline': {
-          fabric.Object.prototype.selectable = false;
           this.canvas.isDrawingMode = false;
           if (!this.color) {
             this.color = 'black';
@@ -300,7 +291,6 @@ export class DrawComponent implements OnInit {
           break;
         }
         case 'Rectangle': {
-          fabric.Object.prototype.selectable = false;
           this.canvas.isDrawingMode = false;
           this.rectangle = new fabric.Rect({
             top: this.y0,
@@ -329,7 +319,6 @@ export class DrawComponent implements OnInit {
           break;
         }
         case 'Square': {
-          fabric.Object.prototype.selectable = false;
           this.canvas.isDrawingMode = false;
 
           this.square = new fabric.Rect({
@@ -341,7 +330,6 @@ export class DrawComponent implements OnInit {
           break;
         }
         case 'Ellipse': {
-          fabric.Object.prototype.selectable = false;
           this.canvas.isDrawingMode = false;
 
           this.ellipse = new fabric.Ellipse({
@@ -361,7 +349,7 @@ export class DrawComponent implements OnInit {
       break;
     }
         case 'Circle': {
-      fabric.Object.prototype.selectable = false;
+        fabric.Object.prototype.selectable=false;
       this.canvas.isDrawingMode = false;
         this.circle = new fabric.Circle({
           originX: 'center',
@@ -372,6 +360,7 @@ export class DrawComponent implements OnInit {
           stroke:this.strokec,
           radius: 0,
         });
+        
       this.canvas.add(this.circle);
       this.selected = this.circle;
       break;
@@ -463,6 +452,7 @@ export class DrawComponent implements OnInit {
       break;
     }
     case 'Circle': {
+      fabric.Object.prototype.selectable=false;
       if (Math.abs(changeInX) >= Math.abs(changeInY)) changeInY = changeInX;
       else if (Math.abs(changeInX) < Math.abs(changeInY))
         changeInX = changeInY;
@@ -499,6 +489,7 @@ export class DrawComponent implements OnInit {
   } else {
     if (this.mode == 'add') {
       this.canvas.isDrawingMode = false;
+      
       this.selected = null;
       this.tool = 'Pointer';
       this.updateModifications(true);
