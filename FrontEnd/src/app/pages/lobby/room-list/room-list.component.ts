@@ -26,7 +26,7 @@ export class RoomListComponent implements OnInit {
   }
 
   async getData(){
-    this.roomList= await this.connect.getListRoom(this.auth.user.uid)
+    this.roomList= await this.connect.getListRoom(this.auth.user.email)
     // this.roomList=this.roomList.room
     console.log(this.roomList)
   }

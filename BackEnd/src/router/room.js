@@ -8,8 +8,8 @@ const { response } = require("../server");
  * Lấy phòng từ người dùng
  */
 router.get("/all", async (req, res) => {
-  const { uid } = req.query;
-  let result = (await db.collection("user").doc(uid).get()).data();
+  const { email } = req.query;
+  let result = (await db.collection("user").doc(email).get()).data();
   res.send({ result: result.room });
 });
 /**
