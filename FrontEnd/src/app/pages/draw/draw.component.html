@@ -1,5 +1,8 @@
 <header>
   <button id="clearTb" (click)="clearCanvas()">Clear table</button>
+  <button id="btnShare" mat-raised-button (click)="openDialog()">
+    Share
+  </button>
 </header>
 
 <body>
@@ -63,7 +66,7 @@
 
             </svg></button> -->
           <button id="btnFunction">
-            <input style="width: 35px; height: 35px" title="Pen color" type="color" id="color" />
+            <input style="width: 35px; height: 35px" title="Pen color" type="color" id="color"  (change)="brushcolor($event)"/>
           </button>
 
         </div>
@@ -136,7 +139,7 @@
             </svg>
           </button>
           <button id="btnFunction">
-            <input style="width: 35px; height: 35px" title="Shape Color" type="color" id="shapecolor"  />
+            <input style="width: 35px; height: 35px" title="Shape Color" type="color" id="shapecolor"  (change)="chooseColor($event)"/>
           </button>
         </div>
 
@@ -214,16 +217,14 @@
   <main>
     <fabric style="background-color: white; width: 1400px; height: 700px" *ngIf="type == 'component' && show"
       fxFlex="auto" (mouseDown)="mouseDown($event)" (mouseMove)="mouseMove($event)" (mouseUp)="mouseUp($event)"
-       (objectSelected)="(true)"
-      [data]="data" [config]="config" [disabled]="disabled">
+       (objectSelected)="(true)" (objectModified)="this.updateModifications(true)"
+       [config]="config" [disabled]="disabled">
     </fabric>
   </main>
   <div class="right-sidebar">
     <div class="list-wrapper" ng-app="app" ng-controller="MainCtrl as ctrl">
-      <button id="btnShare" mat-raised-button (click)="openDialog()">
-        Share
-      </button>
-      <ul class="list">
+      
+      <!-- <ul class="list">
         <li ng-repeat="user in ctrl.users" class="list-item">
           <div>
             <img src="{{ this.auth.user.photoURL }}" class="list-item-image" />
@@ -269,7 +270,7 @@
             <p>{{ this.auth.user.email }}</p>
           </div>
         </li>
-      </ul>
+      </ul> -->
     </div>
   </div>
 </body>
