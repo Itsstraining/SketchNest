@@ -212,6 +212,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     let a = this.canvas.getActiveObject();
     a.set({
       fill: this.color,
+      stroke:'black',
     })
     this.updateModifications(true);
   }
