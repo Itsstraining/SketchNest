@@ -31,6 +31,7 @@ export class DrawComponent implements OnInit, OnDestroy {
   public action = 'none';
   public chosenColor;
   public drawColor;
+  public textc;
   public x0;
   public x2;
   public y2;
@@ -69,6 +70,8 @@ export class DrawComponent implements OnInit, OnDestroy {
   @ViewChild(FabricDirective, { static: false }) directiveRef?: FabricDirective;
   @ViewChild('shapecolor', { static: false }) shapeColor: HTMLElement
   @ViewChild('color', { static: false }) brushColor: HTMLElement
+  @ViewChild('clearcolor', { static: false }) clearColor: HTMLElement
+  @ViewChild('textcolor', { static: false }) textColor: HTMLElement
   ////////////////////////
   canvas;
   image: any;
@@ -203,6 +206,28 @@ export class DrawComponent implements OnInit, OnDestroy {
     this.updateModifications(true);
 
   }
+  public clearcolor(event){
+    this.color=null;
+   
+    let a = this.canvas.getActiveObject();
+    a.set({
+      fill: this.color,
+    })
+    this.updateModifications(true);
+  }
+  public textcolor(event){
+    if (!event.target.value) {
+      this.textc = 'black';
+    }
+    else {
+      this.textc = event.target.value;
+    }
+    let a = this.canvas.getActiveObject();
+    a.set({
+      fill: this.textc,
+    })
+    this.updateModifications(true);
+  }
   public picture(event) {
     this.canvas.isDrawingMode = false;
     if (event.target.files && event.target.files[0]) {
@@ -254,7 +279,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     if (mouseEvent.target != undefined || mouseEvent.target != null) {
       mouseEvent.target.stroke = this.color;
     } else {
-      fabric.Object.prototype.selectable = false;
+     
       this.x0 = mouseEvent.pointer.x;
       this.y0 = mouseEvent.pointer.y;
       switch (this.tool) {
@@ -305,6 +330,7 @@ export class DrawComponent implements OnInit, OnDestroy {
             fontFamily: 'arial black',
             top: this.y0,
             left: this.x0,
+            fill:this.textc,
           });
           this.canvas.add(this.inputText);
           // this.updateModifications(true);
@@ -363,7 +389,6 @@ export class DrawComponent implements OnInit, OnDestroy {
           break;
         }
         case 'Circle': {
-          fabric.Object.prototype.selectable=false;
           this.canvas.isDrawingMode = false;
           if (this.toogle) {
             this.circle = new fabric.Circle({
@@ -401,6 +426,7 @@ export class DrawComponent implements OnInit, OnDestroy {
     // console.log(mouseEvent);
   }
   public mouseMove(mouseEvent) {
+
     this.x2 = mouseEvent.pointer.x;
     this.y2 = mouseEvent.pointer.y;
     let changeInX = this.x2 - this.x0;
